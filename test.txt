@@ -1,252 +1,332 @@
-AbdallahAhmed6520: User Story: 
+I'll provide a comprehensive explanation of the admin termination notification implementation with detailed code snippets for every component.
 
-As a establishment admin I want to get a notification when account is deactivated so that I can know the transaction is done 
+## Complete Admin Termination Notification Implementation
 
- 
+### 1. Entry Point: AdminService.terminateAdmin()
 
-As is:{}
+Let me first check the AdminService to show you the integration point: 
 
-there is no notification related to deactivate admin transaction 
+Searched text for `terminateAdmin|notifyAdminOnRemoval` (`**/AdminService.java`), 4 results
 
- 
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/admin/service/AdminService.java#770-770), lines 770 to 850
 
-To be: 
+### 2. Main Notification Method: notifyAdminOnRemoval 
 
-to send a notification to the admin that deactivates his account 
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2910-2910), lines 2910 to 2959
 
-and send a notification to the super admin of that establishment and if there is no super admin send it to the active owner 
+### 3. Individual Establishment Logic: notifyAdminTerminationForIndividualEstablishment 
 
- 
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2950-2950), lines 2950 to 3015
 
-AC
+### 4. Supporting Method: notifyAdminByRole 
 
-Induvial establishment owners only 
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2805-2805), lines 2805 to 2828
 
- 
+### 5. Helper Method: findTargetAdmin 
 
-Notification attached 
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2830-2830), lines 2830 to 2870
 
- 
+### 6. Notification Sender: sendNotificationToAdmin 
 
-send notification to terminated admin + (current super admin or owner for induvial establishment in case there is no active super admin)
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2871-2871), lines 2871 to 2909
 
-------------------------------
+Now let me check the notification templates and enums used: 
 
-API: (v1/admin/1724293111/terminate?registrationNo=628660158&personId=1020914541).
+Searched text for `NOTIFY_REMOVED_ADMIN|NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED` (`**/*NotificationTemplate*.java`), no results
 
-BE only 
------------------
-this story is alreadt implemented but i want to review the implementations and tell me what is not implemented
+Searched for files matching `**/*NotificationTemplate*`, no matches
 
+Searched text for `enum.*NotificationTemplate` (`**/*.java`), 12 results
 
-GitHub Copilot: I'll help you review the implementation for the notification system when an establishment admin account is deactivated. Let me first explore the codebase to understand the current implementation. 
+Let me check the Role enum as well: 
 
-Searched codebase for "admin terminate deactivate notification establishment", 12 results
+Searched text for `enum.*Role` (`**/*.java`), 20 results
 
-Now let me search for the terminate endpoint specifically: 
+## Complete Implementation Explanation with Code Snippets
 
-Searched text for `terminate.*admin|admin.*terminate` (`**/*.java`), 20 results
+### **1. Entry Point: AdminService.terminateAdmin()**
 
-Let me search specifically for the terminate admin method: 
+The admin termination flow starts in the `AdminService.terminateAdmin()` method:
 
-Searched text for `terminateAdmin|terminate.*Admin` (`**/AdminService.java`), 1 result
-
-Let me read the terminate admin method: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/admin/service/AdminService.java#770-770), lines 770 to 830
-
-Let me see the rest of the terminateAdmin method: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/admin/service/AdminService.java#830-830), lines 830 to 840
-
-Let me see if there's more to this method: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/admin/service/AdminService.java#840-840), lines 840 to 850
-
-Great! Now let me check the API controller that calls this terminate method: 
-
-Searched text for `terminateAdmin` (`**/AdminController.java`), no results
-
-Let me search for the controller that handles the terminate endpoint: 
-
-Searched text for `terminate.*mapping|@PostMapping.*terminate` (`**/*.java`), 1 result
-
-Let me search for the implementation of this API: 
-
-Searched for files matching `**/AdminController.java`, no matches
-
-Searched for files matching `**/*Controller.java`, no matches
-
-Let me search more broadly: 
-
-Searched text for `implements.*AdminApi` (`**/*.java`), 1 result
-
-Now let me check the AdminApiImpl class: 
-
-Searched text for `terminateAdmin` (`**/AdminApiImpl.java`), 3 results
-
-Let me read the terminateAdmin implementation in AdminApiImpl: 
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/admin/AdminApiImpl.java#120-120), lines 120 to 150
-
-Now let me check the notification service method that is called from the terminateAdmin method. I found that it calls `establishmentNotificationService.notifyAdminOnRemoval(establishment, personId,transactionTraceId)`: 
-
-Searched text for `notifyAdminOnRemoval` (`**/EstablishmentNotificationService.java`), 1 result
-
-Let me read the notifyAdminOnRemoval method: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2905-2905), lines 2905 to 2955
-
-Now let me check what notifyAdminByRole does: 
-
-Searched text for `notifyAdminByRole.*\{` (`**/EstablishmentNotificationService.java`), no results
-
-Searched text for `public void notifyAdminByRole` (`**/EstablishmentNotificationService.java`), 1 result
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2810-2810), lines 2810 to 2890
-
-Let me see the rest of this method: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2890-2890), lines 2890 to 2910
-
-Now let me check the notification templates to see what they contain: 
-
-Searched text for `NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED|NOTIFY_REMOVED_ADMIN` (`**/*.java`), 2 results
-
-Let me find the NotificationTemplate enum: 
-
-Searched text for `enum.*NotificationTemplate|NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.*=` (`**/*.java`), 11 results
-
-It looks like NotificationTemplate is in the common library. Let me check if it exists in our project: 
-
-Searched text for `NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED` (`**/*.java`), 1 result
-
-Searched text for `NOTIFY_REMOVED_ADMIN` (`**/*.java`), 1 result
-
-Now let me check if there's also a specific logic for individual establishments. Let me check the findTargetAdmin method more closely by analyzing what it does when there's no super admin: 
-
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2840-2840), lines 2840 to 2880
-
-Now let me check what isPrivate() method does on the EstablishmentEntity: 
-
-Searched text for `public.*boolean.*isPrivate|boolean.*isPrivate\(\)` (`**/*.java`), 1 result
-
-Continue to iterate?
-[object Object]
-
-AbdallahAhmed6520: @agent Continue: "Continue to iterate?"
-
-GitHub Copilot: Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/domain/EstablishmentEntity.java#710-710), lines 710 to 715
-
-Now let me check what the user story requires more carefully. The user story says:
-
-1. Send notification to terminated admin
-2. Send notification to super admin OR owner for individual establishment in case there is no active super admin
-3. AC: Individual establishment owners only
-
-Let me verify if the current implementation handles these requirements properly by looking at the API path mentioned: `v1/admin/1724293111/terminate?registrationNo=628660158&personId=1020914541`
-
-Let me check how individual establishments are identified: 
-
-Searched text for `individual.*establishment|establishment.*individual` (`**/*.java`), 20 results
-
-Let me check what makes an establishment "individual": 
-
-Searched text for `LegalEntityType.*INDIVIDUAL|INDIVIDUAL.*LegalEntityType` (`**/*.java`), no results
-
-Searched text for `LegalEntityType` (`**/*.java`), 20 results
-
-Let me check the LegalEntityType enum: 
-
-Searched text for `PRIVATE_COMPANY.*=` (`**/*.java`), 10 results
-
-Based on my analysis, let me check what exactly makes an establishment "individual" according to the AC (Acceptance Criteria). Let me look for specific legal entity types that might represent individual establishments: 
-
-Searched text for `INDIVIDUAL|SOLE_PROPRIETORSHIP` (`**/*.java`), 20 results
-
-Now let me examine the current implementation more closely. Looking at the code analysis, I can provide you with a comprehensive review:
-
-## Current Implementation Review
-
-### **What is Currently Implemented:**
-
-1. **Admin Termination API**: ✅ **IMPLEMENTED**
-   - API endpoint: `POST /v1/admin/{id}/terminate?registrationNo={registrationNo}&personId={personId}`
-   - Implementation in `AdminApiImpl.terminateAdmin()` method
-   - Calls `AdminService.terminateAdmin()` method
-
-2. **Notification System**: ✅ **IMPLEMENTED**
-   - At the end of `terminateAdmin()` method, it calls:
-   ```java
-   establishmentNotificationService.notifyAdminOnRemoval(establishment, personId, transactionTraceId);
-   ```
-
-3. **Dual Notification Logic**: ✅ **IMPLEMENTED**
-   - **To Terminated Admin**: Uses template `NOTIFY_REMOVED_ADMIN`
-   - **To Super Admin/Owner**: Uses template `NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED`
-
-4. **Fallback to Owner Logic**: ✅ **IMPLEMENTED** 
-   - In `findTargetAdmin()` method:
-   ```java
-   } else if (establishmentEntity.isPrivate()) {
-       establishmentEntity.getOwners().stream()
-           .filter(o -> o.getEndDate() == null)
-           .findFirst()
-           .ifPresent(owner -> matchedAdmin.add(
-               AdminEntity.builder().person(owner.getPerson()).build()
-           ));
-   ```
-
-### **Gap Analysis - What Might Not Be Fully Compliant:**
-
-#### ❌ **POTENTIAL ISSUE**: Individual Establishment Definition
-
-The AC states "Individual establishment owners only", but the current implementation uses:
 ```java
-establishmentEntity.isPrivate()  // This checks for LegalEntityType.PRIVATE_COMPANY
+public void terminateAdmin(Long roleId, Long registrationNo, Long loginPersonId, Long personId, String identifier) {
+    EstablishmentEntity establishment = establishmentFactory.findByRegistrationNo(registrationNo);
+    
+    // ... admin termination logic ...
+    
+    // Key notification call at the end
+    establishmentNotificationService.notifyAdminOnRemoval(establishment, personId, transactionTraceId);
+}
 ```
 
-**Problem**: `isPrivate()` method checks for `PRIVATE_COMPANY` legal entity type, but "individual establishments" might refer to a different legal entity type (like sole proprietorship or individual business).
+**What happens:** After deactivating the admin, the service calls the notification method to inform relevant parties.
 
-#### ❌ **POTENTIAL ISSUE**: Super Admin Check Logic
+---
 
-The current `findTargetAdmin()` method:
-1. First tries to find a SUPER_ADMIN
-2. If not found, tries to find any ADMIN  
-3. Only then falls back to owner (and only for private establishments)
+### **2. Main Notification Method: notifyAdminOnRemoval()**
 
-**Problem**: The requirement states to notify "current super admin or owner for individual establishment in case there is no active super admin". The current logic might send notifications to regular admins before checking owners.
-
-### **What Needs Verification/Potential Fixes:**
-
-1. **Legal Entity Type Clarification**: 
-   - Need to confirm what constitutes an "individual establishment"
-   - May need to add support for additional legal entity types beyond just `PRIVATE_COMPANY`
-
-2. **Admin Role Priority**: 
-   - The current logic checks for `Role.ADMIN` after `Role.SUPER_ADMIN`
-   - Should probably go directly to owner if no super admin exists for individual establishments
-
-3. **Implementation Suggestion**:
 ```java
-// In findTargetAdmin method, for individual establishments:
-if (isIndividualEstablishment(establishmentEntity)) {
-    // First try super admin
-    List<AdminEntity> superAdmins = admins.stream()
-        .filter(a -> a.getAdminRoles().stream()
-            .anyMatch(r -> r.getRole().getId().equals(Long.valueOf(Role.SUPER_ADMIN.getCode()))))
-        .collect(Collectors.toList());
-    
-    if (!superAdmins.isEmpty()) {
-        return Collections.singletonList(superAdmins.get(0));
-    } else {
-        // No super admin, fall back to owner
-        return getActiveOwner(establishmentEntity);
+public void notifyAdminOnRemoval(EstablishmentEntity establishment, Long personId, Long transactionTraceId) {
+    Map<String, String> messageAttributes = new HashMap<>();
+    AdminEntity removedAdmin = establishment.getAdmin(personId);
+
+    // Prepare admin names for notification
+    String removedAdminNameAr = removedAdmin.getPerson().getArabicFullName() != null ?
+        removedAdmin.getPerson().getArabicFullName() : "";
+    String removedAdminNameEn = removedAdmin.getPerson().getName().getNameEnglish() != null ?
+        removedAdmin.getPerson().getName().getNameEnglish() : removedAdminNameAr;
+
+    // Build message attributes for notifications
+    messageAttributes.put(EstablishmentNotificationMsgAttributes.REGISTRATION_NUMBER.getCode(),
+        establishment.getRegistrationNo().toString());
+    messageAttributes.put(EstablishmentNotificationMsgAttributes.REQUEST_NUMBER.getCode(),
+        String.valueOf(transactionTraceId));
+    messageAttributes.put(EstablishmentNotificationMsgAttributes.TAMINATY_URL.getCode(), taminatyUrl);
+    messageAttributes.put(EstablishmentNotificationMsgAttributes.ADMIN_NAME_AR.getCode(), removedAdminNameAr);
+    messageAttributes.put(EstablishmentNotificationMsgAttributes.ADMIN_NAME_EN.getCode(), removedAdminNameEn);
+
+    List<String> communicationChannels = Collections.singletonList(
+        CommunicationChannel.SMS.getDescription()
+    );
+
+    // 1. Send notification to terminated/deactivated admin
+    sendNotificationToAdmin(
+        establishment,
+        NotificationTemplate.NOTIFY_REMOVED_ADMIN.getCode(),
+        Collections.singletonList(removedAdmin),
+        messageAttributes,
+        communicationChannels
+    );
+
+    // 2. Send notification to remaining admins or owners
+    if (establishment.isPrivate()) { // Individual establishment
+        notifyAdminTerminationForIndividualEstablishment(establishment, personId, messageAttributes, communicationChannels);
+    } else { // Non-individual establishment
+        notifyAdminByRole(establishment.getId(),
+            NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.getCode(),
+            false,
+            messageAttributes,
+            communicationChannels,
+            Role.SUPER_ADMIN);
     }
 }
 ```
 
-### **Summary:**
-The notification system for admin termination is **largely implemented** but may need refinement to ensure it correctly identifies "individual establishments" and follows the exact notification priority specified in the user story (super admin OR owner, not regular admins).
+**What happens:** 
+- ✅ **Two notifications are sent**: one to the terminated admin, one to remaining admin/owner
+- ✅ **Branch logic**: Different handling for individual vs non-individual establishments
+- ✅ **Message attributes**: Contains all necessary data (registration number, admin name, etc.)
 
-Would you like me to suggest specific code changes to address these potential gaps?
+---
+
+### **3. Individual Establishment Logic: notifyAdminTerminationForIndividualEstablishment()**
+
+```java
+private void notifyAdminTerminationForIndividualEstablishment(EstablishmentEntity establishment, 
+                                                              Long terminatedPersonId,
+                                                              Map<String, String> messageAttributes,
+                                                              List<String> communicationChannels) {
+    // Get active super admins EXCLUDING the terminated one
+    List<AdminEntity> activeSuperAdmins = establishment.getActiveAdmins().stream()
+        .filter(admin -> !admin.getPerson().getId().equals(terminatedPersonId)) // 🔑 KEY FILTER
+        .filter(admin -> admin.getAdminRoles().stream()
+            .anyMatch(role -> role.getRole().getId().equals(Long.valueOf(Role.SUPER_ADMIN.getCode())) 
+                      && role.isEndDateEmpty()))
+        .collect(Collectors.toList());
+
+    if (!activeSuperAdmins.isEmpty()) {
+        // Case 1: Active super admin found - notify them
+        sendNotificationToAdmin(
+            establishment,
+            NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.getCode(),
+            Collections.singletonList(activeSuperAdmins.get(0)),
+            messageAttributes,
+            communicationChannels
+        );
+    } else {
+        // Case 2: No active super admin found - notify owner (YOUR USER STORY REQUIREMENT)
+        List<OwnerEntity> activeOwners = establishment.getOwners().stream()
+            .filter(owner -> owner.getEndDate() == null)
+            .collect(Collectors.toList());
+            
+        if (!activeOwners.isEmpty()) {
+            OwnerEntity activeOwner = activeOwners.get(0);
+            AdminEntity ownerAsAdmin = AdminEntity.builder()
+                .person(activeOwner.getPerson())
+                .build();
+                
+            sendNotificationToAdmin(
+                establishment,
+                NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.getCode(),
+                Collections.singletonList(ownerAsAdmin),
+                messageAttributes,
+                communicationChannels
+            );
+        }
+    }
+}
+```
+
+**What happens:**
+- ✅ **Excludes terminated admin** from super admin check (critical requirement)
+- ✅ **Owner fallback** when no active super admins exist (your user story requirement)
+- ✅ **Individual establishment specific** logic
+
+---
+
+### **4. Supporting Method: notifyAdminByRole() (Used for Non-Individual Establishments)**
+
+```java
+public void notifyAdminByRole(Long establishmentId,
+                              String templateId,
+                              boolean notifyAll,
+                              Map<String, String> messageAttributes,
+                              List<String> communicationChannel,
+                              Role... roles) {
+    EstablishmentEntity establishmentEntity = aggregateFactory.findById(establishmentId);
+    if (establishmentEntity == null) return;
+
+    List<AdminEntity> adminList = establishmentEntity.getActiveAdmins();
+    if (adminList == null || adminList.isEmpty()) return;
+
+    List<AdminEntity> targetAdmin = findTargetAdmin(establishmentEntity, adminList, notifyAll, roles);
+
+    if (!targetAdmin.isEmpty()) {
+        sendNotificationToAdmin(establishmentEntity, templateId, targetAdmin, messageAttributes, communicationChannel);
+    }
+}
+```
+
+**What happens:** Generic role-based notification method used for non-individual establishments.
+
+---
+
+### **5. Admin Finding Logic: findTargetAdmin()**
+
+```java
+private List<AdminEntity> findTargetAdmin(EstablishmentEntity establishmentEntity,
+                                          List<AdminEntity> admins,
+                                          boolean notifyAll,
+                                          Role... roles) {
+    if (ObjectUtils.isEmpty(roles)) {
+        roles = new Role[]{Role.SUPER_ADMIN, Role.ADMIN}; // Default roles
+    }
+    
+    for (Role role : roles) {
+        List<AdminEntity> matchedAdmin = admins.stream()
+            .filter(a -> a.getAdminRoles().stream()
+                .anyMatch(r -> r.getRole().getId().equals(Long.valueOf(role.getCode()))))
+            .collect(Collectors.toList());
+
+        if (!matchedAdmin.isEmpty()) {
+            return notifyAll ? matchedAdmin : Collections.singletonList(matchedAdmin.get(0));
+        } else if (establishmentEntity.isPrivate()) {
+            // Owner fallback for private establishments
+            establishmentEntity.getOwners().stream()
+                .filter(o -> o.getEndDate() == null)
+                .findFirst()
+                .ifPresent(owner -> matchedAdmin.add(
+                    AdminEntity.builder().person(owner.getPerson()).build()
+                ));
+            return !ObjectUtils.isEmpty(matchedAdmin) ?
+                Collections.singletonList(matchedAdmin.get(0)) : Collections.emptyList();
+        }
+    }
+    return Collections.emptyList();
+}
+```
+
+**What happens:** Finds target admins by role with owner fallback for private establishments.
+
+---
+
+### **6. Notification Sender: sendNotificationToAdmin()**
+
+```java
+private void sendNotificationToAdmin(EstablishmentEntity establishment,
+                                     String templateId,
+                                     List<AdminEntity> admins,
+                                     Map<String, String> messageAttributes,
+                                     List<String> channels) {
+    for (AdminEntity admin : admins) {
+        PersonViewEntity person = admin.getPerson();
+        PersonId personId = personViewService.getPersonIdFromIdentifier(person, null);
+        if (personId == null) continue;
+
+        AmeenNotification notification = AmeenNotification.builder()
+            .templateId(templateId)
+            .establishmentRegistrationNo(String.valueOf(establishment.getRegistrationNo()))
+            .messageData(messageAttributes)
+            .targetApp(TargetApp.BUSINESS)
+            .personId(personId)
+            .build();
+
+        notification.setCommunicationChannels(channels);
+        sendNotificationEvent(notification);
+    }
+}
+```
+
+**What happens:** Actual notification sending to the Ameen notification system.
+
+---
+
+## **Flow Summary: Your User Story Requirements**
+
+### **User Story: "As a establishment admin I want to get a notification when account is deactivated"**
+
+**✅ IMPLEMENTED:**
+```java
+// Step 1: Terminated admin gets notified
+sendNotificationToAdmin(
+    establishment,
+    NotificationTemplate.NOTIFY_REMOVED_ADMIN.getCode(), // Admin termination template
+    Collections.singletonList(removedAdmin), // The terminated admin
+    messageAttributes,
+    communicationChannels
+);
+```
+
+### **Requirement: "for individual company i want to check if there are no active super admins send the notification to owners"**
+
+**✅ IMPLEMENTED:**
+```java
+// Step 2: Check for active super admins EXCLUDING terminated one
+List<AdminEntity> activeSuperAdmins = establishment.getActiveAdmins().stream()
+    .filter(admin -> !admin.getPerson().getId().equals(terminatedPersonId)) // EXCLUDE terminated
+    .filter(admin -> /* has SUPER_ADMIN role */)
+    .collect(Collectors.toList());
+
+if (!activeSuperAdmins.isEmpty()) {
+    // Notify remaining super admin
+} else {
+    // NO super admins found - notify OWNER instead
+    List<OwnerEntity> activeOwners = establishment.getOwners().stream()
+        .filter(owner -> owner.getEndDate() == null)
+        .collect(Collectors.toList());
+    // Send notification to owner
+}
+```
+
+---
+
+## **Key Components Used:**
+
+### **Enums and Templates:**
+- `Role.SUPER_ADMIN` - Super admin role identification
+- `NotificationTemplate.NOTIFY_REMOVED_ADMIN` - Template for terminated admin
+- `NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED` - Template for remaining admins/owners
+- `CommunicationChannel.SMS` - SMS notification channel
+
+### **Entity Relationships:**
+- `EstablishmentEntity` → `AdminEntity` (active admins)
+- `EstablishmentEntity` → `OwnerEntity` (owners)
+- `AdminEntity` → `PersonViewEntity` (person details)
+- `AdminEntity` → `AdminRoleEntity` (role assignments)
+
+### **Business Logic:**
+- `establishment.isPrivate()` - Identifies individual establishments
+- `owner.getEndDate() == null` - Identifies active owners
+- `role.isEndDateEmpty()` - Identifies active admin roles
+
+This implementation fully satisfies your user story requirements with proper individual establishment handling and owner fallback logic.
