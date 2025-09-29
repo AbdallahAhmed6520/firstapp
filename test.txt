@@ -1,297 +1,200 @@
-I'll provide a comprehensive description and explanation of the current implementation. Let me first examine the final code to give you accurate details. 
+/*
+ * Copyright GOSI. All Rights Reserved.
+ * This software is the proprietary information of GOSI.
+ * Use is subject to license terms.
+ */
 
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2900-2900), lines 2900 to 2950
+package sa.gov.gosi.si.em.business.establishment.service;
 
-Now let me also check the supporting methods to provide complete context: 
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import sa.gov.gosi.framework.exception.ExceptionUtils;
+import sa.gov.gosi.si.em.business.establishment.EstablishmentMessageKeys;
+import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentEntity;
+import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentPreferenceEntity;
+import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentPreferenceTagEntity;
+import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentTagEntity;
+import sa.gov.gosi.si.em.business.establishment.enums.EstablishmentTagType;
+import sa.gov.gosi.si.em.business.establishment.proxy.repository.EngagementRepository;
+import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentPreferenceRepository;
+import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentPreferenceTagRepository;
+import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentTagRepository;
 
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/java/sa/gov/gosi/si/em/business/establishment/service/EstablishmentNotificationService.java#2800-2800), lines 2800 to 2900
+/**
+ * The service interface which defines operations related to Establishment Preference Tag Service.
+ */
+@Slf4j
+@Service("Em_EstablishmentPreferenceTagService")
+public class EstablishmentPreferenceTagService {
 
-# Comprehensive Implementation Analysis: Admin Removal Notification System
+    @Autowired
+    EstablishmentPreferenceService establishmentPreferenceService;
 
-## Overview
+    @Autowired
+    EstablishmentPreferenceRepository establishmentPreferenceRepository;
 
-The admin removal notification system is implemented in the `EstablishmentNotificationService` class and consists of a main entry point method `notifyAdminOnRemoval()` that leverages a sophisticated, reusable notification framework to handle different establishment types and admin hierarchies.
+    @Autowired
+    EstablishmentTagRepository establishmentTagRepository;
 
-## Architecture & Design Pattern
+    @Autowired
+    EstablishmentPreferenceTagRepository establishmentPreferenceTagRepository;
 
-The implementation follows a **Strategy Pattern** combined with **Template Method Pattern**:
-- **Strategy**: Different notification strategies for different establishment types
-- **Template**: Common notification flow with customizable steps
-- **Delegation**: Heavy use of existing utility methods for code reuse
+    @Autowired
+    EngagementRepository engagementRepository;
 
-## Core Components
+    /**
+     * The Exception utils.
+     */
+    @Autowired
+    private ExceptionUtils exceptionUtils;
 
-### 1. Main Entry Point: `notifyAdminOnRemoval()`
 
-```java
-public void notifyAdminOnRemoval(EstablishmentEntity establishment, Long personId, Long transactionTraceId) {
-    Map<String, String> messageAttributes = new HashMap<>();
-    AdminEntity removedAdmin = establishment.getAdmin(personId);
-
-    // Data preparation phase
-    String removedAdminNameAr = removedAdmin.getPerson().getArabicFullName() != null ?
-        removedAdmin.getPerson().getArabicFullName() : "";
-    String removedAdminNameEn = removedAdmin.getPerson().getName().getNameEnglish() != null ?
-        removedAdmin.getPerson().getName().getNameEnglish() : removedAdminNameAr;
-
-    // Message attributes setup
-    messageAttributes.put(EstablishmentNotificationMsgAttributes.REGISTRATION_NUMBER.getCode(),
-        establishment.getRegistrationNo().toString());
-    messageAttributes.put(EstablishmentNotificationMsgAttributes.REQUEST_NUMBER.getCode(),
-        String.valueOf(transactionTraceId));
-    messageAttributes.put(EstablishmentNotificationMsgAttributes.TAMINATY_URL.getCode(), taminatyUrl);
-    messageAttributes.put(EstablishmentNotificationMsgAttributes.ADMIN_NAME_AR.getCode(), removedAdminNameAr);
-    messageAttributes.put(EstablishmentNotificationMsgAttributes.ADMIN_NAME_EN.getCode(), removedAdminNameEn);
-
-    List<String> communicationChannels = Collections.singletonList(
-        CommunicationChannel.SMS.getDescription()
-    );
-
-    // Dual notification approach
-    // 1. Notify the terminated admin
-    sendNotificationToAdmin(
-            establishment,
-            NotificationTemplate.NOTIFY_REMOVED_ADMIN.getCode(),
-            Collections.singletonList(removedAdmin),
-            messageAttributes,
-            communicationChannels
-    );
-
-    // 2. Notify supervisory admin (super admin or owner)
-    notifyAdminByRole(establishment.getId(),
-            NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.getCode(),
-            false, // notify only the first matching admin
-            messageAttributes,
-            communicationChannels,
-            Role.SUPER_ADMIN);
-}
-```
-
-### 2. Role-Based Notification Engine: `notifyAdminByRole()`
-
-```java
-public void notifyAdminByRole(Long establishmentId,
-                              String templateId,
-                              boolean notifyAll,
-                              Map<String, String> messageAttributes,
-                              List<String> communicationChannel,
-                              Role... roles) {
-    EstablishmentEntity establishmentEntity = aggregateFactory.findById(establishmentId);
-    if (establishmentEntity == null) return;
-
-    List<AdminEntity> adminList = establishmentEntity.getActiveAdmins();
-    if (adminList == null || adminList.isEmpty()) return;
-
-    List<AdminEntity> targetAdmin = findTargetAdmin(establishmentEntity, adminList, notifyAll, roles);
-
-    if (!targetAdmin.isEmpty()) {
-        sendNotificationToAdmin(establishmentEntity, templateId, targetAdmin, messageAttributes, communicationChannel);
-    }
-}
-```
-
-### 3. Smart Admin Selection Logic: `findTargetAdmin()`
-
-```java
-private List<AdminEntity> findTargetAdmin(EstablishmentEntity establishmentEntity,
-                                          List<AdminEntity> admins,
-                                          boolean notifyAll,
-                                          Role... roles) {
-    if (ObjectUtils.isEmpty(roles)) {
-        roles = new Role[]{Role.SUPER_ADMIN, Role.ADMIN};
-    }
-    
-    for (Role role : roles) {
-        List<AdminEntity> matchedAdmin = admins.stream()
-            .filter(a -> a.getAdminRoles().stream()
-                .anyMatch(r -> r.getRole().getId().equals(Long.valueOf(role.getCode()))))
-            .collect(Collectors.toList());
-
-        if (!matchedAdmin.isEmpty()) {
-            return notifyAll ? matchedAdmin : Collections.singletonList(matchedAdmin.get(0));
-        } else if (establishmentEntity.isPrivate()) {
-            // Owner fallback for individual establishments
-            establishmentEntity.getOwners().stream()
-                .filter(o -> o.getEndDate() == null)
-                .findFirst()
-                .ifPresent(owner -> matchedAdmin.add(
-                    AdminEntity.builder().person(owner.getPerson()).build()
-                ));
-            return !ObjectUtils.isEmpty(matchedAdmin) ?
-                Collections.singletonList(matchedAdmin.get(0)) : Collections.emptyList();
+    /**
+     * This method is to save Establishment Preference Tag
+     *
+     * @param establishmentId the establishment id
+     * @param newlyRegistered is establishment newly registered
+     */
+    public void saveEstablishmentPreferenceTag(Long establishmentId, boolean newlyRegistered) {
+        try {
+            EstablishmentPreferenceEntity establishmentPreferenceEntity = getEstablishmentPreferenceEntity(establishmentId);
+            
+            // Get current tag before calculating new one
+            EstablishmentTagType currentTag = getCurrentEstablishmentTag(establishmentPreferenceEntity);
+            
+            EstablishmentPreferenceTagRequest establishmentPreferenceTagRequest =
+                prepareEstablishmentPreferenceTagRequest(establishmentPreferenceEntity.getEstablishmentEntity(), newlyRegistered, currentTag);
+            
+            // load TagEntity
+            EstablishmentTagType tag = establishmentPreferenceTagRequest.getTag();
+            EstablishmentTagEntity establishmentTagEntity =
+                establishmentTagRepository.findByTagName(tag.getDescriptionEng()).orElse(null);
+            if (establishmentTagEntity == null) {
+                log.error("Establishment Tag Not Found:{}", tag.getDescriptionEng());
+                return;
+            }
+            // check existing Establishment preference Tag
+            List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
+                establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
+                    establishmentPreferenceEntity.getId()).orElse(null);
+            EstablishmentPreferenceTagEntity establishmentPreferenceTagEntity;
+            if (estPreferenceTagEntities == null || estPreferenceTagEntities.isEmpty()) {
+                // Add Establishment Preference Tag
+                establishmentPreferenceTagEntity = EstablishmentPreferenceTagEntity
+                    .builder()
+                    .establishmentPreferenceEntity(establishmentPreferenceEntity)
+                    .establishmentTagEntity(establishmentTagEntity)
+                    .build();
+            } else {
+                // update Establishment Preference Tag
+                establishmentPreferenceTagEntity = estPreferenceTagEntities.get(0);
+                // skip updating preference tag in case matches with previous tag
+                if (establishmentPreferenceTagEntity.getEstablishmentTagEntity().getId().equals(establishmentTagEntity.getId())) {
+                    log.warn("Skipped updating duplicated establishment preference tag:{} for EstablishmentId:{}", tag.getDescriptionEng(), establishmentId);
+                    return;
+                }
+                establishmentPreferenceTagEntity.setEstablishmentTagEntity(establishmentTagEntity);
+            }
+            establishmentPreferenceTagRepository.save(establishmentPreferenceTagEntity);
+        } catch (Exception ex) {
+            log.error("Failed to add Establishment Preference Tag for EstId:{}", establishmentId, ex);
         }
     }
-    return Collections.emptyList();
-}
-```
 
-### 4. Notification Delivery Engine: `sendNotificationToAdmin()`
+    /**
+     * This method is to get current Establishment Tag
+     *
+     * @param establishmentPreferenceEntity the establishment preference entity
+     * @return EstablishmentTagType the current tag or null if no tag exists
+     */
+    private EstablishmentTagType getCurrentEstablishmentTag(EstablishmentPreferenceEntity establishmentPreferenceEntity) {
+        List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
+            establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
+                establishmentPreferenceEntity.getId()).orElse(null);
+        
+        if (estPreferenceTagEntities != null && !estPreferenceTagEntities.isEmpty()) {
+            String tagName = estPreferenceTagEntities.get(0).getEstablishmentTagEntity().getTagName();
+            return EstablishmentTagType.fromDescriptionEng(tagName);
+        }
+        return null;
+    }
 
-```java
-private void sendNotificationToAdmin(EstablishmentEntity establishment,
-                                     String templateId,
-                                     List<AdminEntity> admins,
-                                     Map<String, String> messageAttributes,
-                                     List<String> channels) {
-    for (AdminEntity admin : admins) {
-        PersonViewEntity person = admin.getPerson();
-        PersonId personId = personViewService.getPersonIdFromIdentifier(person, null);
-        if (personId == null) continue;
+    /**
+     * This method is to get Establishment Preference Entity
+     *
+     * @param establishmentId the establishment id
+     * @return EstablishmentPreferenceEntity the establishment preference entity
+     */
+    public EstablishmentPreferenceEntity getEstablishmentPreferenceEntity(Long establishmentId) {
+        Long establishmentPreferenceId = establishmentPreferenceService.getOrCreatePreferenceForEstablishment(establishmentId);
+        return establishmentPreferenceRepository.findById(establishmentPreferenceId)
+            .orElseThrow(() -> exceptionUtils.createBusinessException(EstablishmentMessageKeys.ESTABLISHMENT_PREFERENCE_NOT_FOUND));
+    }
 
-        AmeenNotification notification = AmeenNotification.builder()
-            .templateId(templateId)
-            .establishmentRegistrationNo(String.valueOf(establishment.getRegistrationNo()))
-            .messageData(messageAttributes)
-            .targetApp(TargetApp.BUSINESS)
-            .personId(personId)
+    /**
+     * This method is to prepare Establishment Preference Tag Request
+     *
+     * @param establishmentEntity the establishment entity
+     * @param newlyRegistered is establishment newly registered
+     * @param currentTag the current tag of the establishment
+     * @return EstablishmentPreferenceTagRequest (establishmentId, tag)
+     */
+    public EstablishmentPreferenceTagRequest prepareEstablishmentPreferenceTagRequest(
+            EstablishmentEntity establishmentEntity, boolean newlyRegistered, EstablishmentTagType currentTag) {
+        Long establishmentId = establishmentEntity.getId();
+        
+        if (newlyRegistered) {
+            return EstablishmentPreferenceTagRequest.builder()
+                .establishmentId(establishmentId)
+                .tag(EstablishmentTagType.NEW)
+                .build();
+        }
+        
+        // get contributors count
+        long numberOfContributors = getContributorsCount(establishmentEntity);
+        
+        // Determine the tag based on contributor count
+        EstablishmentTagType calculatedTag;
+        if (numberOfContributors == 0) {
+            calculatedTag = EstablishmentTagType.NEW;
+        } else if (numberOfContributors <= 5) {
+            calculatedTag = EstablishmentTagType.MICRO;
+        } else if (numberOfContributors <= 49) {
+            calculatedTag = EstablishmentTagType.SMALL;
+        } else if (numberOfContributors <= 249) {
+            calculatedTag = EstablishmentTagType.MEDIUM;
+        } else {
+            calculatedTag = EstablishmentTagType.LARGE;
+        }
+        
+        // Apply the business rule: Once moved from NEW, cannot go back to NEW
+        // Minimum tag should be MICRO if establishment was previously not NEW
+        if (calculatedTag == EstablishmentTagType.NEW && currentTag != null && currentTag != EstablishmentTagType.NEW) {
+            log.info("Establishment {} has 0 contributors but was previously {}. Keeping minimum tag as MICRO.", 
+                establishmentId, currentTag);
+            calculatedTag = EstablishmentTagType.MICRO;
+        }
+        
+        return EstablishmentPreferenceTagRequest.builder()
+            .establishmentId(establishmentId)
+            .tag(calculatedTag)
             .build();
+    }
 
-        notification.setCommunicationChannels(channels);
-        sendNotificationEvent(notification);
+    /**
+     * This method is to get Establishment Contributors Count
+     *
+     * @param establishmentEntity the establishment entity
+     * @return long the contributors count
+     */
+    public long getContributorsCount(EstablishmentEntity establishmentEntity) {
+        return engagementRepository.getNumOfActiveContributorsByEstablishmentId(establishmentEntity.getId());
+    }
+
+
+    public List<EstablishmentPreferenceTagEntity> getByEstablishmentPreferenceId(Long PreferenceId) {
+        return establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(PreferenceId).orElse(null);
     }
 }
-```
-
-## Implementation Flow Analysis
-
-### Phase 1: Data Preparation & Validation
-1. **Admin Retrieval**: `establishment.getAdmin(personId)` fetches the terminated admin
-2. **Name Resolution**: Handles bilingual names with Arabic primary, English fallback
-3. **Message Attributes Setup**: Populates template variables for personalization
-
-### Phase 2: Dual Notification Strategy
-The system implements a **dual notification approach**:
-
-#### Notification 1: To Terminated Admin
-```java
-sendNotificationToAdmin(
-    establishment,
-    NotificationTemplate.NOTIFY_REMOVED_ADMIN.getCode(),
-    Collections.singletonList(removedAdmin),
-    messageAttributes,
-    communicationChannels
-);
-```
-- **Template**: `NOTIFY_REMOVED_ADMIN`
-- **Recipient**: The terminated admin themselves
-- **Purpose**: Inform them of their termination
-
-#### Notification 2: To Supervisory Admin
-```java
-notifyAdminByRole(establishment.getId(),
-    NotificationTemplate.NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED.getCode(),
-    false, // notify only first match
-    messageAttributes,
-    communicationChannels,
-    Role.SUPER_ADMIN);
-```
-- **Template**: `NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED`
-- **Recipient**: Super admin or owner (fallback)
-- **Purpose**: Inform supervisory staff of admin termination
-
-### Phase 3: Intelligent Admin Selection
-
-The system uses a **cascading selection strategy**:
-
-```
-1. Look for SUPER_ADMIN role holders
-   ├── If found → Select first super admin
-   └── If not found AND establishment.isPrivate()
-       ├── Look for active owners
-       ├── Create temporary AdminEntity from owner
-       └── Return owner as notification target
-```
-
-## Key Features & Design Decisions
-
-### 1. **Inclusive Super Admin Policy**
-- **Decision**: Terminated super admin can still receive notifications if they're the first available
-- **Rationale**: Maintains original behavior, prevents notification gaps
-- **Implementation**: No exclusion filters in admin selection
-
-### 2. **Individual Establishment Owner Fallback**
-```java
-else if (establishmentEntity.isPrivate()) {
-    establishmentEntity.getOwners().stream()
-        .filter(o -> o.getEndDate() == null)
-        .findFirst()
-        .ifPresent(owner -> matchedAdmin.add(
-            AdminEntity.builder().person(owner.getPerson()).build()
-        ));
-}
-```
-- **Trigger**: No super admin found AND `establishment.isPrivate()`
-- **Fallback**: Active owner becomes notification recipient
-- **Bridge Pattern**: Owner converted to AdminEntity for uniform processing
-
-### 3. **Communication Channel Strategy**
-```java
-List<String> communicationChannels = Collections.singletonList(
-    CommunicationChannel.SMS.getDescription()
-);
-```
-- **Single Channel**: SMS only for immediate delivery
-- **Rationale**: Critical notifications need immediate attention
-- **Extensible**: Easy to add EMAIL, PUSH_NOTIFICATION, etc.
-
-### 4. **Template Differentiation**
-- `NOTIFY_REMOVED_ADMIN`: For terminated admin
-- `NOTIFY_ESTABLISHMENT_SUPER_ADMIN_WHEN_ADMIN_REMOVED`: For supervisory admin
-- **Benefit**: Different messaging for different audiences
-
-## Error Handling & Robustness
-
-### 1. **Null Safety**
-- Person ID validation before notification creation
-- Empty admin list checks
-- Owner existence validation
-
-### 2. **Graceful Degradation**
-- No super admin found → Try owner (for individual establishments)
-- No owner found → Silent failure (no exception thrown)
-- Invalid person ID → Skip notification (continue processing)
-
-### 3. **Data Validation**
-```java
-if (establishmentEntity == null) return;
-if (adminList == null || adminList.isEmpty()) return;
-if (personId == null) continue;
-```
-
-## Performance Considerations
-
-### 1. **Stream Operations Optimization**
-- Single-pass filtering for role matching
-- Early termination with `findFirst()`
-- Minimal object creation
-
-### 2. **Database Efficiency**
-- Single establishment lookup: `aggregateFactory.findById(establishmentId)`
-- Cached active admin list: `establishmentEntity.getActiveAdmins()`
-- Lazy evaluation of owners (only when needed)
-
-### 3. **Memory Management**
-- Use of Collections.singletonList() for single-item lists
-- Builder pattern prevents intermediate object creation
-- Stream operations avoid creating intermediate collections
-
-## Business Logic Summary
-
-### Notification Recipients Decision Tree:
-```
-Admin Terminated
-├── Always notify: Terminated Admin (NOTIFY_REMOVED_ADMIN template)
-└── Supervisory Notification:
-    ├── Super Admin exists? → Notify first Super Admin
-    └── No Super Admin:
-        ├── Individual Establishment? → Notify Owner
-        └── Corporate Establishment? → No notification
-```
-
-### Message Content:
-- **Registration Number**: Establishment identifier
-- **Request Number**: Transaction trace ID for tracking
-- **Taminaty URL**: System link for further actions
-- **Admin Names**: Both Arabic and English names of terminated admin
-
-This implementation provides a robust, scalable, and maintainable solution for admin termination notifications that handles various establishment types and admin hierarchies while maintaining backward compatibility and following established design patterns.
