@@ -61,11 +61,15 @@ public class EstablishmentPreferenceTagService {
         try {
             EstablishmentPreferenceEntity establishmentPreferenceEntity = getEstablishmentPreferenceEntity(establishmentId);
             
-            // Get current tag before calculating new one
+            // Get current tag from the preference entity (avoid duplicate query)
             EstablishmentTagType currentTag = getCurrentEstablishmentTag(establishmentPreferenceEntity);
             
             EstablishmentPreferenceTagRequest establishmentPreferenceTagRequest =
-                prepareEstablishmentPreferenceTagRequest(establishmentPreferenceEntity.getEstablishmentEntity(), newlyRegistered, currentTag);
+                prepareEstablishmentPreferenceTagRequest(
+                    establishmentPreferenceEntity.getEstablishmentEntity(), 
+                    newlyRegistered, 
+                    currentTag
+                );
             
             // load TagEntity
             EstablishmentTagType tag = establishmentPreferenceTagRequest.getTag();
@@ -75,11 +79,13 @@ public class EstablishmentPreferenceTagService {
                 log.error("Establishment Tag Not Found:{}", tag.getDescriptionEng());
                 return;
             }
+            
             // check existing Establishment preference Tag
             List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
                 establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
                     establishmentPreferenceEntity.getId()).orElse(null);
             EstablishmentPreferenceTagEntity establishmentPreferenceTagEntity;
+            
             if (estPreferenceTagEntities == null || estPreferenceTagEntities.isEmpty()) {
                 // Add Establishment Preference Tag
                 establishmentPreferenceTagEntity = EstablishmentPreferenceTagEntity
@@ -104,24 +110,6 @@ public class EstablishmentPreferenceTagService {
     }
 
     /**
-     * This method is to get current Establishment Tag
-     *
-     * @param establishmentPreferenceEntity the establishment preference entity
-     * @return EstablishmentTagType the current tag or null if no tag exists
-     */
-    private EstablishmentTagType getCurrentEstablishmentTag(EstablishmentPreferenceEntity establishmentPreferenceEntity) {
-        List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
-            establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
-                establishmentPreferenceEntity.getId()).orElse(null);
-        
-        if (estPreferenceTagEntities != null && !estPreferenceTagEntities.isEmpty()) {
-            String tagName = estPreferenceTagEntities.get(0).getEstablishmentTagEntity().getTagName();
-            return EstablishmentTagType.fromDescriptionEng(tagName);
-        }
-        return null;
-    }
-
-    /**
      * This method is to get Establishment Preference Entity
      *
      * @param establishmentId the establishment id
@@ -142,9 +130,13 @@ public class EstablishmentPreferenceTagService {
      * @return EstablishmentPreferenceTagRequest (establishmentId, tag)
      */
     public EstablishmentPreferenceTagRequest prepareEstablishmentPreferenceTagRequest(
-            EstablishmentEntity establishmentEntity, boolean newlyRegistered, EstablishmentTagType currentTag) {
+            EstablishmentEntity establishmentEntity, 
+            boolean newlyRegistered, 
+            EstablishmentTagType currentTag) {
+        
         Long establishmentId = establishmentEntity.getId();
         
+        // Special case: truly new establishments
         if (newlyRegistered) {
             return EstablishmentPreferenceTagRequest.builder()
                 .establishmentId(establishmentId)
@@ -152,10 +144,10 @@ public class EstablishmentPreferenceTagService {
                 .build();
         }
         
-        // get contributors count
+        // Get contributors count
         long numberOfContributors = getContributorsCount(establishmentEntity);
         
-        // Determine the tag based on contributor count
+        // Calculate tag based on contributor count
         EstablishmentTagType calculatedTag;
         if (numberOfContributors == 0) {
             calculatedTag = EstablishmentTagType.NEW;
@@ -169,9 +161,12 @@ public class EstablishmentPreferenceTagService {
             calculatedTag = EstablishmentTagType.LARGE;
         }
         
-        // Apply the business rule: Once moved from NEW, cannot go back to NEW
+        // Business Rule: Once moved from NEW, cannot go back to NEW
         // Minimum tag should be MICRO if establishment was previously not NEW
-        if (calculatedTag == EstablishmentTagType.NEW && currentTag != null && currentTag != EstablishmentTagType.NEW) {
+        if (calculatedTag == EstablishmentTagType.NEW 
+            && currentTag != null 
+            && currentTag != EstablishmentTagType.NEW) {
+            
             log.info("Establishment {} has 0 contributors but was previously {}. Keeping minimum tag as MICRO.", 
                 establishmentId, currentTag);
             calculatedTag = EstablishmentTagType.MICRO;
@@ -193,8 +188,47 @@ public class EstablishmentPreferenceTagService {
         return engagementRepository.getNumOfActiveContributorsByEstablishmentId(establishmentEntity.getId());
     }
 
+    /**
+     * This method is to get the current establishment tag from preference entity
+     * This is a private helper to avoid duplicate database queries
+     *
+     * @param establishmentPreferenceEntity the establishment preference entity
+     * @return EstablishmentTagType the current tag, or null if not found
+     */
+    private EstablishmentTagType getCurrentEstablishmentTag(EstablishmentPreferenceEntity establishmentPreferenceEntity) {
+        try {
+            List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
+                establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
+                    establishmentPreferenceEntity.getId()).orElse(null);
+            
+            if (estPreferenceTagEntities != null && !estPreferenceTagEntities.isEmpty()) {
+                EstablishmentPreferenceTagEntity currentTagEntity = estPreferenceTagEntities.get(0);
+                String tagName = currentTagEntity.getEstablishmentTagEntity().getTagName();
+                return EstablishmentTagType.fromDescriptionEng(tagName);
+            }
+        } catch (Exception ex) {
+            log.warn("Failed to get current establishment tag for preference entity", ex);
+        }
+        return null;
+    }
 
-    public List<EstablishmentPreferenceTagEntity> getByEstablishmentPreferenceId(Long PreferenceId) {
-        return establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(PreferenceId).orElse(null);
+    /**
+     * Public method to get current establishment tag by ID
+     * 
+     * @param establishmentId the establishment id
+     * @return EstablishmentTagType the current tag, or null if not found
+     */
+    public EstablishmentTagType getCurrentEstablishmentTagById(Long establishmentId) {
+        try {
+            EstablishmentPreferenceEntity establishmentPreferenceEntity = getEstablishmentPreferenceEntity(establishmentId);
+            return getCurrentEstablishmentTag(establishmentPreferenceEntity);
+        } catch (Exception ex) {
+            log.warn("Failed to get current establishment tag for EstId:{}", establishmentId, ex);
+            return null;
+        }
+    }
+
+    public List<EstablishmentPreferenceTagEntity> getByEstablishmentPreferenceId(Long preferenceId) {
+        return establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(preferenceId).orElse(null);
     }
 }
