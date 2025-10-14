@@ -1,234 +1,990 @@
-/*
- * Copyright GOSI. All Rights Reserved.
- * This software is the proprietary information of GOSI.
- * Use is subject to license terms.
- */
+2025-10-14 17:40:11 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  595190398 and reference no: 357983577
+2025-10-14 17:40:11 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  150004713 and reference no: 357983579
+2025-10-14 17:40:11 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501390798 and reference no: 357983583
+2025-10-14 17:40:11 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501390798 and reference no: 357983583
+2025-10-14 17:40:12 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501056901 and reference no: 357983584
+2025-10-14 17:40:12 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  592340909 and reference no: 357983585
+2025-10-14 17:40:12 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  13222827 and reference no: 357983586
+2025-10-14 17:40:14 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  595190398 and reference no: 357983596
+2025-10-14 17:40:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  220123588 and reference no: 357983603
+2025-10-14 17:40:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501056901 and reference no: 357983604
+2025-10-14 17:40:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501056901 and reference no: 357983606
+2025-10-14 17:40:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  601579685 and reference no: 357983610
+2025-10-14 17:40:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  601579685 and reference no: 357983610
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 30.282 s - in sa.gov.gosi.si.em.business.establishment.flag.FlagServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+2025-10-14 17:40:17 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  595190398 and reference no: 357983627
+2025-10-14 17:40:17 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  502351249 and reference no: 548691
+[INFO] Running sa.gov.gosi.si.em.business.establishment.TerminationServiceTest
+2025-10-14 17:40:18 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  924201142 and reference no: 357983635
+2025-10-14 17:40:19 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501482161 and reference no: 357983644
+2025-10-14 17:40:20 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200032292 and reference no: 357983646
+2025-10-14 17:40:20 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200032292 and reference no: 357983646
+2025-10-14 17:40:20 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200032292 and reference no: 357983646
+2025-10-14 17:40:20 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200032292 and reference no: 357983646
+2025-10-14 17:40:20 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  598418470 and reference no: 289890870
+2025-10-14 17:40:23 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  240405172 and reference no: 357983658
+2025-10-14 17:40:23 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  300068065 and reference no: 357983659
+2025-10-14 17:40:23 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  300068065 and reference no: 357983659
+2025-10-14 17:40:24 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  220124452 and reference no: 357983672
+2025-10-14 17:40:24 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  220124452 and reference no: 357983672
+2025-10-14 17:40:26 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  595190398 and reference no: 357983683
+17:40:09,858 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:40:09,914 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:40:09,914 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:40:09,922 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:40:09,966 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:40:09,966 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:40:09,966 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:40:09,968 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:40:09,968 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:40:09,968 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:40:09,968 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:40:09,968 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:40:09,968 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:40:09,969 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:40:09,969 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:40:09,969 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:40:09,970 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@200d1a3d - Registering current configuration as safe fallback point
 
-package sa.gov.gosi.si.em.business.establishment.service;
+2025-10-14 17:40:27 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  220108562 and reference no: 357983689
+Mon Apr 14 17:40:27 AST 2025
+java.util.GregorianCalendar[time=1744641627100,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="Asia/Riyadh",offset=10800000,dstSavings=0,useDaylight=false,transitions=3,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2025,MONTH=3,WEEK_OF_YEAR=16,WEEK_OF_MONTH=3,DAY_OF_MONTH=14,DAY_OF_YEAR=104,DAY_OF_WEEK=2,DAY_OF_WEEK_IN_MONTH=2,AM_PM=1,HOUR=5,HOUR_OF_DAY=17,MINUTE=40,SECOND=27,MILLISECOND=100,ZONE_OFFSET=10800000,DST_OFFSET=0]
+2025-10-14 17:40:27 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  500240385 and reference no: 189675811
+2025-10-14 17:40:28 ERROR  --- [main] s.g.g.s.e.b.e.s.EstablishmentNotificationService : safety check notification error check
+2025-10-14 17:40:28 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  505829514 and reference no: 357983701
+Mon Apr 14 17:40:28 AST 2025
+java.util.GregorianCalendar[time=1744641628813,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="Asia/Riyadh",offset=10800000,dstSavings=0,useDaylight=false,transitions=3,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2025,MONTH=3,WEEK_OF_YEAR=16,WEEK_OF_MONTH=3,DAY_OF_MONTH=14,DAY_OF_YEAR=104,DAY_OF_WEEK=2,DAY_OF_WEEK_IN_MONTH=2,AM_PM=1,HOUR=5,HOUR_OF_DAY=17,MINUTE=40,SECOND=28,MILLISECOND=813,ZONE_OFFSET=10800000,DST_OFFSET=0]
+2025-10-14 17:40:29 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  500240385 and reference no: 189675811
+2025-10-14 17:40:29 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  505829514 and reference no: 357983711
+2025-10-14 17:40:30 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  603367154 and reference no: 357983720
+2025-10-14 17:40:30 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  300013716 and reference no: 81317129
+17:40:18,002 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:40:18,051 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:40:18,051 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:40:18,059 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:40:18,104 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:40:18,104 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:40:18,104 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:40:18,105 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:40:18,105 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:40:18,105 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:40:18,106 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:40:18,106 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:40:18,106 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:40:18,106 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:40:18,106 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:40:18,106 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:40:18,107 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@12d35bc9 - Registering current configuration as safe fallback point
 
-import java.util.List;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sa.gov.gosi.framework.exception.ExceptionUtils;
-import sa.gov.gosi.si.em.business.establishment.EstablishmentMessageKeys;
-import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentEntity;
-import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentPreferenceEntity;
-import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentPreferenceTagEntity;
-import sa.gov.gosi.si.em.business.establishment.domain.EstablishmentTagEntity;
-import sa.gov.gosi.si.em.business.establishment.enums.EstablishmentTagType;
-import sa.gov.gosi.si.em.business.establishment.proxy.repository.EngagementRepository;
-import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentPreferenceRepository;
-import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentPreferenceTagRepository;
-import sa.gov.gosi.si.em.business.establishment.repository.EstablishmentTagRepository;
+2025-10-14 17:40:38 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  601431521 and reference no: 18092089
+Mon Apr 14 17:40:39 AST 2025
+java.util.GregorianCalendar[time=1744641639458,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="Asia/Riyadh",offset=10800000,dstSavings=0,useDaylight=false,transitions=3,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2025,MONTH=3,WEEK_OF_YEAR=16,WEEK_OF_MONTH=3,DAY_OF_MONTH=14,DAY_OF_YEAR=104,DAY_OF_WEEK=2,DAY_OF_WEEK_IN_MONTH=2,AM_PM=1,HOUR=5,HOUR_OF_DAY=17,MINUTE=40,SECOND=39,MILLISECOND=458,ZONE_OFFSET=10800000,DST_OFFSET=0]
+2025-10-14 17:40:39 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  500240385 and reference no: 189675811
+2025-10-14 17:40:39 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  500240288 and reference no: 357983723
+2025-10-14 17:40:39 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  592340909 and reference no: 357983724
+[WARNING] Tests run: 52, Failures: 0, Errors: 0, Skipped: 5, Time elapsed: 30.43 s - in sa.gov.gosi.si.em.business.establishment.compliance.ComplianceServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.SamaServiceTest
+2025-10-14 17:40:52 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  500240288 and reference no: 357983730
+2025-10-14 17:40:53 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  592340909 and reference no: 357983734
+2025-10-14 17:40:53 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501482161 and reference no: 357983746
+2025-10-14 17:40:54 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  300013716 and reference no: 357983756
+2025-10-14 17:40:54 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  260004409 and reference no: 357983761
+2025-10-14 17:40:55 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  260004409 and reference no: 357983762
+2025-10-14 17:40:55 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  924201479 and reference no: 357983766
+2025-10-14 17:40:55 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  506864542 and reference no: 171198099
+17:40:41,567 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:40:41,622 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:40:41,622 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:40:41,630 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:40:41,674 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:40:41,674 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:40:41,674 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:40:41,675 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:40:41,675 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:40:41,675 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:40:41,675 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:40:41,675 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:40:41,676 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:40:41,676 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:40:41,676 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:40:41,676 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:40:41,677 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@340d6d89 - Registering current configuration as safe fallback point
 
-/**
- * The service interface which defines operations related to Establishment Preference Tag Service.
- */
-@Slf4j
-@Service("Em_EstablishmentPreferenceTagService")
-public class EstablishmentPreferenceTagService {
+2025-10-14 17:40:56 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501390798 and reference no: 357983768
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.394 s - in sa.gov.gosi.si.em.business.establishment.SamaServiceTest
+2025-10-14 17:40:55 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200032292 and reference no: 357983763
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+2025-10-14 17:40:57 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  260004409 and reference no: 357983775
+2025-10-14 17:40:57 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  592340909 and reference no: 357983778
+[ERROR] Tests run: 184, Failures: 1, Errors: 1, Skipped: 9, Time elapsed: 71.342 s <<< FAILURE! - in sa.gov.gosi.si.em.business.establishment.AmendmentServiceTest
+[ERROR] sa.gov.gosi.si.em.business.establishment.AmendmentServiceTest.getChangeEstablishmentLinkWorkflowDetailsTest  Time elapsed: 0.092 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
+	at sa.gov.gosi.si.em.business.establishment.AmendmentServiceTest.getChangeEstablishmentLinkWorkflowDetailsTest(AmendmentServiceTest.java:1674)
 
-    @Autowired
-    EstablishmentPreferenceService establishmentPreferenceService;
+[ERROR] sa.gov.gosi.si.em.business.establishment.AmendmentServiceTest.activateChangeOwnerEstablishmentRejectOrReturnTest  Time elapsed: 0.032 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+	at sa.gov.gosi.si.em.business.establishment.AmendmentServiceTest.activateChangeOwnerEstablishmentRejectOrReturnTest(AmendmentServiceTest.java:1767)
 
-    @Autowired
-    EstablishmentPreferenceRepository establishmentPreferenceRepository;
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstSpecificPaymentServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest
+2025-10-14 17:40:58 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  340010388 and reference no: 357983779
+2025-10-14 17:40:59 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  340010388 and reference no: 357983779
+2025-10-14 17:40:59 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  340010388 and reference no: 357983779
+[ERROR] Tests run: 35, Failures: 0, Errors: 1, Skipped: 3, Time elapsed: 48.791 s <<< FAILURE! - in sa.gov.gosi.si.em.business.establishment.TerminationServiceTest
+[ERROR] sa.gov.gosi.si.em.business.establishment.TerminationServiceTest.terminateEstablishment_InWorkflow_Test  Time elapsed: 2.634 s  <<< ERROR!
+sa.gov.gosi.framework.exception.GosiBusinessException: A request already exists to close this establishment , cannot proceed. Transaction number:357983783
+	at sa.gov.gosi.si.em.business.establishment.TerminationServiceTest.terminateEstablishment_InWorkflow_Test(TerminationServiceTest.java:303)
 
-    @Autowired
-    EstablishmentTagRepository establishmentTagRepository;
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest
+17:40:58,269 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:40:58,325 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:40:58,325 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:40:58,334 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:40:58,379 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:40:58,379 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:40:58,379 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:40:58,380 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:40:58,381 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:40:58,381 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:40:58,381 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:40:58,381 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:40:58,381 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:40:58,381 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:40:58,381 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:40:58,381 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:40:58,382 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@577536e0 - Registering current configuration as safe fallback point
 
-    @Autowired
-    EstablishmentPreferenceTagRepository establishmentPreferenceTagRepository;
+17:40:59,430 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:40:59,482 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:40:59,483 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:40:59,493 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:40:59,543 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:40:59,543 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:40:59,543 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:40:59,544 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:40:59,544 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:40:59,544 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:40:59,545 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:40:59,545 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:40:59,545 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:40:59,545 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:40:59,545 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:40:59,545 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:40:59,546 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@359ceb13 - Registering current configuration as safe fallback point
 
-    @Autowired
-    EngagementRepository engagementRepository;
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.063 s - in sa.gov.gosi.si.em.business.establishment.EstSpecificPaymentServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[ERROR] Tests run: 13, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 20.462 s <<< FAILURE! - in sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest
+[ERROR] sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.validateSuperAdminForReplacementTest2  Time elapsed: 0.063 s  <<< ERROR!
+sa.gov.gosi.framework.exception.GosiBusinessException: Error has occurred during modify establishment admins criteria application, person does not have access to modify establishment admins .
+	at sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.validateSuperAdminForReplacementTest2(AdminServiceValidatorTest.java:65)
 
-    /**
-     * The Exception utils.
-     */
-    @Autowired
-    private ExceptionUtils exceptionUtils;
+[ERROR] sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.validateAdminToAddAsSuperAdmin_Test2  Time elapsed: 0.042 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <sa.gov.gosi.framework.exception.GosiBusinessException> but was: <org.springframework.context.NoSuchMessageException>
+	at sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.validateAdminToAddAsSuperAdmin_Test2(AdminServiceValidatorTest.java:410)
+Caused by: org.springframework.context.NoSuchMessageException: No message found under code 'null' for locale 'en'.
+	at sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.lambda$validateAdminToAddAsSuperAdmin_Test2$10(AdminServiceValidatorTest.java:413)
+	at sa.gov.gosi.si.em.business.establishment.AdminServiceValidatorTest.validateAdminToAddAsSuperAdmin_Test2(AdminServiceValidatorTest.java:410)
 
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.admin.service.AdminServiceExtensionTest
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentCertificateProxyServiceTest
+17:41:08,329 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:08,388 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:08,389 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:08,398 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:08,449 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:08,449 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:08,449 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:08,450 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:08,450 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:08,450 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:08,451 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:08,451 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:08,451 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:08,451 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:08,451 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:08,451 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:08,452 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@70e5737f - Registering current configuration as safe fallback point
 
-    /**
-     * This method is to save Establishment Preference Tag
-     *
-     * @param establishmentId the establishment id
-     * @param newlyRegistered is establishment newly registered
-     */
-    public void saveEstablishmentPreferenceTag(Long establishmentId, boolean newlyRegistered) {
-        try {
-            EstablishmentPreferenceEntity establishmentPreferenceEntity = getEstablishmentPreferenceEntity(establishmentId);
-            
-            // Get current tag from the preference entity (avoid duplicate query)
-            EstablishmentTagType currentTag = getCurrentEstablishmentTag(establishmentPreferenceEntity);
-            
-            EstablishmentPreferenceTagRequest establishmentPreferenceTagRequest =
-                prepareEstablishmentPreferenceTagRequest(
-                    establishmentPreferenceEntity.getEstablishmentEntity(), 
-                    newlyRegistered, 
-                    currentTag
-                );
-            
-            // load TagEntity
-            EstablishmentTagType tag = establishmentPreferenceTagRequest.getTag();
-            EstablishmentTagEntity establishmentTagEntity =
-                establishmentTagRepository.findByTagName(tag.getDescriptionEng()).orElse(null);
-            if (establishmentTagEntity == null) {
-                log.error("Establishment Tag Not Found:{}", tag.getDescriptionEng());
-                return;
-            }
-            
-            // check existing Establishment preference Tag
-            List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
-                establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
-                    establishmentPreferenceEntity.getId()).orElse(null);
-            EstablishmentPreferenceTagEntity establishmentPreferenceTagEntity;
-            
-            if (estPreferenceTagEntities == null || estPreferenceTagEntities.isEmpty()) {
-                // Add Establishment Preference Tag
-                establishmentPreferenceTagEntity = EstablishmentPreferenceTagEntity
-                    .builder()
-                    .establishmentPreferenceEntity(establishmentPreferenceEntity)
-                    .establishmentTagEntity(establishmentTagEntity)
-                    .build();
-            } else {
-                // update Establishment Preference Tag
-                establishmentPreferenceTagEntity = estPreferenceTagEntities.get(0);
-                // skip updating preference tag in case matches with previous tag
-                if (establishmentPreferenceTagEntity.getEstablishmentTagEntity().getId().equals(establishmentTagEntity.getId())) {
-                    log.warn("Skipped updating duplicated establishment preference tag:{} for EstablishmentId:{}", tag.getDescriptionEng(), establishmentId);
-                    return;
-                }
-                establishmentPreferenceTagEntity.setEstablishmentTagEntity(establishmentTagEntity);
-            }
-            establishmentPreferenceTagRepository.save(establishmentPreferenceTagEntity);
-        } catch (Exception ex) {
-            log.error("Failed to add Establishment Preference Tag for EstId:{}", establishmentId, ex);
-        }
-    }
+2025-10-14 17:41:38 ERROR  --- [main] s.g.g.s.e.b.e.a.s.AdminServiceValidator : failed to check Restriction on Adding GOSI Employees As Admin 
+java.lang.ClassCastException: sa.gov.gosi.si.common.vo.Passport cannot be cast to sa.gov.gosi.si.common.vo.NIN
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminServiceValidator.checkRestrictionOnAddingGosiEmployeesAsAdmin(AdminServiceValidator.java:673)
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminService.registerAdmin(AdminService.java:192)
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.lambda$registerGCCAdminFailureWithoutGccId$3(AdminServiceTest.java:347)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:55)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082)
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.registerGCCAdminFailureWithoutGccId(AdminServiceTest.java:344)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:725)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:214)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:210)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:135)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:66)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:188)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:154)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:428)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:562)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:548)
+17:41:21,075 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:21,167 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:21,167 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:21,178 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:21,269 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:21,269 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:21,269 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:21,270 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:21,270 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:21,270 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:21,271 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:21,271 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:21,271 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:21,271 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:21,271 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:21,271 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:21,276 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@11e71181 - Registering current configuration as safe fallback point
 
-    /**
-     * This method is to get Establishment Preference Entity
-     *
-     * @param establishmentId the establishment id
-     * @return EstablishmentPreferenceEntity the establishment preference entity
-     */
-    public EstablishmentPreferenceEntity getEstablishmentPreferenceEntity(Long establishmentId) {
-        Long establishmentPreferenceId = establishmentPreferenceService.getOrCreatePreferenceForEstablishment(establishmentId);
-        return establishmentPreferenceRepository.findById(establishmentPreferenceId)
-            .orElseThrow(() -> exceptionUtils.createBusinessException(EstablishmentMessageKeys.ESTABLISHMENT_PREFERENCE_NOT_FOUND));
-    }
+17:41:21,596 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:21,720 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:21,721 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:21,733 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:21,813 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:21,813 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:21,813 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:21,814 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:21,814 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:21,814 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:21,815 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:21,815 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:21,815 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:21,815 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:21,815 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:21,815 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:21,817 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@7c011174 - Registering current configuration as safe fallback point
 
-    /**
-     * This method is to prepare Establishment Preference Tag Request
-     *
-     * @param establishmentEntity the establishment entity
-     * @param newlyRegistered is establishment newly registered
-     * @param currentTag the current tag of the establishment
-     * @return EstablishmentPreferenceTagRequest (establishmentId, tag)
-     */
-    public EstablishmentPreferenceTagRequest prepareEstablishmentPreferenceTagRequest(
-            EstablishmentEntity establishmentEntity, 
-            boolean newlyRegistered, 
-            EstablishmentTagType currentTag) {
-        
-        Long establishmentId = establishmentEntity.getId();
-        
-        // Special case: truly new establishments
-        if (newlyRegistered) {
-            return EstablishmentPreferenceTagRequest.builder()
-                .establishmentId(establishmentId)
-                .tag(EstablishmentTagType.NEW)
-                .build();
-        }
-        
-        // Get contributors count
-        long numberOfContributors = getContributorsCount(establishmentEntity);
-        
-        // Calculate tag based on contributor count
-        EstablishmentTagType calculatedTag;
-        if (numberOfContributors == 0) {
-            calculatedTag = EstablishmentTagType.NEW;
-        } else if (numberOfContributors <= 5) {
-            calculatedTag = EstablishmentTagType.MICRO;
-        } else if (numberOfContributors <= 49) {
-            calculatedTag = EstablishmentTagType.SMALL;
-        } else if (numberOfContributors <= 249) {
-            calculatedTag = EstablishmentTagType.MEDIUM;
-        } else {
-            calculatedTag = EstablishmentTagType.LARGE;
-        }
-        
-        // Business Rule: Once moved from NEW, cannot go back to NEW
-        // Minimum tag should be MICRO if establishment was previously not NEW
-        if (calculatedTag == EstablishmentTagType.NEW 
-            && currentTag != null 
-            && currentTag != EstablishmentTagType.NEW) {
-            
-            log.info("Establishment {} has 0 contributors but was previously {}. Keeping minimum tag as MICRO.", 
-                establishmentId, currentTag);
-            calculatedTag = EstablishmentTagType.MICRO;
-        }
-        
-        return EstablishmentPreferenceTagRequest.builder()
-            .establishmentId(establishmentId)
-            .tag(calculatedTag)
-            .build();
-    }
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.622 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentCertificateProxyServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.264 s - in sa.gov.gosi.si.em.business.establishment.admin.service.AdminServiceExtensionTest
+2025-10-14 17:41:40 ERROR  --- [main] s.g.g.s.e.b.e.a.s.AdminServiceValidator : failed to check Restriction on Adding GOSI Employees As Admin 
+java.lang.ClassCastException: sa.gov.gosi.si.common.vo.Iqama cannot be cast to sa.gov.gosi.si.common.vo.NIN
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminServiceValidator.checkRestrictionOnAddingGosiEmployeesAsAdmin(AdminServiceValidator.java:673)
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminService.registerAdmin(AdminService.java:192)
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.updateAdminWithRoleAdminAccess_Success2(AdminServiceTest.java:1875)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:725)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:214)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:210)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:135)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:66)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:188)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:154)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:428)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:562)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:548)
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.activitytype.IsicActivityServiceTest
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentEventGenerationServiceTest
+2025-10-14 17:41:43 ERROR  --- [main] s.g.g.s.e.b.e.a.s.AdminServiceValidator : failed to check Restriction on Adding GOSI Employees As Admin 
+java.lang.ClassCastException: sa.gov.gosi.si.common.vo.Iqama cannot be cast to sa.gov.gosi.si.common.vo.NIN
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminServiceValidator.checkRestrictionOnAddingGosiEmployeesAsAdmin(AdminServiceValidator.java:673)
+	at sa.gov.gosi.si.em.business.establishment.admin.service.AdminService.registerAdmin(AdminService.java:192)
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.lambda$registerAdminEstablishment$20(AdminServiceTest.java:1668)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:55)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082)
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.registerAdminEstablishment(AdminServiceTest.java:1667)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:725)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:214)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:210)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:135)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:66)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:188)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:154)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:428)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:562)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:548)
+[ERROR] Tests run: 106, Failures: 0, Errors: 1, Skipped: 17, Time elapsed: 42.296 s <<< FAILURE! - in sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest
+[ERROR] sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.updateDummyRoleInIAM_Test  Time elapsed: 0.093 s  <<< ERROR!
+sa.gov.gosi.framework.exception.GosiBusinessException: Invalid Country code.
+	at sa.gov.gosi.si.em.business.establishment.admin.AdminServiceTest.updateDummyRoleInIAM_Test(AdminServiceTest.java:2138)
 
-    /**
-     * This method is to get Establishment Contributors Count
-     *
-     * @param establishmentEntity the establishment entity
-     * @return long the contributors count
-     */
-    public long getContributorsCount(EstablishmentEntity establishmentEntity) {
-        return engagementRepository.getNumOfActiveContributorsByEstablishmentId(establishmentEntity.getId());
-    }
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.OwnerServiceTest
+17:41:42,746 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:42,804 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:42,805 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:42,813 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:42,875 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:42,875 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:42,875 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:42,876 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:42,876 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:42,876 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:42,877 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:42,877 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:42,877 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:42,877 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:42,877 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:42,877 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:42,878 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@3ce443f9 - Registering current configuration as safe fallback point
 
-    /**
-     * This method is to get the current establishment tag from preference entity
-     * This is a private helper to avoid duplicate database queries
-     *
-     * @param establishmentPreferenceEntity the establishment preference entity
-     * @return EstablishmentTagType the current tag, or null if not found
-     */
-    private EstablishmentTagType getCurrentEstablishmentTag(EstablishmentPreferenceEntity establishmentPreferenceEntity) {
-        try {
-            List<EstablishmentPreferenceTagEntity> estPreferenceTagEntities =
-                establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(
-                    establishmentPreferenceEntity.getId()).orElse(null);
-            
-            if (estPreferenceTagEntities != null && !estPreferenceTagEntities.isEmpty()) {
-                EstablishmentPreferenceTagEntity currentTagEntity = estPreferenceTagEntities.get(0);
-                String tagName = currentTagEntity.getEstablishmentTagEntity().getTagName();
-                return EstablishmentTagType.fromDescriptionEng(tagName);
-            }
-        } catch (Exception ex) {
-            log.warn("Failed to get current establishment tag for preference entity", ex);
-        }
-        return null;
-    }
+2025-10-14 17:42:01 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  534329210 and reference no: 14178162
+2025-10-14 17:42:02 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  501920959 and reference no: 17243005
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.44 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentEventGenerationServiceTest
+17:41:42,673 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:42,735 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:42,736 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:42,756 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:42,808 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:42,808 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:42,808 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:42,809 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:42,809 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:42,810 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:42,810 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:42,810 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:42,810 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:42,810 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:42,810 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:42,810 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:42,811 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@6bcb12e6 - Registering current configuration as safe fallback point
 
-    /**
-     * Public method to get current establishment tag by ID
-     * 
-     * @param establishmentId the establishment id
-     * @return EstablishmentTagType the current tag, or null if not found
-     */
-    public EstablishmentTagType getCurrentEstablishmentTagById(Long establishmentId) {
-        try {
-            EstablishmentPreferenceEntity establishmentPreferenceEntity = getEstablishmentPreferenceEntity(establishmentId);
-            return getCurrentEstablishmentTag(establishmentPreferenceEntity);
-        } catch (Exception ex) {
-            log.warn("Failed to get current establishment tag for EstId:{}", establishmentId, ex);
-            return null;
-        }
-    }
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentTransactionServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.048 s - in sa.gov.gosi.si.em.business.establishment.activitytype.IsicActivityServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.TransientUtilsTest
+17:41:52,141 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:41:52,201 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:41:52,202 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:41:52,211 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:41:52,258 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:41:52,258 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:41:52,258 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:41:52,259 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:41:52,259 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:41:52,259 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:41:52,260 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:41:52,260 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:41:52,260 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:41:52,260 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:41:52,260 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:41:52,260 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:41:52,261 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@2f99d8c - Registering current configuration as safe fallback point
 
-    public List<EstablishmentPreferenceTagEntity> getByEstablishmentPreferenceId(Long preferenceId) {
-        return establishmentPreferenceTagRepository.findAllByEstablishmentPreferenceEntityId(preferenceId).orElse(null);
-    }
-}
+2025-10-14 17:42:13 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  636714275 and reference no: 175001726
+2025-10-14 17:42:15 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  200077385 and reference no: 357983825
+2025-10-14 17:42:17 ERROR  --- [main] s.g.g.s.e.b.e.d.EstablishmentEntity : Event published for resource id  504573397 and reference no: 357983828
+17:42:03,589 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:03,655 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:03,656 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:03,665 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:03,762 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:03,762 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:03,762 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:03,763 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:03,763 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:03,763 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:03,764 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:03,764 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:03,764 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:03,764 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:03,764 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:03,764 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:03,765 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@3e1f1046 - Registering current configuration as safe fallback point
+
+17:42:05,463 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:05,526 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:05,527 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:05,537 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:05,613 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:05,613 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:05,613 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:05,614 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:05,615 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:05,615 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:05,615 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:05,615 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:05,615 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:05,616 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:05,616 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:05,616 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:05,617 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@40a72ecd - Registering current configuration as safe fallback point
+
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.597 s - in sa.gov.gosi.si.em.business.establishment.TransientUtilsTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.473 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentTransactionServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentRadarServiceTest
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentNotificationServiceTest
+[ERROR] Tests run: 45, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 40.697 s <<< FAILURE! - in sa.gov.gosi.si.em.business.establishment.OwnerServiceTest
+[ERROR] sa.gov.gosi.si.em.business.establishment.OwnerServiceTest.getOwnerReferenceNoEstablishmentTestSuccess  Time elapsed: 0.313 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
+	at sa.gov.gosi.si.em.business.establishment.OwnerServiceTest.getOwnerReferenceNoEstablishmentTestSuccess(OwnerServiceTest.java:110)
+
+[ERROR] sa.gov.gosi.si.em.business.establishment.OwnerServiceTest.removeDataMaskForDeletedOwner_Test  Time elapsed: 0.035 s  <<< ERROR!
+java.lang.NullPointerException
+	at sa.gov.gosi.si.em.business.establishment.OwnerServiceTest.removeDataMaskForDeletedOwner_Test(OwnerServiceTest.java:961)
+
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.person.PersonViewServiceTest
+17:42:32,634 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:32,731 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:32,732 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:32,741 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:32,837 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:32,837 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:32,837 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:32,838 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:32,839 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:32,839 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:32,839 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:32,839 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:32,839 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:32,840 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:32,840 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:32,840 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:32,841 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@377874b4 - Registering current configuration as safe fallback point
+
+17:42:32,729 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:32,796 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:32,796 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:32,807 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:32,913 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:32,913 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:32,913 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:32,914 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:32,914 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:32,914 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:32,915 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:32,915 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:32,915 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:32,915 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:32,916 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:32,916 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:32,917 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@573a078 - Registering current configuration as safe fallback point
+
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.801 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentRadarServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+17:42:34,484 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:34,549 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:34,550 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:34,562 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:34,640 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:34,640 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:34,640 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:34,642 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:34,642 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:34,642 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:34,643 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:34,643 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:34,643 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:34,643 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:34,643 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:34,643 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:34,646 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@4f8d86e4 - Registering current configuration as safe fallback point
+
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentPreferenceTagServiceTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.355 s - in sa.gov.gosi.si.em.business.establishment.person.PersonViewServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[WARNING] Tests run: 20, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 24.148 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentNotificationServiceTest
+17:42:56,329 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:56,381 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:56,382 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:56,388 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:56,440 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:56,440 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:56,440 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:56,441 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:56,441 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:56,441 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:56,442 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:56,442 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:56,442 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:56,442 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:56,442 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:56,442 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:56,443 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@1f3361e9 - Registering current configuration as safe fallback point
+
+[INFO] Running sa.gov.gosi.si.em.business.establishment.certificate.RequestCertificateServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+2025-10-14 17:42:57 ERROR  --- [main] s.g.g.s.e.b.e.s.EstablishmentPreferenceTagService : Establishment Tag Not Found:New
+2025-10-14 17:42:57 ERROR  --- [main] s.g.g.s.e.b.e.s.EstablishmentPreferenceTagService : Establishment Tag Not Found:New
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.933 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentPreferenceTagServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentServiceValidatorTest
+[INFO] Running sa.gov.gosi.si.em.business.establishment.EstablishmentPreferenceServiceTest
+17:43:00,653 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:43:00,806 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:43:00,807 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:43:00,818 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:43:00,874 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:43:00,874 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:43:00,874 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:43:00,875 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:43:00,875 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:43:00,875 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:43:00,876 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:43:00,876 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:43:00,876 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:43:00,877 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:43:00,877 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:43:00,877 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:43:00,878 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@267a8777 - Registering current configuration as safe fallback point
+
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.22 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentPreferenceServiceTest
+[ERROR] Picked up JAVA_TOOL_OPTIONS: -Dmaven.ext.class.path="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/pipeline-maven-spy.jar" -Dorg.jenkinsci.plugins.pipeline.maven.reportsFolder="/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500" 
+[INFO] Running sa.gov.gosi.si.em.business.establishment.CertificateValidatorTest
+17:42:57,530 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:57,595 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:57,596 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:57,608 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:57,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:57,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:57,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:57,663 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:57,663 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:57,663 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:57,664 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:57,664 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:57,664 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:57,664 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:57,664 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:57,664 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:57,665 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@49491770 - Registering current configuration as safe fallback point
+
+17:42:58,641 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:42:58,715 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:42:58,716 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:42:58,726 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:42:58,812 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:42:58,812 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:42:58,812 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:42:58,813 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:42:58,813 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:42:58,813 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:42:58,814 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:42:58,814 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:42:58,814 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:42:58,814 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:42:58,814 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:42:58,814 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:42:58,815 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@538b3c88 - Registering current configuration as safe fallback point
+
+2025-10-14 17:43:20 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:20 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:20 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+17:43:02,539 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/test-classes/logback-test.xml]
+17:43:02,600 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:43:02,601 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:43:02,609 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:43:02,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - This appender no longer admits a layout as a sub-component, set an encoder instead.
+17:43:02,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.
+17:43:02,662 |-WARN in ch.qos.logback.core.ConsoleAppender[STDOUT] - See also http://logback.qos.ch/codes.html#layoutInsteadOfEncoder for details
+17:43:02,664 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.springframework] to ERROR
+17:43:02,664 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.springframework] to false
+17:43:02,664 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.springframework]
+17:43:02,667 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [logging.level.org.hibernate] to ERROR
+17:43:02,667 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [logging.level.org.hibernate] to false
+17:43:02,667 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[logging.level.org.hibernate]
+17:43:02,667 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+17:43:02,668 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:43:02,668 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:43:02,669 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@4aa31ffc - Registering current configuration as safe fallback point
+
+[INFO] Tests run: 36, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.362 s - in sa.gov.gosi.si.em.business.establishment.EstablishmentServiceValidatorTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.469 s - in sa.gov.gosi.si.em.business.establishment.CertificateValidatorTest
+2025-10-14 17:43:21 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:22 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:22 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:22 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:23 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:23 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+2025-10-14 17:43:23 ERROR  --- [main] s.g.g.s.e.b.e.s.CertificateServiceValidator : Exception Handled for MCI Downtime
+[WARNING] Tests run: 36, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 27.107 s - in sa.gov.gosi.si.em.business.establishment.certificate.RequestCertificateServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   AdminServiceValidatorTest.validateAdminToAddAsSuperAdmin_Test2:410 Unexpected exception type thrown ==> expected: <sa.gov.gosi.framework.exception.GosiBusinessException> but was: <org.springframework.context.NoSuchMessageException>
+[ERROR]   AmendmentServiceTest.getChangeEstablishmentLinkWorkflowDetailsTest:1674 expected: <false> but was: <true>
+[ERROR]   EstablishmentServiceTest.getEstablishmentWithEmptyPreference_Success_Test:3885 expected: <0> but was: <1>
+[ERROR]   EstablishmentServiceTest.getNumberOfEmployeesByMolNumbersTest:2675 expected: <418> but was: <410>
+[ERROR]   EstablishmentServiceTest.verifyProactiveMolIdsRegistrationTest:2490 expected: <EST-ERR-5055> but was: <EST-ERR-5019>
+[ERROR]   OwnerServiceTest.getOwnerReferenceNoEstablishmentTestSuccess:110 expected: <false> but was: <true>
+[ERROR] Errors: 
+[ERROR]   AdminServiceValidatorTest.validateSuperAdminForReplacementTest2:65 » GosiBusiness
+[ERROR]   AmendmentServiceTest.activateChangeOwnerEstablishmentRejectOrReturnTest:1767 » IndexOutOfBounds
+[ERROR]   EstablishmentServiceTest.getEstablishmentPreferenceSuccessTest » ScriptStatementFailed
+[ERROR]   EstablishmentServiceTest.saveEstablishmentPreferenceTag_Test » ScriptStatementFailed
+[ERROR]   EstablishmentServiceTest.searchEstablishmentBranchTest_EstName:1719 » GosiBusiness
+[ERROR]   OwnerServiceTest.removeDataMaskForDeletedOwner_Test:961 » NullPointer
+[ERROR]   TerminationServiceTest.terminateEstablishment_InWorkflow_Test:303 » GosiBusiness
+[ERROR]   AdminServiceTest.updateDummyRoleInIAM_Test:2138 » GosiBusiness Invalid Country...
+[INFO] 
+[ERROR] Tests run: 951, Failures: 6, Errors: 8, Skipped: 43
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for establishment-management 3.3.0-SNAPSHOT:
+[INFO] 
+[INFO] establishment ...................................... FAILURE [08:38 min]
+[INFO] em-api ............................................. SKIPPED
+[INFO] establishment-management ........................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  08:38 min
+[INFO] Finished at: 2025-10-14T17:43:25+03:00
+[INFO] ------------------------------------------------------------------------
+[INFO] [jenkins-event-spy] Generated /jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730@tmp/withMaven2882a500/maven-spy-20251014-173445-9416387337449655149555.log
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0-M5:test (default-test) on project establishment: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /jenkins/nodes/lx-agent05/workspace/ishment-management_feature_28730/establishment/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[Pipeline] }
+[withMaven] JacocoPublisher is no longer implicitly used with `withMaven` step.
+[withMaven] Jacoco plugin has been deprecated and should not be used anymore.
+[withMaven] CoveragePublisher will be used instead.
+
+[withMaven] artifactsPublisher - Archive artifact establishment/pom.xml under sa/gov/gosi/si/establishment/3.3.0-SNAPSHOT/establishment-3.3.0-SNAPSHOT.pom
+[withMaven] artifactsPublisher - Archive artifact em-api/pom.xml under sa/gov/gosi/si/em-api/3.3.0-SNAPSHOT/em-api-3.3.0-SNAPSHOT.pom
+[withMaven] artifactsPublisher - Archive artifact pom.xml under sa/gov/gosi/si/establishment-management/3.3.0-SNAPSHOT/establishment-management-3.3.0-SNAPSHOT.pom
+[withMaven] Publishers: Generated Artifacts Publisher: 57 ms
+[withMaven] JacocoPublisher is no longer implicitly used with `withMaven` step.
+[withMaven] Jacoco plugin has been deprecated and should not be used anymore.
+[withMaven] CoveragePublisher will be used instead.
+
+[withMaven] Publishers: Generated Artifacts Publisher: 1 ms, Dependencies Fingerprint Publisher: 9 ms
+[Pipeline] // withMaven
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+Failed in branch Unit Test
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+Stage "Build" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (SonarQube analysis & Quality Gate)
+Stage "SonarQube analysis & Quality Gate" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Nexus Publish - JDK 8)
+Stage "Nexus Publish - JDK 8" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (UCD Publish - JDK 8)
+Stage "UCD Publish - JDK 8" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Rewrite - Old Plugins)
+Stage "Rewrite - Old Plugins" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Rewrite - Spring Upgrade)
+Stage "Rewrite - Spring Upgrade" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Tag Upgraded Code)
+Stage "Tag Upgraded Code" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Coverity Scan - j21)
+Stage "Coverity Scan - j21" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Upgraded build)
+Stage "Upgraded build" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (NexusIQ evaluation and Nexus Publish)
+Stage "NexusIQ evaluation and Nexus Publish" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] parallel
+[Pipeline] { (Branch: NexusIQ Policy Evaluation )
+[Pipeline] { (Branch: Nexus Publish)
+[Pipeline] stage
+[Pipeline] { (NexusIQ Policy Evaluation )
+[Pipeline] stage
+[Pipeline] { (Nexus Publish)
+Stage "NexusIQ Policy Evaluation " skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+Stage "Nexus Publish" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+Failed in branch NexusIQ Policy Evaluation 
+[Pipeline] }
+Failed in branch Nexus Publish
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Rename jar)
+Stage "Rename jar" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (UCD Publish FatJar)
+Stage "UCD Publish FatJar" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (UCD Deploy)
+Stage "UCD Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Triggering Collections Management)
+Stage "Triggering Collections Management" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+[INFO]
+[INFO] -----------------------------------------------------
+[INFO] Global Post Script
+[INFO] -----------------------------------------------------
+Job Name-Establishment/establishment%2Fjava%2Festablishment-management/feature_28730
+Branch Name-feature_28730
+Build Result-FAILURE
+Establishment/establishment%2Fjava%2Festablishment-management Component
+establishment/java/establishment-management Component
+[INFO] -----------------------------------------------------
+[GitLab Pipeline Status] Notifying branch build status: FAILED Establishment/establishment%2Fjava%2Festablishment-management/feature_28730 #16: There was a failure building this commit.
+[GitLab Pipeline Status] Notified
+Notified JIRA that a build has completed (null).
+
+Finished: FAILURE
