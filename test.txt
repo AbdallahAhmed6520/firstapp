@@ -1,63 +1,800 @@
-Abduallah Ahmed (عبد الله أحمد) requested review from @CR200915 14 hours ago
-Mohamed Magdy Ahmed @CR200915 started a thread on the diff 32 minutes ago
-migration_scripts/DDL/V03.0.20251014.02_CREATE_T_PROFILEACTIVITY.sql  0 → 100644
- CREATE TABLE OWS_ADMIN.T_PROFILEACTIVITY (
-    PROFILEACTIVITYID      NUMBER     NOT NULL,
-    PROFILEID              NUMBER   NOT NULL,
-    ACTIVITYTYPE           VARCHAR2(50)      NOT NULL,
-    TARGETENTITYTYPE       VARCHAR2(50)      NOT NULL,
-    TARGETENTITYID         NUMBER,
-C
-Mohamed Magdy Ahmed
-@CR200915
-· 32 minutes ago
-Developer
-Is it a foreign key? Where is the constraint?
+AbdallahAhmed6520: Creating the API to search the establishment by name or UNN + owner sphere proxy (add flow) + unit test.
+UI - > Apigee (authenticate + authorized) -> target server (backend)
+SQL + request + response (3 points)
 
-Reply…
-Mohamed Magdy Ahmed @CR200915 started a thread on the diff 32 minutes ago
-migration_scripts/DDL/V03.0.20251014.02_CREATE_T_PROFILEACTIVITY.sql  0 → 100644
- CREATE TABLE OWS_ADMIN.T_PROFILEACTIVITY (
-    PROFILEACTIVITYID      NUMBER     NOT NULL,
-    PROFILEID              NUMBER   NOT NULL,
-    ACTIVITYTYPE           VARCHAR2(50)      NOT NULL,
-    TARGETENTITYTYPE       VARCHAR2(50)      NOT NULL,
-    TARGETENTITYID         NUMBER,
-Comment on lines +5 to +6
-C
-Mohamed Magdy Ahmed
-@CR200915
-· 32 minutes ago
-Developer
-Create an index for TARGETENTITYTYPE and TARGETENTITYID
+i get this task to implement in owner sphere app, i dont know how to implement it, tell me how
 
-Reply…
-Mohamed Magdy Ahmed @CR200915 started a thread on the diff 32 minutes ago
-migration_scripts/DDL/V03.0.20251014.01_CREATE_T_BOOKMARK.sql  0 → 100644
-CREATE TABLE OWS_ADMIN.T_BOOKMARK (
-    BOOKMARKID            NUMBER                NOT NULL,
-    PROFILEID             NUMBER                NOT NULL,
-    BOOKMARKENTITYID      NUMBER                NOT NULL,
-    BOOKMARKENTITYTYPE    VARCHAR2(50)          NOT NULL,
-Comment on lines +4 to +5
-C
-Mohamed Magdy Ahmed
-@CR200915
-· 32 minutes ago
-Developer
-Create an index for both BOOKMARKENTITYTYPE + BOOKMARKENTITYID
+GitHub Copilot: I'll help you understand how to implement this task in the owner sphere application. Let me first explore the project structure to understand the existing architecture and provide you with a clear implementation guide. 
 
-Reply…
-Mohamed Magdy Ahmed @CR200915 started a thread on the diff 32 minutes ago
-migration_scripts/DDL/V03.0.20251014.03_CREATE_T_PROFILESEARCHHISTORY.sql  0 → 100644
-CREATE TABLE OWS_ADMIN.T_PROFILESEARCHHISTORY (
-    SEARCHHISTORYID NUMBER NOT NULL,
-    PROFILEID NUMBER NOT NULL,
-    SEARCHTEXT VARCHAR2(500) NOT NULL,
-C
-Mohamed Magdy Ahmed
-@CR200915
-· 32 minutes ago
-Developer
-Create an index for SEARCHTEXT
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere)
 
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/pom.xml#1-1), lines 1 to 50
+
+Searched codebase for "controller rest api endpoint establishment search", no results
+
+Searched text for `@RestController|@RequestMapping|@GetMapping|@PostMapping` (`**/owner-sphere/**/*.java`), 6 results
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/search/SearchHistoryApi.java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/search/SearchHistoryApiImpl.java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp)
+
+Searched text for `@Service|@Repository|service|repository` (`**/owner-sphere/ownersphere/**/*.java`), 20 results
+
+Searched for files matching `**/owner-sphere/**/resources/**/*.sql`, no matches
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/service/EstablishmentService.java)
+
+Searched text for `class.*Repository|interface.*Repository` (`**/owner-sphere/**/*.java`), 16 results
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/repository/EstablishmentViewRepository.java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere)
+
+Searched text for `class.*Entity|@Entity` (`**/owner-sphere/**/*.java`), 17 results
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/repository/domain/EstablishmentViewEntity.java)
+
+Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy)
+
+Searched text for `RestTemplate|WebClient|@FeignClient` (`**/owner-sphere/**/*.java`), 4 results
+
+Searched text for `@GetMapping.*establishment|@PostMapping.*establishment|searchEstablishment` (`**/establishment-management/**/*.java`), 20 results
+
+Searched for files matching `**/establishment-management/**/establishment*.sql`, 12 matches
+
+Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/resources)
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApi.java#50-50), lines 50 to 150
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApiImpl.java#50-50), lines 50 to 210
+
+Now let me look at the actual search endpoint implementation: 
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApiImpl.java#220-220), lines 220 to 250
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApi.java#160-160), lines 160 to 185
+
+Perfect! Now let me check the DTOs and understand the structure better: 
+
+Searched text for `class EstablishmentSearchDto` (`**/establishment-management/**/EstablishmentSearchDto.java`), 1 result
+
+Searched for files matching `**/establishment-management/**/EstablishmentSearchDto.java`, 2 matches
+
+Searched for files matching `**/establishment-management/**/EstablishmentResponseDto.java`, 2 matches
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/dto/EstablishmentSearchDto.java#1-1), lines 1 to 100
+
+Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/dto/EstablishmentResponseDto.java)
+
+Perfect! Now I have a comprehensive understanding. Let me create a detailed implementation guide for you:
+
+## 📋 Implementation Guide: Search Establishment API in Owner Sphere
+
+Based on my analysis of your codebase, here's a complete step-by-step guide to implement the search establishment API with Owner Sphere proxy integration:
+
+### **Architecture Overview**
+```
+UI → Apigee (Auth) → Owner Sphere API → Owner Sphere Service → 
+  ├─ Database (SQL Query)
+  └─ Establishment Management Proxy (External Call)
+```
+
+---
+
+## **Step 1: Create Request & Response DTOs**
+
+### 1.1 Create Search Request DTO
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentSearchRequestDto.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment.dto;
+
+import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Size;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class EstablishmentSearchRequestDto {
+    
+    @ApiParam(value = "Unified National Number (UNN) of Establishment")
+    private Long unifiedNationalNumber;
+    
+    @ApiParam(value = "Establishment Name (Arabic or English)")
+    @Size(min = 3, message = "Establishment name must be at least 3 characters")
+    private String establishmentName;
+    
+    @ApiParam(value = "Page number for pagination", defaultValue = "0")
+    private Integer pageNo = 0;
+    
+    @ApiParam(value = "Page size for pagination", defaultValue = "10")
+    private Integer pageSize = 10;
+}
+```
+
+### 1.2 Create Search Response DTO
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentSearchResponseDto.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class EstablishmentSearchResponseDto {
+    
+    private Long totalRecords;
+    private List<EstablishmentDetailsDto> establishments;
+}
+```
+
+### 1.3 Create Establishment Details DTO
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentDetailsDto.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import sa.gov.gosi.si.common.vo.BilingualText;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class EstablishmentDetailsDto {
+    
+    private Long registrationNo;
+    private Long unifiedNationalNumber;
+    private BilingualText name;
+    private Integer status;
+    private Integer legalEntity;
+    private Boolean gccCountry;
+}
+```
+
+---
+
+## **Step 2: Create API Controller**
+
+### 2.1 Create API Interface
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApi.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
+
+import javax.validation.Valid;
+
+@Api(value = "Establishment Search", description = "Establishment Search API", tags = "Establishment")
+@RequestMapping("/establishment")
+public interface EstablishmentSearchApi {
+
+    @GetMapping("/search")
+    @ApiOperation(
+        value = "Search establishments by name or UNN",
+        nickname = "searchEstablishment",
+        notes = "Search for establishments using name or unified national number",
+        response = EstablishmentSearchResponseDto.class,
+        tags = "Establishment"
+    )
+    EstablishmentSearchResponseDto searchEstablishment(@Valid EstablishmentSearchRequestDto searchRequest);
+}
+```
+
+### 2.2 Create API Implementation
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApiImpl.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestMapping;
+import sa.gov.gosi.framework.annotation.GosiRestController;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
+import sa.gov.gosi.si.osp.business.ownersphere.service.EstablishmentService;
+
+import javax.validation.Valid;
+
+@Slf4j
+@Validated
+@GosiRestController
+@RequestMapping(value = "/establishment")
+public class EstablishmentSearchApiImpl implements EstablishmentSearchApi {
+
+    @Autowired
+    private EstablishmentService establishmentService;
+    
+    @Autowired
+    private EstablishmentSearchAssembler assembler;
+
+    @Override
+    public EstablishmentSearchResponseDto searchEstablishment(@Valid EstablishmentSearchRequestDto searchRequest) {
+        log.info("Searching establishments with request: {}", searchRequest);
+        
+        // Validate at least one search criteria is provided
+        if (searchRequest.getUnifiedNationalNumber() == null && 
+            (searchRequest.getEstablishmentName() == null || searchRequest.getEstablishmentName().trim().isEmpty())) {
+            throw new IllegalArgumentException("At least one search criteria (UNN or Name) must be provided");
+        }
+        
+        return assembler.assembleSearchResponse(
+            establishmentService.searchEstablishments(searchRequest)
+        );
+    }
+}
+```
+
+### 2.3 Create Assembler
+**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchAssembler.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment;
+
+import org.springframework.stereotype.Component;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentDetailsDto;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public class EstablishmentSearchAssembler {
+
+    public EstablishmentSearchResponseDto assembleSearchResponse(List<EstablishmentViewEntity> entities) {
+        return EstablishmentSearchResponseDto.builder()
+            .totalRecords((long) entities.size())
+            .establishments(entities.stream()
+                .map(this::assembleEstablishmentDetails)
+                .collect(Collectors.toList()))
+            .build();
+    }
+
+    public EstablishmentDetailsDto assembleEstablishmentDetails(EstablishmentViewEntity entity) {
+        return EstablishmentDetailsDto.builder()
+            .registrationNo(entity.getRegistrationNo())
+            .unifiedNationalNumber(entity.getNationalUnifiedNo())
+            .name(entity.getName())
+            .status(entity.getStatus())
+            .legalEntity(entity.getLegalEntity())
+            .gccCountry(entity.isGccCountry())
+            .build();
+    }
+}
+```
+
+---
+
+## **Step 3: Create Service Layer**
+
+### 3.1 Update EstablishmentService
+**Location:** EstablishmentService.java
+
+```java
+package sa.gov.gosi.si.osp.business.ownersphere.service;
+
+import com.querydsl.core.BooleanBuilder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.EstablishmentViewRepository;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.QEstablishmentViewEntity;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.service.EstablishmentManagementProxy;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Service
+public class EstablishmentService {
+
+    @Autowired 
+    private EstablishmentViewRepository establishmentViewRepository;
+    
+    @Autowired
+    private EstablishmentManagementProxy establishmentManagementProxy;
+
+    /**
+     * Search establishments by name or UNN
+     * First search in local database (proxy view)
+     * Then call Establishment Management API for additional details
+     */
+    @Transactional(readOnly = true)
+    public List<EstablishmentViewEntity> searchEstablishments(EstablishmentSearchRequestDto searchRequest) {
+        log.info("Searching establishments with criteria: UNN={}, Name={}", 
+                 searchRequest.getUnifiedNationalNumber(), 
+                 searchRequest.getEstablishmentName());
+        
+        // Build QueryDSL predicate
+        QEstablishmentViewEntity qEstablishment = QEstablishmentViewEntity.establishmentViewEntity;
+        BooleanBuilder builder = new BooleanBuilder();
+        
+        // Search by UNN
+        if (searchRequest.getUnifiedNationalNumber() != null) {
+            builder.and(qEstablishment.nationalUnifiedNo.eq(searchRequest.getUnifiedNationalNumber()));
+        }
+        
+        // Search by Name (supports both Arabic and English)
+        if (searchRequest.getEstablishmentName() != null && !searchRequest.getEstablishmentName().trim().isEmpty()) {
+            String searchTerm = "%" + searchRequest.getEstablishmentName().trim() + "%";
+            builder.and(
+                qEstablishment.name.arabic.likeIgnoreCase(searchTerm)
+                    .or(qEstablishment.name.english.likeIgnoreCase(searchTerm))
+            );
+        }
+        
+        // Execute query
+        List<EstablishmentViewEntity> results = new ArrayList<>();
+        establishmentViewRepository.findAll(builder).forEach(results::add);
+        
+        log.info("Found {} establishments from database", results.size());
+        
+        // Optionally enrich with data from Establishment Management service
+        if (!results.isEmpty()) {
+            enrichWithExternalData(results);
+        }
+        
+        return results;
+    }
+    
+    /**
+     * Enrich establishment data by calling Establishment Management proxy
+     */
+    private void enrichWithExternalData(List<EstablishmentViewEntity> establishments) {
+        try {
+            // Call proxy to get additional details from Establishment Management
+            establishments.forEach(est -> {
+                try {
+                    establishmentManagementProxy.getEstablishmentDetails(est.getRegistrationNo());
+                } catch (Exception e) {
+                    log.warn("Failed to enrich establishment {} with external data", est.getRegistrationNo(), e);
+                }
+            });
+        } catch (Exception e) {
+            log.error("Error enriching establishment data", e);
+        }
+    }
+}
+```
+
+---
+
+## **Step 4: Create Proxy Service (for Establishment Management)**
+
+### 4.1 Create Proxy Interface
+**Location:** `owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/service/EstablishmentManagementProxy.java`
+
+```java
+package sa.gov.gosi.si.osp.business.ownersphere.proxy.service;
+
+import sa.gov.gosi.si.em.api.establishment.dto.EstablishmentDetailsDto;
+
+public interface EstablishmentManagementProxy {
+    
+    /**
+     * Get establishment details from Establishment Management service
+     * @param registrationNo Registration number
+     * @return Establishment details
+     */
+    EstablishmentDetailsDto getEstablishmentDetails(Long registrationNo);
+}
+```
+
+### 4.2 Create Proxy Implementation
+**Location:** `owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/service/EstablishmentManagementProxyImpl.java`
+
+```java
+package sa.gov.gosi.si.osp.business.ownersphere.proxy.service;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import sa.gov.gosi.framework.security.GosiSecureRestTemplate;
+import sa.gov.gosi.si.em.api.establishment.dto.EstablishmentDetailsDto;
+
+@Slf4j
+@Service
+public class EstablishmentManagementProxyImpl implements EstablishmentManagementProxy {
+
+    @Autowired
+    private GosiSecureRestTemplate restTemplate;
+    
+    @Value("${establishment.management.base.url:http://localhost:8080/api/v1}")
+    private String establishmentMgmtBaseUrl;
+
+    @Override
+    public EstablishmentDetailsDto getEstablishmentDetails(Long registrationNo) {
+        log.info("Calling Establishment Management API for regNo: {}", registrationNo);
+        
+        try {
+            String url = establishmentMgmtBaseUrl + "/establishment/" + registrationNo;
+            
+            ResponseEntity<EstablishmentDetailsDto> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                EstablishmentDetailsDto.class
+            );
+            
+            log.info("Successfully retrieved establishment details for regNo: {}", registrationNo);
+            return response.getBody();
+            
+        } catch (Exception e) {
+            log.error("Error calling Establishment Management API for regNo: {}", registrationNo, e);
+            throw new RuntimeException("Failed to retrieve establishment details", e);
+        }
+    }
+}
+```
+
+---
+
+## **Step 5: Create SQL Query (if custom query needed)**
+
+### 5.1 Create Named Query in Repository
+**Location:** Update EstablishmentViewRepository.java
+
+```java
+package sa.gov.gosi.si.osp.business.ownersphere.proxy.repository;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.history.RevisionRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
+
+import java.util.List;
+
+@Repository("Contributor_EstablishmentRepository")
+public interface EstablishmentViewRepository
+    extends CrudRepository<EstablishmentViewEntity, Long>,
+        QuerydslPredicateExecutor<EstablishmentViewEntity>,
+        RevisionRepository<EstablishmentViewEntity, Long, Integer> {
+    
+    /**
+     * Search establishments by UNN
+     */
+    List<EstablishmentViewEntity> findByNationalUnifiedNo(Long nationalUnifiedNo);
+    
+    /**
+     * Search establishments by name (custom query)
+     */
+    @Query("SELECT e FROM OwnerSphere_EstablishmentEntity e WHERE " +
+           "LOWER(e.name.arabic) LIKE LOWER(CONCAT('%', :name, '%')) OR " +
+           "LOWER(e.name.english) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<EstablishmentViewEntity> searchByName(@Param("name") String name);
+    
+    /**
+     * Combined search by UNN or name
+     */
+    @Query("SELECT e FROM OwnerSphere_EstablishmentEntity e WHERE " +
+           "(:unn IS NULL OR e.nationalUnifiedNo = :unn) AND " +
+           "(:name IS NULL OR LOWER(e.name.arabic) LIKE LOWER(CONCAT('%', :name, '%')) OR " +
+           "LOWER(e.name.english) LIKE LOWER(CONCAT('%', :name, '%')))")
+    List<EstablishmentViewEntity> searchEstablishments(
+        @Param("unn") Long unn, 
+        @Param("name") String name
+    );
+}
+```
+
+---
+
+## **Step 6: Create Unit Tests**
+
+### 6.1 Service Test
+**Location:** `owner-sphere/ownersphere/src/test/java/sa/gov/gosi/si/osp/business/ownersphere/service/EstablishmentServiceTest.java`
+
+```java
+package sa.gov.gosi.si.osp.business.ownersphere.service;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import sa.gov.gosi.si.common.vo.BilingualText;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.EstablishmentViewRepository;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.service.EstablishmentManagementProxy;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+class EstablishmentServiceTest {
+
+    @Mock
+    private EstablishmentViewRepository repository;
+    
+    @Mock
+    private EstablishmentManagementProxy proxy;
+    
+    @InjectMocks
+    private EstablishmentService service;
+    
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    @Test
+    void testSearchByUNN_Success() {
+        // Given
+        Long unn = 700123456L;
+        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
+            .unifiedNationalNumber(unn)
+            .build();
+        
+        EstablishmentViewEntity mockEntity = EstablishmentViewEntity.builder()
+            .id(1L)
+            .registrationNo(501234567L)
+            .nationalUnifiedNo(unn)
+            .name(new BilingualText("Test Establishment", "منشأة اختبار"))
+            .status(1)
+            .build();
+        
+        when(repository.findAll(any())).thenReturn(Arrays.asList(mockEntity));
+        
+        // When
+        List<EstablishmentViewEntity> results = service.searchEstablishments(request);
+        
+        // Then
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        assertEquals(unn, results.get(0).getNationalUnifiedNo());
+        verify(repository, times(1)).findAll(any());
+    }
+    
+    @Test
+    void testSearchByName_Success() {
+        // Given
+        String name = "Test";
+        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
+            .establishmentName(name)
+            .build();
+        
+        EstablishmentViewEntity mockEntity = EstablishmentViewEntity.builder()
+            .id(1L)
+            .registrationNo(501234567L)
+            .name(new BilingualText("Test Establishment", "منشأة اختبار"))
+            .build();
+        
+        when(repository.findAll(any())).thenReturn(Arrays.asList(mockEntity));
+        
+        // When
+        List<EstablishmentViewEntity> results = service.searchEstablishments(request);
+        
+        // Then
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
+        verify(repository, times(1)).findAll(any());
+    }
+    
+    @Test
+    void testSearchWithNoCriteria_ThrowsException() {
+        // Given
+        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder().build();
+        
+        // When & Then - This validation should happen at API level
+        // Just verify repository is not called
+        assertThrows(Exception.class, () -> {
+            if (request.getUnifiedNationalNumber() == null && 
+                (request.getEstablishmentName() == null || request.getEstablishmentName().trim().isEmpty())) {
+                throw new IllegalArgumentException("Search criteria required");
+            }
+        });
+    }
+}
+```
+
+### 6.2 API Controller Test
+**Location:** `owner-sphere/osp-api/src/test/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApiImplTest.java`
+
+```java
+package sa.gov.gosi.si.osp.api.establishment;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import sa.gov.gosi.si.common.vo.BilingualText;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
+import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
+import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
+import sa.gov.gosi.si.osp.business.ownersphere.service.EstablishmentService;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+class EstablishmentSearchApiImplTest {
+
+    @Mock
+    private EstablishmentService service;
+    
+    @Mock
+    private EstablishmentSearchAssembler assembler;
+    
+    @InjectMocks
+    private EstablishmentSearchApiImpl api;
+    
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    @Test
+    void testSearchEstablishment_WithUNN_Success() {
+        // Given
+        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
+            .unifiedNationalNumber(700123456L)
+            .build();
+        
+        EstablishmentViewEntity entity = EstablishmentViewEntity.builder()
+            .registrationNo(501234567L)
+            .nationalUnifiedNo(700123456L)
+            .name(new BilingualText("Test", "اختبار"))
+            .build();
+        
+        EstablishmentSearchResponseDto expectedResponse = EstablishmentSearchResponseDto.builder()
+            .totalRecords(1L)
+            .build();
+        
+        when(service.searchEstablishments(any())).thenReturn(Arrays.asList(entity));
+        when(assembler.assembleSearchResponse(any())).thenReturn(expectedResponse);
+        
+        // When
+        EstablishmentSearchResponseDto response = api.searchEstablishment(request);
+        
+        // Then
+        assertNotNull(response);
+        assertEquals(1L, response.getTotalRecords());
+        verify(service, times(1)).searchEstablishments(request);
+    }
+    
+    @Test
+    void testSearchEstablishment_WithoutCriteria_ThrowsException() {
+        // Given
+        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder().build();
+        
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> {
+            api.searchEstablishment(request);
+        });
+    }
+}
+```
+
+---
+
+## **Step 7: Configuration**
+
+### 7.1 Add Application Properties
+**Location:** `owner-sphere/osp-api/src/main/resources/application.properties` or `application.yml`
+
+```properties
+# Establishment Management Service Configuration
+establishment.management.base.url=http://establishment-management-service:8080/api/v1
+
+# Security Configuration
+spring.security.oauth2.resourceserver.jwt.issuer-uri=https://your-auth-server.com
+
+# Database Configuration (if not already configured)
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:ORCL
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
+
+---
+
+## **Summary of Implementation Points**
+
+### ✅ **3 Main Components (As per your requirement)**
+
+1. **SQL Query** - Implemented in `EstablishmentViewRepository` using QueryDSL and custom JPQL queries
+2. **Request DTO** - `EstablishmentSearchRequestDto` with UNN and Name search fields
+3. **Response DTO** - `EstablishmentSearchResponseDto` with list of establishments and total count
+
+### 📁 **Files to Create**
+
+1. **DTOs (3 files)**
+   - `EstablishmentSearchRequestDto.java`
+   - `EstablishmentSearchResponseDto.java`
+   - `EstablishmentDetailsDto.java`
+
+2. **API Layer (3 files)**
+   - `EstablishmentSearchApi.java` (Interface)
+   - `EstablishmentSearchApiImpl.java` (Implementation)
+   - `EstablishmentSearchAssembler.java` (DTO Assembler)
+
+3. **Service Layer (1 file to update)**
+   - EstablishmentService.java (Add search method)
+
+4. **Proxy Layer (2 files)**
+   - `EstablishmentManagementProxy.java` (Interface)
+   - `EstablishmentManagementProxyImpl.java` (Implementation)
+
+5. **Repository (1 file to update)**
+   - EstablishmentViewRepository.java (Add custom queries)
+
+6. **Tests (2 files)**
+   - `EstablishmentServiceTest.java`
+   - `EstablishmentSearchApiImplTest.java`
+
+### 🔄 **Flow**
+
+1. **UI calls Apigee** with authentication
+2. **Apigee forwards** to Owner Sphere API (`/api/v1/establishment/search`)
+3. **API Controller** validates and calls Service
+4. **Service** queries database using Repository (QueryDSL)
+5. **Service** optionally calls Establishment Management proxy for enrichment
+6. **Response assembled** and returned through API
+
+### 🎯 **Next Steps**
+
+1. Create the folder structure for DTOs
+2. Implement DTOs first
+3. Create API interface and implementation
+4. Update Service layer
+5. Create Proxy for Establishment Management
+6. Write unit tests
+7. Test locally
+8. Deploy and test through Apigee
+
+Would you like me to help you create any specific file or explain any part in more detail?
