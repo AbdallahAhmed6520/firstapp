@@ -1,800 +1,10209 @@
-AbdallahAhmed6520: Creating the API to search the establishment by name or UNN + owner sphere proxy (add flow) + unit test.
-UI - > Apigee (authenticate + authorized) -> target server (backend)
-SQL + request + response (3 points)
+Skip to content
+You said:
+After the owner chooses the establishment to log in with:
+UI (v1/*owner-sphere/b2b/
+{regNo}/suggestions) > Apigee > OWS backend (owner-sphere/b2b/{regNo}
+/suggestions)> Apigee (what is the API endpoint that is exposed from AI ) > OSB > AI
+1- Create a new proxy and a flow with this endpoint *v1/*owner-sphere/b2b/
+{regNo}
+/suggestions and the target server owner sphere
+2- Create a developer App for the Owner Sphere and create a product for the new proxy
+3- Create a new API (Request and Response) and call AI by creating a new proxy class and using the defined endpoint.
+4- Create a KVM for the new API
+What will happen if the AI call fails?
 
-i get this task to implement in owner sphere app, i dont know how to implement it, tell me how
+فهمني التاسك دي
+ChatGPT said:
+تمام 👌 خليني أوضحلك التاسك خطوة بخطوة وببساطة:
 
-GitHub Copilot: I'll help you understand how to implement this task in the owner sphere application. Let me first explore the project structure to understand the existing architecture and provide you with a clear implementation guide. 
+🎯 الهدف العام
+الهدف إنك تعمل تكامل (integration) بين:
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere)
+واجهة المستخدم (UI) → Apigee → OWS backend → Apigee → OSB → AI service
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api)
+علشان لما المالك يختار المنشأة اللي هيسجل الدخول بيها، النظام يقدر يجيب اقتراحات (suggestions) من خدمة الذكاء الاصطناعي (AI).
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere)
+🧩 شرح الخطوات واحدة واحدة
+1️⃣ Create a new proxy and a flow
+في Apigee، هتعمل Proxy API جديدة اسمها مثلاً:
+v1/owner-sphere/b2b/{regNo}/suggestions
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java)
+دي هتكون الواجهة الخارجية اللي UI بيكلمها.
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java)
+هتربطها بـ target server اللي هو OWS backend (اللي موجود فعلاً).
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/pom.xml#1-1), lines 1 to 50
+يعني UI → Apigee (proxy الجديد) → OWS backend
 
-Searched codebase for "controller rest api endpoint establishment search", no results
+2️⃣ Create a Developer App + Product
+في Apigee لازم أي Proxy يتربط بـ:
 
-Searched text for `@RestController|@RequestMapping|@GetMapping|@PostMapping` (`**/owner-sphere/**/*.java`), 6 results
+API Product → بيجمع مجموعة APIs.
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/search/SearchHistoryApi.java)
+Developer App → بتمثل التطبيق اللي بيستخدم الـ API (في الحالة دي “Owner Sphere App”).
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/search/SearchHistoryApiImpl.java)
+الهدف: التحكم في الوصول (access control) و الـ credentials (API key).
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp)
+3️⃣ Create a new API (Request and Response)
+في OWS backend (Java / Spring):
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp)
+هتعمل endpoint جديد بنفس الـ path:
+/owner-sphere/b2b/{regNo}/suggestions
 
-Searched text for `@Service|@Repository|service|repository` (`**/owner-sphere/ownersphere/**/*.java`), 20 results
+جواه هتكتب الكود اللي ينادي على AI service.
 
-Searched for files matching `**/owner-sphere/**/resources/**/*.sql`, no matches
+علشان تنادي الـ AI:
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business)
+هتعمل proxy class جديدة (مثلاً AiServiceProxy)
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/service/EstablishmentService.java)
+تستخدمها لاستدعاء الـ endpoint بتاع AI من خلال الـ OSB.
 
-Searched text for `class.*Repository|interface.*Repository` (`**/owner-sphere/**/*.java`), 16 results
+يعني Backend → OSB → AI
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/repository/EstablishmentViewRepository.java)
+4️⃣ Create a KVM for the new API
+KVM = Key Value Map في Apigee
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere)
+دي بتخزن إعدادات حساسة أو URLs أو مفاتيح API بدل ما تكتبها في الكود.
 
-Searched text for `class.*Entity|@Entity` (`**/owner-sphere/**/*.java`), 17 results
+هنا ممكن تحط مثلاً:
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/repository/domain/EstablishmentViewEntity.java)
+URL بتاع AI service
 
-Read [](file:///c%3A/Projects/owner-sphere/owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy)
+Token أو credentials لو محتاج
 
-Searched text for `RestTemplate|WebClient|@FeignClient` (`**/owner-sphere/**/*.java`), 4 results
+⚠️ ماذا يحدث لو الـ AI call فشل؟
+لو الاتصال بين OWS backend و AI فشل لأي سبب (timeout، error، service down):
 
-Searched text for `@GetMapping.*establishment|@PostMapping.*establishment|searchEstablishment` (`**/establishment-management/**/*.java`), 20 results
+الـ backend لازم يتعامل مع الفشل بشكل آمن:
 
-Searched for files matching `**/establishment-management/**/establishment*.sql`, 12 matches
+يرجع response مخصص مثلاً:
 
-Read [](file:///c%3A/Projects/establishment-management/establishment/src/main/resources)
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApi.java#50-50), lines 50 to 150
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApiImpl.java#50-50), lines 50 to 210
-
-Now let me look at the actual search endpoint implementation: 
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApiImpl.java#220-220), lines 220 to 250
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/EstablishmentApi.java#160-160), lines 160 to 185
-
-Perfect! Now let me check the DTOs and understand the structure better: 
-
-Searched text for `class EstablishmentSearchDto` (`**/establishment-management/**/EstablishmentSearchDto.java`), 1 result
-
-Searched for files matching `**/establishment-management/**/EstablishmentSearchDto.java`, 2 matches
-
-Searched for files matching `**/establishment-management/**/EstablishmentResponseDto.java`, 2 matches
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/dto/EstablishmentSearchDto.java#1-1), lines 1 to 100
-
-Read [](file:///c%3A/Projects/establishment-management/em-api/src/main/java/sa/gov/gosi/si/em/api/establishment/dto/EstablishmentResponseDto.java)
-
-Perfect! Now I have a comprehensive understanding. Let me create a detailed implementation guide for you:
-
-## 📋 Implementation Guide: Search Establishment API in Owner Sphere
-
-Based on my analysis of your codebase, here's a complete step-by-step guide to implement the search establishment API with Owner Sphere proxy integration:
-
-### **Architecture Overview**
-```
-UI → Apigee (Auth) → Owner Sphere API → Owner Sphere Service → 
-  ├─ Database (SQL Query)
-  └─ Establishment Management Proxy (External Call)
-```
-
----
-
-## **Step 1: Create Request & Response DTOs**
-
-### 1.1 Create Search Request DTO
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentSearchRequestDto.java`
-
-```java
-package sa.gov.gosi.si.osp.api.establishment.dto;
-
-import io.swagger.annotations.ApiParam;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Size;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class EstablishmentSearchRequestDto {
-    
-    @ApiParam(value = "Unified National Number (UNN) of Establishment")
-    private Long unifiedNationalNumber;
-    
-    @ApiParam(value = "Establishment Name (Arabic or English)")
-    @Size(min = 3, message = "Establishment name must be at least 3 characters")
-    private String establishmentName;
-    
-    @ApiParam(value = "Page number for pagination", defaultValue = "0")
-    private Integer pageNo = 0;
-    
-    @ApiParam(value = "Page size for pagination", defaultValue = "10")
-    private Integer pageSize = 10;
+{
+  "status": "AI_UNAVAILABLE",
+  "suggestions": []
 }
-```
+أو يرجع fallback data (مثلاً من كاش قديم).
 
-### 1.2 Create Search Response DTO
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentSearchResponseDto.java`
+Apigee مش هيكون سبب الفشل — الخطأ هييجي من الـ backend نفسه.
 
-```java
-package sa.gov.gosi.si.osp.api.establishment.dto;
+UI هتشوف النتيجة (سواء فاضية أو فيها error message)
+وممكن تعرض رسالة للمستخدم زي “No suggestions available now”.
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+🔁 الـ Flow كله ببساطة
+UI 
+  ↓
+Apigee (proxy: /v1/owner-sphere/b2b/{regNo}/suggestions)
+  ↓
+OWS backend (calls AI through proxy class)
+  ↓
+OSB (middleware)
+  ↓
+AI service
+  ↑
+Response back (or error handled)
+هل تحب أعملك sequence diagram ASCII (رسم بسيط يوضح الفلو بالكامل) علشان تبقى الصورة أوضح؟
 
-import java.util.List;
+You said:
+انا مش فاهمحاجه يعم من الكلام ده
+ChatGPT said:
+تمام 😄 ولا يهمك، خليني أشرحها بطريقة بسيطة جدًا كأننا بنحكيها لبعض في الشغل 👇
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class EstablishmentSearchResponseDto {
-    
-    private Long totalRecords;
-    private List<EstablishmentDetailsDto> establishments;
+👇 الموقف ببساطة:
+لما المالك يختار المنشأة اللي هيسجل بيها، السيستم محتاج يجيب له اقتراحات (suggestions) من خدمة ذكاء اصطناعي (AI).
+
+يعني عايزين نعمل طريق (API) يوصل من واجهة المستخدم لحد الـ AI.
+
+🧭 الفكرة العامة:
+الطريق اللي المعلومة هتمشي فيه هو ده:
+
+UI → Apigee → OWS backend → OSB → AI
+💡 نبدأ بالخطوات واحدة واحدة:
+🟩 الخطوة 1: تعمل API Proxy جديدة في Apigee
+تخيلها كأنك بتعمل “بوابة” جديدة يدخل منها الطلب.
+اسمها مثلًا:
+
+v1/owner-sphere/b2b/{regNo}/suggestions
+UI (واجهة المستخدم) هتضرب على اللينك ده.
+
+Apigee هيستقبل الطلب.
+
+Apigee هيبعته للـ backend (اللي اسمه Owner Sphere backend).
+
+🟦 الخطوة 2: تعمل Developer App + Product
+دي خطوة روتينية في Apigee علشان:
+
+تحدد مين اللي مسموح له يستخدم الـ API.
+
+تربط الـ proxy اللي عملته بتطبيق اسمه “Owner Sphere App”.
+
+🟨 الخطوة 3: backend هيكلم الـ AI
+في الـ backend (الكود اللي بلغة Java أو Spring Boot):
+
+هتعمل API جديدة بنفس الاسم:
+
+/owner-sphere/b2b/{regNo}/suggestions
+الكود جوه الـ API دي هيبعت request لـ خدمة الـ AI من خلال وسيط اسمه OSB.
+
+يعني:
+
+OWS backend → OSB → AI
+لو الـ AI رجع نتيجة، الكود يرجعها للـ frontend.
+لو حصل خطأ، الكود يتصرف.
+
+🟧 الخطوة 4: KVM
+في Apigee، هتخزن القيم الحساسة (زي URL بتاع الـ AI أو API key) في مكان اسمه KVM بدل ما تكتبها في الكود.
+زي كأنك بتحط “إعدادات” في مكان آمن.
+
+🔴 طب لو الـ AI وقع أو فشل الاتصال؟
+يعني لو لما الـ backend حاول يكلم الـ AI والـ AI ما ردش 👇
+
+هيحصل كده:
+
+الكود في الـ backend لازم يكون عامل error handling.
+
+لو فشل الاتصال، يرجع مثلاً response زي:
+
+{
+  "status": "AI_ERROR",
+  "message": "AI service not available right now"
 }
-```
+يعني النظام مش هيكسر، بس هيرجع رد يقول إن الـ AI مش شغال دلوقتي.
 
-### 1.3 Create Establishment Details DTO
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/dto/EstablishmentDetailsDto.java`
+📊 تخيلها كأنها سلسلة
+الخطوة	من	إلى	الغرض
+1	UI	Apigee	المستخدم يطلب البيانات
+2	Apigee	Backend (OWS)	يوصّل الطلب للـ backend
+3	Backend	OSB	يكلم خدمة الـ AI
+4	OSB	AI	يجيب الاقتراحات
+5	AI	Backend	يرجع النتيجة
+6	Backend	Apigee	يرجع الرد النهائي
+7	Apigee	UI	يوصل النتيجة للمستخدم
+هل تحب أعملك رسم بسيط يوضح الخطوات دي (diagram بالنص)؟
+هيخلي الصورة توصل في ثانية.
 
-```java
-package sa.gov.gosi.si.osp.api.establishment.dto;
+You said:
+### 🟩 الخطوة 1: تعمل API Proxy جديدة في Apigee
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import sa.gov.gosi.si.common.vo.BilingualText;
+اسميه اي
+ChatGPT said:
+حلو 👌
+يبقى إنت بتسأل: الـ API Proxy الجديدة اللي هتعملها في Apigee أسميها إيه؟
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class EstablishmentDetailsDto {
+الأنسب إنك تسميها نفس اسم الـ endpoint اللي مكتوب في التاسك، لكن بشكل منظم وواضح.
+يعني مثلًا:
+
+🔹 الاسم المقترح:
+owner-sphere-b2b-suggestions-v1
+
+أو لو فيه standard في الشغل عندكم لتسمية الـ proxies، يبقى تمشي عليه (مثلاً كل الـ proxies تبدأ بـ ows-).
+
+مثال تاني:
+
+ows-owner-sphere-b2b-suggestions-v1
+
+✅ السبب في التسمية دي:
+ows → عشان تبين إنها تابعة لـ Owner Sphere
+
+owner-sphere-b2b → بتوضح المجال (B2B module)
+
+suggestions → اسم الخدمة
+
+v1 → إصدار الـ API
+
+تحب أقولك كمان إيه ممكن تسمي الـ API Product و Developer App اللي هيرتبطوا بيها؟
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+API Proxies
+Environment 
+intranet
+
+
+
+Organization 
+ameenfea12
+
+
+
+API Proxies
+
+List
+Analytics
+
+Search
+
+All
+
+1-25 of 257  
+
+Offline Trace API Proxy
+
+API Proxy
+
+Environments
+
+Metrics for Last 24 Hours (intranet)
+
+Modified
+
+Actions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Traffic
+
+Message Trend by Hour
+
+Avg Time
+
+Error Rate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_UpdateWorkItemAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+25 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudUpdateCaseAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudScenarioAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudCaseItemsAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudCaseAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudCase2Proxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TR_FraudCase1Proxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+26 minutes ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FS_BPMTaskUpdateAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+3 days ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CRM_ComplaintV2APIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+4 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CIM_ComplaintAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+4 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CIM_AppealAPIproxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+4 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EM_BulkSafetyInspectionAPIProxy
+
+intranet, private
+
+0
+
+
+
+
+
+
+
+7 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FS_MCIServiceAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+7 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EM_EstablishmentAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+7 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EM_COMMERCIALESTWSAPIProxy
+
+public
+
+0
+
+
+
+
+
+
+
+7 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DSI_GSBMCInquiryAPIProxy
+
+
+
+0
+
+
+
+
+
+
+
+7 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CA_ContributorAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+8 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CA_RpaAggregationAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+10 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CA_PensionAggregationRequestAPIProxy
+
+
+
+0
+
+
+
+
+
+
+
+10 months ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FS_WCCFileUploadV2APIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EM_MCIServiceAPIProxy
+
+intranet, public
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EM_GCCEstablishmentRegistrationAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VM_FraudComplaintAPIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FS_SAMAAccountValidationAPIProxy
+
+intranet
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FS_SAMAValidatetIBANV2APIProxy
+
+intranet, private, public
+
+0
+
+
+
+
+
+
+
+a year ago
+
+Delete
+
+Roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+
+ده شكل الباترن بتاع كتابة الapi proxsies
+ChatGPT said:
+تمام جدًا 🔥
+كده وضحت الصورة 👌
+
+بما إنك في بيئة Apigee وبتستخدم naming pattern زي اللي ظاهر عندك (مثلاً FS_, EM_, CA_, TR_ …)،
+يبقى لازم نمشي على نفس نمط التسمية الرسمي اللي بيتبعه الفريق.
+
+🧩 التحليل من اللي انت بعتّه:
+من الأمثلة:
+
+EM_EstablishmentAPIProxy
+
+FS_SAMAAccountValidationAPIProxy
+
+CA_ContributorAPIProxy
+
+TR_FraudCaseAPIProxy
+
+نقدر نستنتج إن الباترن هو:
+
+{ModuleCode}_{APIName}APIProxy
+
+🧭 بناء على التاسك بتاعك:
+الخدمة تخص Owner Sphere وبتتعامل مع B2B establishments suggestions.
+
+يبقى نختار prefix منطقي:
+
+OS أو OWS ← اختصار لـ Owner Sphere
+
+✅ التسمية المقترحة:
+OWS_B2BSuggestionsAPIProxy
+
+✳️ ليه التسمية دي مظبوطة:
+OWS → توضح إنها تابعة لنظام Owner Sphere
+
+B2B → تبين نوع الخدمة (Business to Business)
+
+Suggestions → اسم العملية اللي الـ API بتعملها
+
+APIProxy → متطابق مع الباترن الرسمي اللي كل الـ APIs ماشية عليه
+
+🧱 وكمثال، باقي الكيانات ممكن تسميها كده:
+العنصر	الاسم المقترح
+API Proxy	OWS_B2BSuggestionsAPIProxy
+API Product	OWS_B2BSuggestionsAPIProduct
+Developer App	OwnerSphereApp أو OWS_B2BApp
+KVM	OWS_B2BSuggestionsKVM
+تحب أقولك كمان إيه المفروض تحط جوه الـ KVM (القيم اللي تخزنها زي URLs أو tokens بتاعة الـ AI)؟
+
+You said:
+اي الخطوه التانيه
+ChatGPT said:
+جميل جدًا 👌
+بما إنك خلصت الخطوة الأولى (عملت الـ API Proxy الجديدة في Apigee وسميتها مثلاً OWS_B2BSuggestionsAPIProxy) —
+يبقى نروح دلوقتي على الخطوة التانية اللي مكتوبة في التاسك:
+
+🟦 الخطوة التانية:
+Create a Developer App for the Owner Sphere and create a Product for the new proxy
+
+يعني دلوقتي لازم تعمل حاجتين في Apigee:
+
+API Product
+
+Developer App
+وتربطهم ببعض وبالـ proxy اللي لسه عاملها.
+
+🎯 الهدف منها
+Apigee لازم يعرف:
+
+إيه الـ APIs اللي هتتعرض للاستخدام (دي بتتعرف في الـ Product)
+
+ومين اللي له صلاحية يستخدمها (ده بيتحدد من خلال Developer App)
+
+🪜 الخطوات العملية بالتفصيل:
+🟢 أولًا: إنشاء الـ API Product
+في Apigee → روح إلى قائمة Publish → API Products.
+
+اضغط على + API Product (أو Create).
+
+اكتب البيانات التالية:
+
+Name: OWS_B2BSuggestionsAPIProduct
+
+Display Name: Owner Sphere B2B Suggestions
+
+Environment: اختار intranet (زي باقي الـ APIs عندكم)
+
+Access: خليها Private أو حسب سياسة المشروع.
+
+Quota / Rate Limit: ممكن تسيبها فاضية مؤقتًا.
+
+في قسم API Proxies:
+
+أضف الـ proxy اللي عملتها في الخطوة الأولى (OWS_B2BSuggestionsAPIProxy).
+
+احفظ المنتج.
+
+🟢 ثانيًا: إنشاء الـ Developer App
+روح إلى Publish → Developer Apps
+
+اضغط على + Developer App
+
+اكتب البيانات:
+
+Name: OwnerSphereApp
+
+Developer: ممكن تختار المستخدم اللي خاص بالمشروع (زي gosiuser@gosi.gov.sa)
+
+API Products: اختار OWS_B2BSuggestionsAPIProduct
+
+احفظ التطبيق.
+
+بعد الحفظ، Apigee هيولد لك Consumer Key و Secret —
+دول اللي الـ backend أو الـ UI هيستخدموهم لما يستدعي الـ API (Authentication).
+
+✅ النتيجة بعد الخطوة دي
+هتكون عامل شبكة العلاقات دي:
+
+[Developer App: OwnerSphereApp]
+           │
+           ▼
+[API Product: OWS_B2BSuggestionsAPIProduct]
+           │
+           ▼
+[API Proxy: OWS_B2BSuggestionsAPIProxy]
+هل تحب أقولك إزاي تختبرها عمليًا من Apigee بعد ما تخلص الخطوة دي (عشان تتأكد إن الـ proxy شغالة تمام)؟
+
+You said:
+انا سيبت الخطوه الاولي والتانيه لان بيظهرلي ايرور غير معروف لما اعمل كريت للapi proxy from bundle
+ChatGPT said:
+تمام جدًا 👌 شكلك ماشي صح، بس خلينا نفهم بالراحة المشكلة دي علشان نحلها سوا.
+
+⚠️ الموقف:
+أنت بتحاول تعمل API Proxy جديدة من bundle (zip) في Apigee
+لكن بيظهرلك Error غير معروف (Unknown error) وقت ما تضغط "Create".
+
+🔍 علشان نعرف السبب، محتاجين نفهم ٣ حاجات:
+1️⃣ إنت بتعملها إزاي بالظبط؟
+هل:
+
+اخترت Develop → API Proxies → +Proxy → Upload bundle؟
+
+ولا بتحاول ترفعها من Postman أو CI/CD؟
+
+2️⃣ الملف اللي بترفعه (الـ bundle):
+هل هو ZIP file معمول بالطريقة الصح؟
+
+لازم يحتوي على المجلدات:
+
+apiproxy/
+  proxies/
+  targets/
+  policies/
+  apiproxy.xml
+لو ناقص حاجة منهم، Apigee بيعمل error بدون تفاصيل واضحة.
+
+3️⃣ الـ Environment اللي اخترته؟
+تأكد إنك اخترت environment اسمه intranet (زي باقي الـ APIs اللي عندك).
+
+ولو عندك role محدود (مش admin كامل)، ممكن Apigee يمنعك تعمل Proxy جديدة.
+
+🧠 الأسباب المحتملة (والحلول السريعة):
+السبب	العلامة	الحل
+❌ bundle فيه مشكلة في البنية	error بدون تفاصيل	فك الضغط واتأكد إن فيه ملف apiproxy.xml في الجذر
+⚙️ permission issue	أنت مش admin أو مش Authorized	جرب تسأل الـ admin يديك صلاحية apiadmin أو orgadmin
+🌐 environment مش متاح	لما تختار environment بيقف عند "intranet"	اتأكد إن environment مفعّل
+🧩 اسم الـ proxy فيه مسافات أو رموز غريبة	بيظهر error فوري	استخدم اسم بدون مسافات، زي: OWS_B2BSuggestionsAPIProxy
+🔒 token session انتهت	بيحصل لما الصفحة مفتوحة بقالها كتير	اعمل logout / login وجرب تاني
+✅ خطوات التجربة السريعة:
+اعمل logout من Apigee ودخل تاني.
+
+جرب تعمل Proxy جديدة من الصفر (not from bundle):
+
+اختار "Reverse proxy"
+
+اسمها: OWS_B2BSuggestionsAPIProxy
+
+Target URL: أي placeholder مؤقت (زي https://example.com)
+
+Environment: intranet
+
+Create
+
+لو دي اشتغلت → يبقى المشكلة من الـ bundle.
+
+لو دي برضو عملت نفس error → يبقى صلاحيات أو مشكلة في الـ environment نفسه.
+
+لو تحب، ابعتلي (من غير معلومات حساسة) 👇:
+
+رسالة الخطأ بالظبط اللي بتظهر.
+
+أو لقطة بسيطة من الـ bundle structure (اسم الملفات جواه).
+
+وأقولك بالضبط السطر اللي سبب المشكلة.
+
+You said:
+انا عملت download for revision for api proxy بعد كده عملت كريت لل api proxy from bundle
+ChatGPT said:
+تمام 👌 حلو إنك وضحت الخطوات — كده فهمت بالضبط إنت عملت إيه.
+خليني أوضحلك ليه بيحصل الـ error ده وليك تختار تعمل إيه بالضبط 👇
+
+⚙️ اللي حصل عندك بالضبط:
+أنت:
+
+نزلت bundle (ملف ZIP) بتاع API Proxy موجودة بالفعل (download revision).
+
+حاولت تعمل Create API Proxy → From bundle بنفس الـ ZIP.
+
+Apigee رجّعلك Unknown error.
+
+😬 السبب الأساسي (وهو شائع جدًا في Apigee):
+Apigee ما بيسمحش تعمل import لـ bundle فيه نفس:
+
+اسم الـ proxy
+أو
+
+config قديم فيه IDs داخلية مرتبطة ببيئة معينة
+
+يعني الـ ZIP اللي نزلته فيه metadata بيربطه بالـ revision القديمة.
+فلما تحاول ترفعه كـ “proxy جديدة”، Apigee بيتلخبط، ويقولك “unknown error”.
+
+✅ الحل البسيط جدًا (خطوة بخطوة):
+✳️ الخيار 1: لو عايز تعملها كـ Proxy جديدة
+فك ضغط الملف (unzip).
+
+ادخل على الملف:
+
+apiproxy/apiproxy.xml
+غيّر السطر اللي فيه:
+
+<DisplayName>TR_FraudCaseAPIProxy</DisplayName>
+<Name>TR_FraudCaseAPIProxy</Name>
+إلى مثلاً:
+
+<DisplayName>OWS_B2BSuggestionsAPIProxy</DisplayName>
+<Name>OWS_B2BSuggestionsAPIProxy</Name>
+احفظ الملف.
+
+اعمل zip من جديد (zip لازم يحتوي على مجلد اسمه apiproxy/ في الجذر).
+
+ارجع على Apigee → Create API Proxy → From bundle → وارفع الملف الجديد.
+
+🔹 كده Apigee هيعتبرها API جديدة تمامًا ومش هيتصادم مع الاسم القديم.
+
+✳️ الخيار 2: لو كنت عايز تعمل مجرد تحديث لنفس الـ Proxy القديمة
+متعملش "Create from bundle"
+
+استخدم "Import revision" بدلها:
+
+افتح الـ Proxy القديمة
+
+اضغط على Revisions
+
+اختار Import revision وارفع الملف.
+
+كده Apigee هيفهم إنك بتضيف نسخة جديدة من نفس الـ proxy، مش واحدة جديدة.
+
+⚠️ نصيحة سريعة:
+قبل ما تعمل zip من جديد، تأكد إن هيكل الملفات جوه الملف كده بالضبط 👇
+
+apiproxy/
+   apiproxy.xml
+   proxies/
+   targets/
+   policies/
+مش كده:
+
+myproxy/apiproxy/...
+(لو فيه فولدر زيادة فوق apiproxy/، Apigee هيكسر.)
+
+هل تحب تبعتلي أسماء الملفات أو محتوى ملف apiproxy.xml (من غير أي data حساسة)،
+وأقولك بالضبط إزاي تعدله علشان يشتغل في أول مرة؟
+
+You said:
+ظههرلي ايرور ان الباندل فاضي بعد ما غيرت الاسم والديسبلاي نيم واسم الفولدر
+ChatGPT said:
+تمام ✅
+الرسالة اللي بتقول إن "the bundle is empty" معناها إن Apigee لما حاول يقرأ الملف الـ ZIP ما لقاش جواه البنية اللي هو متوقعها.
+وده بيحصل بسبب حاجة بسيطة جدًا في طريقة عمل الـ zip أو في مكان الملفات جواه.
+
+خلينا نحله خطوة بخطوة 👇
+
+⚙️ Apigee بيقرأ الـ ZIP بطريقة محددة جدًا
+لازم البنية الداخلية تكون بالضبط كده (مش زيادة ولا نقص):
+
+apiproxy/
+   apiproxy.xml
+   proxies/
+   targets/
+   policies/
+يعني أول حاجة يشوفها Apigee لما يفتح الـ ZIP هي مجلد اسمه apiproxy/
+مش أي فولدر تاني فوقه.
+
+🔍 احتمالين للغلط اللي حصل:
+❌ الحالة الأولى:
+لما عملت zip، حصل كده مثلًا:
+
+OWS_B2BSuggestionsAPIProxy.zip
+   └── OWS_B2BSuggestionsAPIProxy/
+         └── apiproxy/
+             ├── apiproxy.xml
+ده غلط.
+Apigee هنا شايف فولدر زيادة اسمه OWS_B2BSuggestionsAPIProxy فوق apiproxy/،
+فما يعرفش يوصل لملف apiproxy.xml → فيقولك إن الـ bundle فاضي.
+
+✅ الحل الصحيح:
+لما تفتح الملف .zip لازم تشوف مباشرة مجلد اسمه apiproxy/ جوه الجذر، بالشكل ده:
+
+OWS_B2BSuggestionsAPIProxy.zip
+   └── apiproxy/
+        ├── apiproxy.xml
+        ├── proxies/
+        ├── targets/
+        └── policies/
+🪜 خطوات مضمونة لإصلاح الملف:
+فك ضغط الملف اللي عندك حاليًا.
+
+تأكد إن المجلد الداخلي اسمه بالضبط apiproxy (مش apiproxy(1) أو غيره).
+
+حدد مجلد apiproxy نفسه (مش المجلد اللي يحتويه).
+
+اضغط كليك يمين → Send to → Compressed (zipped) folder
+أو استخدم أي أداة ZIP بس تأكد إنك بتضغط المجلد apiproxy/ فقط.
+
+الناتج يكون ملف ZIP في الجذر يحتوي على apiproxy/.
+
+🔎 كمان تأكد من:
+اسم الملف من غير مسافات أو رموز عربية
+استخدم اسم بسيط زي OWS_B2BSuggestionsAPIProxy.zip
+
+الحجم مش 0 KB (لو فاضي فعلًا، الملف مش معمول صح).
+
+بعد كده:
+ارجع لـ Apigee → Develop → API Proxies → +Proxy → From bundle → Upload ZIP الجديد
+
+هيشتغل إن شاء الله بدون أي Error.
+
+تحب تبعتلي لقطة من شكل المجلد عندك (أو أسماء الملفات والمجلدات جواه)؟
+هقولك بالضبط إيه اللي محتاج يتغير قبل ما تعمل الضغط.
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+API Proxies /
+OSP_EstablishmentServiceAPIProxy /
+Overview /
+1
+Organization 
+ameenfea12
+
+
+
+OSP_EstablishmentServiceAPIProxyWhat's new in the Proxy Editor
+
+Overview
+Develop
+Trace
+Performance
+
+Project 
+
+Save
+
+Revision 1 
+
+Deployment 
+
+Revision 1 Summary
+
+Created: a few seconds ago , Updated: a few seconds ago .
+
+No description for this proxy.
+
+Deployments
+
+No deployments for this proxy.
+
+Proxy Endpoints
+
+Expand AllCollapse All
+
+Name
+
+Base Path
+
+Target Endpoints
+
+default
+
+/v1/pension-rpa
+
+default, cancel, cancelAggregationToGosi
+
+Target Endpoints
+
+Expand AllCollapse All
+
+Name
+
+Target
+
+Used by Proxy Endpoints
+
+default
+
+none
+
+default
+
+cancel
+
+none
+
+default
+
+cancelAggregationToGosi
+
+none
+
+default
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+ChatGPT said:
+تمام ✅ كده واضح جدًا إنك نجحت تعمل API Proxy جديدة في Apigee
+واسمها هو:
+
+OSP_EstablishmentServiceAPIProxy
+
+وده معناه إنك عديت مرحلة الـ error والحمد لله الـ bundle اتقبل بنجاح 🎉
+
+لكن لاحظ معايا إن في الصورة اللي بعتها:
+
+الـ Proxy اتعملت ✅
+
+بس لسه مفيهاش Target Endpoint ولا أي Flow فعّال
+
+وكمان لسه مش متنشّرة (Not deployed)
+
+يعني لسه محتاجة شوية إعداد بسيط علشان تشتغل فعليًا 👇
+
+🧩 الخطوات اللي تعملها بعد ما الـ Proxy اتعملت:
+1️⃣ افتح الـ Proxy Endpoint
+روح إلى تبويب Develop (من فوق).
+
+افتح الملف default.xml تحت قسم Proxy Endpoints.
+
+جوه هتلاقي حاجة زي كده:
+
+<ProxyEndpoint name="default">
+    <HTTPProxyConnection>
+        <BasePath>/v1/pension-rpa</BasePath>
+        <VirtualHost>default</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+2️⃣ عدّل الـ BasePath
+غيّره من /v1/pension-rpa إلى المسار المطلوب في التاسك بتاعك، اللي هو:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+(طبعًا {regNo} هنا مجرد placeholder، ممكن تكتب /v1/owner-sphere/b2b مؤقتًا).
+
+3️⃣ أضف Target Endpoint
+تحت قسم Target Endpoints، افتح الملف default.xml.
+
+لو لقيته فاضي أو فيه none، حط الهدف (target) اللي الـ proxy هيوصله — مثلاً الـ backend URL:
+
+<TargetEndpoint name="default">
+    <HTTPTargetConnection>
+        <URL>https://ownersphere-backend.gov.sa/owner-sphere/b2b</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>
+(غيّر الـ URL ده بالـ actual backend URL عندكم — مثلاً الـ OWS endpoint.)
+
+4️⃣ احفظ التعديلات
+اضغط Save (أو Ctrl + S).
+
+5️⃣ انشر (Deploy)
+ارجع إلى تبويب Overview.
+
+اضغط على Deploy.
+
+اختار Environment → intranet.
+
+لو كل حاجة تمام، هتظهرلك الحالة:
+✅ Revision 1 deployed to intranet.
+
+6️⃣ جرّبها
+بعد ما تتنشر، ممكن تختبرها من Postman أو المتصفح:
+
+https://{your-apigee-domain}/v1/owner-sphere/b2b/123456789/suggestions
+هل تحب أقولك بالضبط إزاي تضيف policy بسيطة (زي Logging أو Error Handling) داخلها قبل النشر؟
+ده هيخليها شبه باقي الـ APIs اللي عندكم في Apigee.
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+API Proxies /
+OSP_EstablishmentServiceAPIProxy /
+Develop /
+1
+Organization 
+ameenfea12
+
+
+
+OSP_EstablishmentServiceAPIProxyWhat's new in the Proxy Editor
+
+Overview
+Develop
+Trace
+Performance
+
+Project 
+
+Save
+
+Revision 1 
+
+Tools
+
+Deployment 
+
+Help for SelectedFlow
+
+
+
+
+
+Navigator
+
+
+
+OSP_EstablishmentServiceAPIProxy
+
+
+
+Policies
+
+
+
+
+
+AmeenSecurityCheck
+
+
+
+
+
+Remove Header Authorization
+
+
+
+
+
+Verify OAuth v2.0 Access Token
+
+
+
+
+
+VerifyAPIKey
+
+
+
+Proxy Endpoints
+
+
+
+default
+
+All
+
+PreFlow
+
+All
+
+PostFlow
+
+
+
+Target Endpoints
+
+
+
+default
+
+All
+
+PreFlow
+
+All
+
+PostFlow
+
+
+
+Resources
+
+Flow: PreFlow
+
+
+
++ Step
+
+
+
+REQUEST
+
+
+
+
+
+
+
+
+
+RESPONSE
+
+
+
+
+
+
+
++ Step
+
+
+
+Code default
+
+
+
+
+
+Property InspectorPreFlow
+
+PreFlow
+
+name
+
+
+
+Request
+
+
+
+Response
+
+
+
+Not deployed
+
+
+
+
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+ChatGPT said:
+تمام جدًا 👌
+كده واضح إنك داخل في شاشة Develop الخاصة بالـ Proxy “OSP_EstablishmentServiceAPIProxy”،
+وده المكان اللي فعلاً بنضيف فيه كل الـ logic — زي الـ policies، الـ routes، والـ target endpoints.
+
+لكن من اللي باين في الصورة:
+
+الـ Proxy اتعمل ✅
+
+فيه policies مضافة (زي Verify OAuth، Verify API Key، Remove Header Authorization...) ✅
+
+بس مفيش Target Endpoint محدد ❌
+
+والـ Proxy لسه Not deployed ❌
+
+وده السبب اللي مخليه مش بيشتغل فعليًا.
+
+🧩 اللي تعمله دلوقتي خطوة بخطوة
+🔹 الخطوة 1: افتح الـ Target Endpoint
+في القائمة اللي على الشمال، تحت قسم Target Endpoints، اضغط على:
+
+default
+هتفتحلك نافذة فاضية أو فيها XML بسيط.
+
+🔹 الخطوة 2: ضيف الكود ده داخلها
+استبدل أي محتوى عندك بالكود ده 👇
+
+<TargetEndpoint name="default">
+    <HTTPTargetConnection>
+        <URL>https://ownersphere-backend.gov.sa/owner-sphere/b2b</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>
+✏️ ملاحظة: غيّر الـ URL لو عندك لينك مختلف للـ backend الحقيقي (زي staging أو dev).
+
+🔹 الخطوة 3: اربط الـ Proxy بالـ Target
+لو الـ Proxy Endpoint بتاعك اسمه default، افتحه من:
+
+Proxy Endpoints > default
+وتأكد إن جوه الجزء ده موجود السطر ده:
+
+<RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+لو مش موجود، ضيفه يدويًا تحت <ProxyEndpoint>.
+
+🔹 الخطوة 4: احفظ
+اضغط على زر Save فوق.
+
+🔹 الخطوة 5: انشر (Deploy)
+ارجع إلى Overview من فوق.
+
+اضغط على Deploy.
+
+اختار environment → intranet.
+
+استنى يظهرلك ✅ “Deployed successfully”.
+
+🔹 الخطوة 6: اختبر
+من Postman أو المتصفح:
+
+https://ameenfea12.apigee.net/v1/owner-sphere/b2b/123456789/suggestions
+لو شغال، المفروض يوصلك رد من الـ backend أو error من عنده (ده معناه إن الـ proxy نفسه شغال تمام 💪).
+
+هل تحب أقولك بالضبط الـ XML الكامل الجاهز لكل الـ Proxy + Target (جاهز للنسخ واللصق) عشان تتفادى أي syntax error؟
+
+You said:
+انا عاوز اعرف ايه فايدة ال proxy end points and target end points
+ChatGPT said:
+سؤال ممتاز جدًا 👏
+ده من أهم المفاهيم اللي لازم تكون فاهمها كويس جدًا وانت شغال على Apigee.
+خليني أشرحها بطريقة بسيطة وسلسة بالأمثلة 👇
+
+🎯 أولًا: يعني إيه Proxy في Apigee؟
+الـ API Proxy في Apigee هو "واجهة أمامية" (facade) بتقف بين الـ client (زي UI أو موبايل أو Postman)
+و الـ backend الحقيقي اللي بيقدم الخدمة (زي الـ Owner Sphere backend أو AI service).
+
+يعني:
+
+المستخدم (أو التطبيق) مش بيكلم الـ backend مباشرة،
+بيكلم الـ proxy، والـ proxy هو اللي بيكلم الـ backend بالنيابة عنه.
+
+⚙️ مكونات الـ Proxy الرئيسية:
+الـ Proxy بيتقسم منطقيًا إلى جزئين:
+
+الجزء	الاسم في Apigee	بيعمل إيه؟
+الواجهة الأمامية	🔹 Proxy Endpoint	بتستقبل الـ requests من العالم الخارجي (clients / UI / Postman).
+الواجهة الخلفية	🔹 Target Endpoint	بتبعت الـ requests للـ backend الحقيقي (زي الـ Owner Sphere backend أو AI).
+🧩 خلينا ناخد مثال عملي من حالتك:
+🔹 1. الـ Proxy Endpoint
+<ProxyEndpoint name="default">
+    <HTTPProxyConnection>
+        <BasePath>/v1/owner-sphere/b2b</BasePath>
+    </HTTPProxyConnection>
     
-    private Long registrationNo;
-    private Long unifiedNationalNumber;
-    private BilingualText name;
-    private Integer status;
-    private Integer legalEntity;
-    private Boolean gccCountry;
-}
-```
-
----
-
-## **Step 2: Create API Controller**
-
-### 2.1 Create API Interface
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApi.java`
-
-```java
-package sa.gov.gosi.si.osp.api.establishment;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
-
-import javax.validation.Valid;
-
-@Api(value = "Establishment Search", description = "Establishment Search API", tags = "Establishment")
-@RequestMapping("/establishment")
-public interface EstablishmentSearchApi {
-
-    @GetMapping("/search")
-    @ApiOperation(
-        value = "Search establishments by name or UNN",
-        nickname = "searchEstablishment",
-        notes = "Search for establishments using name or unified national number",
-        response = EstablishmentSearchResponseDto.class,
-        tags = "Establishment"
-    )
-    EstablishmentSearchResponseDto searchEstablishment(@Valid EstablishmentSearchRequestDto searchRequest);
-}
-```
-
-### 2.2 Create API Implementation
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApiImpl.java`
-
-```java
-package sa.gov.gosi.si.osp.api.establishment;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import sa.gov.gosi.framework.annotation.GosiRestController;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
-import sa.gov.gosi.si.osp.business.ownersphere.service.EstablishmentService;
-
-import javax.validation.Valid;
-
-@Slf4j
-@Validated
-@GosiRestController
-@RequestMapping(value = "/establishment")
-public class EstablishmentSearchApiImpl implements EstablishmentSearchApi {
-
-    @Autowired
-    private EstablishmentService establishmentService;
-    
-    @Autowired
-    private EstablishmentSearchAssembler assembler;
-
-    @Override
-    public EstablishmentSearchResponseDto searchEstablishment(@Valid EstablishmentSearchRequestDto searchRequest) {
-        log.info("Searching establishments with request: {}", searchRequest);
-        
-        // Validate at least one search criteria is provided
-        if (searchRequest.getUnifiedNationalNumber() == null && 
-            (searchRequest.getEstablishmentName() == null || searchRequest.getEstablishmentName().trim().isEmpty())) {
-            throw new IllegalArgumentException("At least one search criteria (UNN or Name) must be provided");
-        }
-        
-        return assembler.assembleSearchResponse(
-            establishmentService.searchEstablishments(searchRequest)
-        );
-    }
-}
-```
-
-### 2.3 Create Assembler
-**Location:** `owner-sphere/osp-api/src/main/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchAssembler.java`
-
-```java
-package sa.gov.gosi.si.osp.api.establishment;
-
-import org.springframework.stereotype.Component;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentDetailsDto;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Component
-public class EstablishmentSearchAssembler {
-
-    public EstablishmentSearchResponseDto assembleSearchResponse(List<EstablishmentViewEntity> entities) {
-        return EstablishmentSearchResponseDto.builder()
-            .totalRecords((long) entities.size())
-            .establishments(entities.stream()
-                .map(this::assembleEstablishmentDetails)
-                .collect(Collectors.toList()))
-            .build();
-    }
-
-    public EstablishmentDetailsDto assembleEstablishmentDetails(EstablishmentViewEntity entity) {
-        return EstablishmentDetailsDto.builder()
-            .registrationNo(entity.getRegistrationNo())
-            .unifiedNationalNumber(entity.getNationalUnifiedNo())
-            .name(entity.getName())
-            .status(entity.getStatus())
-            .legalEntity(entity.getLegalEntity())
-            .gccCountry(entity.isGccCountry())
-            .build();
-    }
-}
-```
-
----
-
-## **Step 3: Create Service Layer**
-
-### 3.1 Update EstablishmentService
-**Location:** EstablishmentService.java
-
-```java
-package sa.gov.gosi.si.osp.business.ownersphere.service;
-
-import com.querydsl.core.BooleanBuilder;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.EstablishmentViewRepository;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.QEstablishmentViewEntity;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.service.EstablishmentManagementProxy;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Slf4j
-@Service
-public class EstablishmentService {
-
-    @Autowired 
-    private EstablishmentViewRepository establishmentViewRepository;
-    
-    @Autowired
-    private EstablishmentManagementProxy establishmentManagementProxy;
-
-    /**
-     * Search establishments by name or UNN
-     * First search in local database (proxy view)
-     * Then call Establishment Management API for additional details
-     */
-    @Transactional(readOnly = true)
-    public List<EstablishmentViewEntity> searchEstablishments(EstablishmentSearchRequestDto searchRequest) {
-        log.info("Searching establishments with criteria: UNN={}, Name={}", 
-                 searchRequest.getUnifiedNationalNumber(), 
-                 searchRequest.getEstablishmentName());
-        
-        // Build QueryDSL predicate
-        QEstablishmentViewEntity qEstablishment = QEstablishmentViewEntity.establishmentViewEntity;
-        BooleanBuilder builder = new BooleanBuilder();
-        
-        // Search by UNN
-        if (searchRequest.getUnifiedNationalNumber() != null) {
-            builder.and(qEstablishment.nationalUnifiedNo.eq(searchRequest.getUnifiedNationalNumber()));
-        }
-        
-        // Search by Name (supports both Arabic and English)
-        if (searchRequest.getEstablishmentName() != null && !searchRequest.getEstablishmentName().trim().isEmpty()) {
-            String searchTerm = "%" + searchRequest.getEstablishmentName().trim() + "%";
-            builder.and(
-                qEstablishment.name.arabic.likeIgnoreCase(searchTerm)
-                    .or(qEstablishment.name.english.likeIgnoreCase(searchTerm))
-            );
-        }
-        
-        // Execute query
-        List<EstablishmentViewEntity> results = new ArrayList<>();
-        establishmentViewRepository.findAll(builder).forEach(results::add);
-        
-        log.info("Found {} establishments from database", results.size());
-        
-        // Optionally enrich with data from Establishment Management service
-        if (!results.isEmpty()) {
-            enrichWithExternalData(results);
-        }
-        
-        return results;
-    }
-    
-    /**
-     * Enrich establishment data by calling Establishment Management proxy
-     */
-    private void enrichWithExternalData(List<EstablishmentViewEntity> establishments) {
-        try {
-            // Call proxy to get additional details from Establishment Management
-            establishments.forEach(est -> {
-                try {
-                    establishmentManagementProxy.getEstablishmentDetails(est.getRegistrationNo());
-                } catch (Exception e) {
-                    log.warn("Failed to enrich establishment {} with external data", est.getRegistrationNo(), e);
-                }
-            });
-        } catch (Exception e) {
-            log.error("Error enriching establishment data", e);
-        }
-    }
-}
-```
-
----
-
-## **Step 4: Create Proxy Service (for Establishment Management)**
-
-### 4.1 Create Proxy Interface
-**Location:** `owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/service/EstablishmentManagementProxy.java`
-
-```java
-package sa.gov.gosi.si.osp.business.ownersphere.proxy.service;
-
-import sa.gov.gosi.si.em.api.establishment.dto.EstablishmentDetailsDto;
-
-public interface EstablishmentManagementProxy {
-    
-    /**
-     * Get establishment details from Establishment Management service
-     * @param registrationNo Registration number
-     * @return Establishment details
-     */
-    EstablishmentDetailsDto getEstablishmentDetails(Long registrationNo);
-}
-```
-
-### 4.2 Create Proxy Implementation
-**Location:** `owner-sphere/ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/service/EstablishmentManagementProxyImpl.java`
-
-```java
-package sa.gov.gosi.si.osp.business.ownersphere.proxy.service;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import sa.gov.gosi.framework.security.GosiSecureRestTemplate;
-import sa.gov.gosi.si.em.api.establishment.dto.EstablishmentDetailsDto;
-
-@Slf4j
-@Service
-public class EstablishmentManagementProxyImpl implements EstablishmentManagementProxy {
-
-    @Autowired
-    private GosiSecureRestTemplate restTemplate;
-    
-    @Value("${establishment.management.base.url:http://localhost:8080/api/v1}")
-    private String establishmentMgmtBaseUrl;
-
-    @Override
-    public EstablishmentDetailsDto getEstablishmentDetails(Long registrationNo) {
-        log.info("Calling Establishment Management API for regNo: {}", registrationNo);
-        
-        try {
-            String url = establishmentMgmtBaseUrl + "/establishment/" + registrationNo;
-            
-            ResponseEntity<EstablishmentDetailsDto> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                EstablishmentDetailsDto.class
-            );
-            
-            log.info("Successfully retrieved establishment details for regNo: {}", registrationNo);
-            return response.getBody();
-            
-        } catch (Exception e) {
-            log.error("Error calling Establishment Management API for regNo: {}", registrationNo, e);
-            throw new RuntimeException("Failed to retrieve establishment details", e);
-        }
-    }
-}
-```
-
----
-
-## **Step 5: Create SQL Query (if custom query needed)**
-
-### 5.1 Create Named Query in Repository
-**Location:** Update EstablishmentViewRepository.java
-
-```java
-package sa.gov.gosi.si.osp.business.ownersphere.proxy.repository;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.history.RevisionRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
-
-import java.util.List;
-
-@Repository("Contributor_EstablishmentRepository")
-public interface EstablishmentViewRepository
-    extends CrudRepository<EstablishmentViewEntity, Long>,
-        QuerydslPredicateExecutor<EstablishmentViewEntity>,
-        RevisionRepository<EstablishmentViewEntity, Long, Integer> {
-    
-    /**
-     * Search establishments by UNN
-     */
-    List<EstablishmentViewEntity> findByNationalUnifiedNo(Long nationalUnifiedNo);
-    
-    /**
-     * Search establishments by name (custom query)
-     */
-    @Query("SELECT e FROM OwnerSphere_EstablishmentEntity e WHERE " +
-           "LOWER(e.name.arabic) LIKE LOWER(CONCAT('%', :name, '%')) OR " +
-           "LOWER(e.name.english) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<EstablishmentViewEntity> searchByName(@Param("name") String name);
-    
-    /**
-     * Combined search by UNN or name
-     */
-    @Query("SELECT e FROM OwnerSphere_EstablishmentEntity e WHERE " +
-           "(:unn IS NULL OR e.nationalUnifiedNo = :unn) AND " +
-           "(:name IS NULL OR LOWER(e.name.arabic) LIKE LOWER(CONCAT('%', :name, '%')) OR " +
-           "LOWER(e.name.english) LIKE LOWER(CONCAT('%', :name, '%')))")
-    List<EstablishmentViewEntity> searchEstablishments(
-        @Param("unn") Long unn, 
-        @Param("name") String name
-    );
-}
-```
-
----
-
-## **Step 6: Create Unit Tests**
-
-### 6.1 Service Test
-**Location:** `owner-sphere/ownersphere/src/test/java/sa/gov/gosi/si/osp/business/ownersphere/service/EstablishmentServiceTest.java`
-
-```java
-package sa.gov.gosi.si.osp.business.ownersphere.service;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import sa.gov.gosi.si.common.vo.BilingualText;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.EstablishmentViewRepository;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.service.EstablishmentManagementProxy;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-class EstablishmentServiceTest {
-
-    @Mock
-    private EstablishmentViewRepository repository;
-    
-    @Mock
-    private EstablishmentManagementProxy proxy;
-    
-    @InjectMocks
-    private EstablishmentService service;
-    
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-    
-    @Test
-    void testSearchByUNN_Success() {
-        // Given
-        Long unn = 700123456L;
-        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
-            .unifiedNationalNumber(unn)
-            .build();
-        
-        EstablishmentViewEntity mockEntity = EstablishmentViewEntity.builder()
-            .id(1L)
-            .registrationNo(501234567L)
-            .nationalUnifiedNo(unn)
-            .name(new BilingualText("Test Establishment", "منشأة اختبار"))
-            .status(1)
-            .build();
-        
-        when(repository.findAll(any())).thenReturn(Arrays.asList(mockEntity));
-        
-        // When
-        List<EstablishmentViewEntity> results = service.searchEstablishments(request);
-        
-        // Then
-        assertNotNull(results);
-        assertEquals(1, results.size());
-        assertEquals(unn, results.get(0).getNationalUnifiedNo());
-        verify(repository, times(1)).findAll(any());
-    }
-    
-    @Test
-    void testSearchByName_Success() {
-        // Given
-        String name = "Test";
-        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
-            .establishmentName(name)
-            .build();
-        
-        EstablishmentViewEntity mockEntity = EstablishmentViewEntity.builder()
-            .id(1L)
-            .registrationNo(501234567L)
-            .name(new BilingualText("Test Establishment", "منشأة اختبار"))
-            .build();
-        
-        when(repository.findAll(any())).thenReturn(Arrays.asList(mockEntity));
-        
-        // When
-        List<EstablishmentViewEntity> results = service.searchEstablishments(request);
-        
-        // Then
-        assertNotNull(results);
-        assertFalse(results.isEmpty());
-        verify(repository, times(1)).findAll(any());
-    }
-    
-    @Test
-    void testSearchWithNoCriteria_ThrowsException() {
-        // Given
-        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder().build();
-        
-        // When & Then - This validation should happen at API level
-        // Just verify repository is not called
-        assertThrows(Exception.class, () -> {
-            if (request.getUnifiedNationalNumber() == null && 
-                (request.getEstablishmentName() == null || request.getEstablishmentName().trim().isEmpty())) {
-                throw new IllegalArgumentException("Search criteria required");
-            }
-        });
-    }
-}
-```
-
-### 6.2 API Controller Test
-**Location:** `owner-sphere/osp-api/src/test/java/sa/gov/gosi/si/osp/api/establishment/EstablishmentSearchApiImplTest.java`
-
-```java
-package sa.gov.gosi.si.osp.api.establishment;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import sa.gov.gosi.si.common.vo.BilingualText;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchRequestDto;
-import sa.gov.gosi.si.osp.api.establishment.dto.EstablishmentSearchResponseDto;
-import sa.gov.gosi.si.osp.business.ownersphere.proxy.repository.domain.EstablishmentViewEntity;
-import sa.gov.gosi.si.osp.business.ownersphere.service.EstablishmentService;
-
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-class EstablishmentSearchApiImplTest {
-
-    @Mock
-    private EstablishmentService service;
-    
-    @Mock
-    private EstablishmentSearchAssembler assembler;
-    
-    @InjectMocks
-    private EstablishmentSearchApiImpl api;
-    
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-    
-    @Test
-    void testSearchEstablishment_WithUNN_Success() {
-        // Given
-        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder()
-            .unifiedNationalNumber(700123456L)
-            .build();
-        
-        EstablishmentViewEntity entity = EstablishmentViewEntity.builder()
-            .registrationNo(501234567L)
-            .nationalUnifiedNo(700123456L)
-            .name(new BilingualText("Test", "اختبار"))
-            .build();
-        
-        EstablishmentSearchResponseDto expectedResponse = EstablishmentSearchResponseDto.builder()
-            .totalRecords(1L)
-            .build();
-        
-        when(service.searchEstablishments(any())).thenReturn(Arrays.asList(entity));
-        when(assembler.assembleSearchResponse(any())).thenReturn(expectedResponse);
-        
-        // When
-        EstablishmentSearchResponseDto response = api.searchEstablishment(request);
-        
-        // Then
-        assertNotNull(response);
-        assertEquals(1L, response.getTotalRecords());
-        verify(service, times(1)).searchEstablishments(request);
-    }
-    
-    @Test
-    void testSearchEstablishment_WithoutCriteria_ThrowsException() {
-        // Given
-        EstablishmentSearchRequestDto request = EstablishmentSearchRequestDto.builder().build();
-        
-        // When & Then
-        assertThrows(IllegalArgumentException.class, () -> {
-            api.searchEstablishment(request);
-        });
-    }
-}
-```
-
----
-
-## **Step 7: Configuration**
-
-### 7.1 Add Application Properties
-**Location:** `owner-sphere/osp-api/src/main/resources/application.properties` or `application.yml`
-
-```properties
-# Establishment Management Service Configuration
-establishment.management.base.url=http://establishment-management-service:8080/api/v1
-
-# Security Configuration
-spring.security.oauth2.resourceserver.jwt.issuer-uri=https://your-auth-server.com
-
-# Database Configuration (if not already configured)
-spring.datasource.url=jdbc:oracle:thin:@localhost:1521:ORCL
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
-
----
-
-## **Summary of Implementation Points**
-
-### ✅ **3 Main Components (As per your requirement)**
-
-1. **SQL Query** - Implemented in `EstablishmentViewRepository` using QueryDSL and custom JPQL queries
-2. **Request DTO** - `EstablishmentSearchRequestDto` with UNN and Name search fields
-3. **Response DTO** - `EstablishmentSearchResponseDto` with list of establishments and total count
-
-### 📁 **Files to Create**
-
-1. **DTOs (3 files)**
-   - `EstablishmentSearchRequestDto.java`
-   - `EstablishmentSearchResponseDto.java`
-   - `EstablishmentDetailsDto.java`
-
-2. **API Layer (3 files)**
-   - `EstablishmentSearchApi.java` (Interface)
-   - `EstablishmentSearchApiImpl.java` (Implementation)
-   - `EstablishmentSearchAssembler.java` (DTO Assembler)
-
-3. **Service Layer (1 file to update)**
-   - EstablishmentService.java (Add search method)
-
-4. **Proxy Layer (2 files)**
-   - `EstablishmentManagementProxy.java` (Interface)
-   - `EstablishmentManagementProxyImpl.java` (Implementation)
-
-5. **Repository (1 file to update)**
-   - EstablishmentViewRepository.java (Add custom queries)
-
-6. **Tests (2 files)**
-   - `EstablishmentServiceTest.java`
-   - `EstablishmentSearchApiImplTest.java`
-
-### 🔄 **Flow**
-
-1. **UI calls Apigee** with authentication
-2. **Apigee forwards** to Owner Sphere API (`/api/v1/establishment/search`)
-3. **API Controller** validates and calls Service
-4. **Service** queries database using Repository (QueryDSL)
-5. **Service** optionally calls Establishment Management proxy for enrichment
-6. **Response assembled** and returned through API
-
-### 🎯 **Next Steps**
-
-1. Create the folder structure for DTOs
-2. Implement DTOs first
-3. Create API interface and implementation
-4. Update Service layer
-5. Create Proxy for Establishment Management
-6. Write unit tests
-7. Test locally
-8. Deploy and test through Apigee
-
-Would you like me to help you create any specific file or explain any part in more detail?
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+🔸 اللي بيحصل هنا:
+
+الـ UI (أو Postman) بيكلم:
+
+https://ameenfea12.apigee.net/v1/owner-sphere/b2b/123456789/suggestions
+Apigee يستقبل الطلب على الـ Proxy Endpoint ده.
+
+بعد كده، يقرر يبعته على الـ Target Endpoint اللي اسمه "default".
+
+🔹 2. الـ Target Endpoint
+<TargetEndpoint name="default">
+    <HTTPTargetConnection>
+        <URL>https://ownersphere-backend.gov.sa/owner-sphere/b2b</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>
+🔸 اللي بيحصل هنا:
+
+Apigee بياخد الطلب اللي جاله من الـ Proxy Endpoint
+
+ويبعت نفس الطلب للـ backend الفعلي اللي URL بتاعه فوق (ده اللي فعليًا بينفذ العملية).
+
+🧠 بمعنى تاني:
+تقدر تعتبرها زي:
+
+الدور	الكيان	المثال
+العميل اللي بيكلم Apigee	Client (UI)	Angular app أو Postman
+البوابة اللي بتحقق وتتحكم وتوجّه	Proxy Endpoint	Apigee façade (واجهة API)
+السيرفر الحقيقي اللي بينفذ الطلب	Target Endpoint	Owner Sphere Backend أو AI service
+📊 ليه بنفصلهم عن بعض؟
+عشان نقدر نتحكم في كل مرحلة لوحدها:
+
+في Proxy Endpoint: نضيف security, rate limiting, logging, transformations (قبل ما نوصل للـ backend)
+
+في Target Endpoint: نتحكم في الـ backend اللي هنوصله أو نغيره بسهولة بدون ما نغير الـ frontend URL
+
+🧱 مثال واقعي في شغلك:
+في التاسك بتاعك:
+
+Proxy Endpoint:
+/v1/owner-sphere/b2b/{regNo}/suggestions
+
+Target Endpoint:
+https://osb.gov.sa/ai/suggestions
+
+فالـ UI هيكلم Apigee فقط،
+و Apigee بدوره هيكلم الـ OSB أو AI service من وراء الكواليس.
+
+هل تحب أعملك رسم توضيحي بسيط (diagram) يورّيك العلاقة بينهم visually؟
+
+You said:
+جوه كل وحده لقيت pre flow and post flow
+ChatGPT said:
+ممتاز 👏
+دلوقتي انت بدأت تدخل في العمق الحقيقي للـ Apigee Proxy Logic —
+وده اللي بيفرق أي API Proxy شغال كويس عن API Proxy عادي 💪
+
+خليني أشرحلك ببساطة إيه يعني PreFlow و PostFlow،
+وإيه الفرق بينهم في كل من ProxyEndpoint و TargetEndpoint.
+
+🧩 أولًا: يعني إيه Flow؟
+في Apigee، الـ Flow هو تسلسل العمليات (policies) اللي بتحصل على الـ request أو الـ response.
+
+يعني مثلًا:
+
+قبل ما request يوصل للـ backend.
+
+أو بعد ما response يرجع من الـ backend.
+
+⚙️ أنواع الـ Flows الأساسية
+في كل Endpoint (سواء Proxy أو Target)، عندك حاجتين أساسيين:
+
+Flow	بيشتغل إمتى	بيستخدم في إيه
+PreFlow	قبل ما الـ request يتحرك للخطوة الجاية	للتحقق، المصادقة، إضافة headers، logging، ...
+PostFlow	بعد ما الـ response يرجع	لتعديل الـ response، إزالة headers، تنسيق البيانات، ...
+🎯 فين الفرق بين ProxyEndpoint و TargetEndpoint؟
+عندك خط سير الطلب كله كده 👇
+
+Client → ProxyEndpoint (PreFlow) → TargetEndpoint (PreFlow)
+→ [Backend] → TargetEndpoint (PostFlow) → ProxyEndpoint (PostFlow)
+→ Client
+🧠 نفصّلهم واحدة واحدة:
+🔹 1. ProxyEndpoint
+ده الجزء اللي بيتعامل مع الـ client مباشرة.
+
+Flow	التوقيت	الاستخدامات الشائعة
+PreFlow	أول حاجة بتحصل لما request يوصل لـ Apigee	✅ تحقق من التوكن
+✅ إضافة Headers
+✅ Rate Limiting
+✅ Logging
+PostFlow	آخر حاجة بتحصل قبل ما Apigee يرد على الـ client	✅ تنسيق الـ Response
+✅ إزالة Headers داخلية
+✅ إضافة Metadata أو Error Handling
+🧱 مثال عملي:
+<ProxyEndpoint name="default">
+  <PreFlow>
+    <Request>
+      <Step><Name>VerifyAPIKey</Name></Step>
+    </Request>
+  </PreFlow>
+
+  <PostFlow>
+    <Response>
+      <Step><Name>RemoveHeader.Authorization</Name></Step>
+    </Response>
+  </PostFlow>
+</ProxyEndpoint>
+هنا Apigee بيشيّك على الـ API Key أول ما request يدخل
+وبعدين بيشيل الهيدر Authorization قبل ما يرجع الـ response.
+
+🔹 2. TargetEndpoint
+ده الجزء اللي بيتعامل مع الـ backend الحقيقي.
+
+Flow	التوقيت	الاستخدامات الشائعة
+PreFlow	قبل ما Apigee يبعت الطلب للـ backend	✅ تعديل URL
+✅ إضافة backend headers
+✅ Prepare payload
+PostFlow	بعد ما Apigee يستقبل response من الـ backend	✅ تحليل أو تعديل الـ response
+✅ التعامل مع errors من الـ backend
+🧱 مثال عملي:
+<TargetEndpoint name="default">
+  <PreFlow>
+    <Request>
+      <Step><Name>AddBackendHeaders</Name></Step>
+    </Request>
+  </PreFlow>
+
+  <PostFlow>
+    <Response>
+      <Step><Name>ResponseTransformation</Name></Step>
+    </Response>
+  </PostFlow>
+</TargetEndpoint>
+هنا Apigee بيضيف headers قبل ما يكلّم الـ backend
+وبعدين بعد ما الـ backend يرد، بيحوّل شكل الـ response عشان يناسب الـ UI.
+
+🔄 مثال كامل مبسّط (زي حالتك في Owner Sphere)
+Client (UI Angular) بيبعت request:
+
+GET /v1/owner-sphere/b2b/123/suggestions
+ProxyEndpoint PreFlow:
+
+يتحقق من API key أو OAuth token.
+
+TargetEndpoint PreFlow:
+
+يجهّز الـ URL النهائي لـ AI.
+
+Backend (AI):
+
+بيرجع الرد الحقيقي.
+
+TargetEndpoint PostFlow:
+
+ينسّق أو يفلتر الرد.
+
+ProxyEndpoint PostFlow:
+
+يشيل headers داخلية ويضيف response metadata.
+
+Client يستقبل الرد النظيف.
+
+هل تحب أوريك رسم توضيحي بسيط (diagram) يشرح ترتيب الـ flows بالأسهم؟
+هيخليك تحفظها في دقيقة واحدة بس.
+
+You said:
+proxy endpoints
+
+preflow
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request/>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows/>
+<HTTPProxyConnection>
+<BasePath>/v1/scenarios</BasePath>
+<Properties/>
+<VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+<RouteRule name="default">
+<TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+</ProxyEndpoint>
+ 
+post flow
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request/>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows/>
+<HTTPProxyConnection>
+<BasePath>/v1/scenarios</BasePath>
+<Properties/>
+<VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+<RouteRule name="default">
+<TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+</ProxyEndpoint>
+ 
+ده اللي موجود دلوقت, انا عاوز اعدله بحيث يتماشي مع التاسك بتعتي
+ChatGPT said:
+ممتاز جدًا 💪
+دلوقتي انت عايز تعدّل ملف الـ ProxyEndpoint عشان يتماشى مع التاسك اللي عندك —
+اللي هو إنشاء API Proxy للـ endpoint:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+واللي هيروح في النهاية للـ backend (Owner Sphere backend أو AI عن طريق OSB).
+
+خليني أشرحلك خطوة بخطوة التعديل اللي تعمله بالضبط،
+وبعدين أديك الكود الجاهز اللي تحطه مكان الموجود 👇
+
+🎯 الهدف
+تعمل Proxy اسمه مثلًا:
+
+OSP_SuggestionsAPIProxy
+ويكون الـ ProxyEndpoint:
+
+بيستقبل requests من الـ UI على المسار:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+ويتحول بعد كده إلى TargetEndpoint (هيكلم backend URL)
+
+⚙️ التعديلات المطلوبة على ProxyEndpoint
+🔹 أولاً: نحدث الـ BasePath
+بدل:
+
+<BasePath>/v1/scenarios</BasePath>
+هنخليها:
+
+<BasePath>/v1/owner-sphere/b2b</BasePath>
+🔹 ثانيًا: نضيف Policies في الـ PreFlow و PostFlow
+✅ في الـ PreFlow (قبل ما الـ request يوصل للـ backend)
+نضيف مثلاً:
+
+Policy تتحقق من الأمان (VerifyAPIKey أو OAuth)
+
+Policy تشيل الهيدر Authorization لو محتاج
+
+✅ في الـ PostFlow (بعد ما الـ response يرجع)
+نضيف:
+
+Policy تنظّف الـ response أو تشيل headers داخلية
+
+📜 الكود النهائي المقترح للـ ProxyEndpoint
+انسخ الكود ده بالكامل وحطه بدل اللي عندك حاليًا في ProxyEndpoint/default.xml:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description>Owner Sphere B2B Suggestions Proxy</Description>
+
+  <!-- لو في Error Rules -->
+  <FaultRules/>
+
+  <!-- ✅ PreFlow: قبل ما request يروح للـ backend -->
+  <PreFlow name="PreFlow">
+    <Request>
+      <!-- تحقق من API Key -->
+      <Step>
+        <Name>VerifyAPIKey</Name>
+      </Step>
+      <!-- ممكن تضيف Policy تشيل Authorization header -->
+      <Step>
+        <Name>RemoveHeader.Authorization</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+
+  <!-- ✅ PostFlow: بعد ما response يرجع من الـ backend -->
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response>
+      <!-- تنظيف response -->
+      <Step>
+        <Name>ResponseCleanup</Name>
+      </Step>
+    </Response>
+  </PostFlow>
+
+  <!-- لو عندك Flows إضافية لكل endpoint -->
+  <Flows/>
+
+  <!-- إعدادات الاتصال -->
+  <HTTPProxyConnection>
+    <BasePath>/v1/owner-sphere/b2b</BasePath>
+    <Properties/>
+    <VirtualHost>AmeenVH</VirtualHost>
+  </HTTPProxyConnection>
+
+  <!-- الربط بين الـ Proxy والـ Target -->
+  <RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>
+💡 ملاحظات مهمة
+<VirtualHost>AmeenVH</VirtualHost> لازم يفضل زي ما هو لو ده الاسم اللي بيستخدم في بيئة الـ intranet عندك.
+
+الـ TargetEndpoint لازم يكون معرف في ملف اسمه default.xml داخل فولدر targets/
+(هنعدله بعدين عشان يوجّه الـ request للـ backend الحقيقي — لو عايز أساعدك فيه كمان أعملهولك).
+
+السياسات (VerifyAPIKey, RemoveHeader.Authorization, ResponseCleanup) لازم تكون موجودة داخل مجلد policies/.
+لو مش موجودة، نقدر نكتبها يدويًا بسهولة.
+
+هل تحب أكمّلك الخطوة الجاية وهي إعداد ملف TargetEndpoint (targets/default.xml)
+اللي يربط الـ proxy ده مع الـ backend (OSB → AI)؟
+
+You said:
+Policies
+ 
+ 
+AmeenSecurityCheck
+ 
+ 
+Remove Header Authorization
+ 
+ 
+Verify OAuth v2.0 Access Token
+ 
+ verifyApiKey
+
+ديه البوليسيس اللي موجوده عندي, هل لاوم اضيفها في البروكسي اند بوينت ديفولت اكسمل
+ChatGPT said:
+سؤال ممتاز جدًا 👏 وفعلاً دي خطوة محورية — لأن الـ Policies هي اللي بتنفذ المنطق داخل الـ Proxy.
+
+خليني أوضحلك بالظبط:
+✅ إمتى تضيفها في ProxyEndpoint/default.xml
+❌ وإمتى تسيبها زي ما هي في فولدر policies/ بس.
+
+🧠 القاعدة العامة
+وجود الـ Policy في فولدر policies/ فقط ❌ مش كفاية
+لازم كمان “تربطها” داخل ملف ProxyEndpoint أو TargetEndpoint عشان تتنفذ فعلًا ✅
+
+بمعنى آخر:
+
+وجود الملف هو “تعريف” الـ Policy
+لكن إضافته جوه <Step> في الـ XML هو “تشغيل” الـ Policy في التوقيت الصح (PreFlow أو PostFlow).
+
+🎯 دلوقتي عندك السياسات دي:
+AmeenSecurityCheck
+
+Remove Header Authorization
+
+Verify OAuth v2.0 Access Token
+
+verifyApiKey
+
+فإزاي تستخدمهم داخل الـ ProxyEndpoint/default.xml 👇
+
+🔹 التعديلات المقترحة داخل ProxyEndpoint/default.xml
+خلي الكود كده:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description>Owner Sphere B2B Suggestions Proxy</Description>
+  <FaultRules/>
+
+  <!-- ✅ PreFlow: قبل ما request يروح للـ backend -->
+  <PreFlow name="PreFlow">
+    <Request>
+      <!-- 🔒 تحقق من الأمان -->
+      <Step>
+        <Name>AmeenSecurityCheck</Name>
+      </Step>
+
+      <!-- ✅ تحقق من التوكن -->
+      <Step>
+        <Name>Verify OAuth v2.0 Access Token</Name>
+      </Step>
+
+      <!-- ✅ تحقق من الـ API Key -->
+      <Step>
+        <Name>verifyApiKey</Name>
+      </Step>
+
+      <!-- 🚫 إزالة Authorization Header قبل ما الطلب يروح -->
+      <Step>
+        <Name>Remove Header Authorization</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+
+  <!-- ✅ PostFlow: بعد ما response يرجع -->
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+
+  <Flows/>
+
+  <HTTPProxyConnection>
+    <BasePath>/v1/owner-sphere/b2b</BasePath>
+    <Properties/>
+    <VirtualHost>AmeenVH</VirtualHost>
+  </HTTPProxyConnection>
+
+  <RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>
+💬 شرح اللي بيحصل بالترتيب:
+AmeenSecurityCheck
+يتأكد إن الـ request جاي من مصدر موثوق (سياسة داخلية).
+
+Verify OAuth v2.0 Access Token
+يتحقق من صلاحية التوكن لو الـ UI بيستخدم OAuth.
+
+verifyApiKey
+يتأكد إن الـ API Key صحيح (لو Apigee بيستخدمه للتحقق من التطبيقات المسجلة).
+
+Remove Header Authorization
+بيشيل الهيدر Authorization قبل ما الطلب يروح للـ backend (لو مش محتاج يوصله هناك).
+
+⚠️ مهم جدًا:
+الأسماء داخل <Step><Name>...</Name></Step> لازم تطابق اسم ملف الـ Policy بالظبط (بدون .xml).
+
+الترتيب مهم لو السياسات بينهم اعتماد (مثلاً لازم التوكن يتشيّك قبل إزالة الهيدر).
+
+هل تحب أكمّلك بالخطوة الجاية؟
+(تعديل ملف TargetEndpoint/default.xml) عشان أربطه بالـ backend الحقيقي (OSB → AI call).
+
+You said:
+اي يحصل لو محطتش الاستبس دي في الفايل
+ChatGPT said:
+سؤال ذكي جدًا 👏
+وده فعلاً بيفرق بين إن الـ proxy يشتغل “ظاهرًا” وإنه يشتغل صح وفعليًا آمن ومتكامل.
+خليني أوضحلك ببساطة وبالتفصيل إيه اللي هيحصل لو ماحطّتش الـ Steps (الـ Policies) داخل ProxyEndpoint/default.xml 👇
+
+🧩 أولًا: التوضيح المهم جدًا
+وجود ملفات الـ Policies في فولدر policies/ بس = مجرد تعريف.
+Apigee مش بيشغّلها تلقائيًا ❌
+لازم تربطها يدويًا داخل <PreFlow> أو <PostFlow> (أو داخل <Flows> معينة).
+من غير الربط ده، Apigee مش هينفّذها إطلاقًا.
+
+⚠️ يعني إيه ده عمليًا؟
+الحالة 1️⃣ — لو ما ضفتش أي Step خالص في PreFlow
+🔹 Apigee هيعدّي الـ request زي ما هو بدون:
+
+تحقق من API Key
+
+تحقق من OAuth Token
+
+أمان إضافي (AmeenSecurityCheck)
+
+📉 النتيجة:
+
+أي حد يعرف الـ URL ممكن يكلمه مباشرة 😬
+
+الـ backend هيستقبل requests حتى من مستخدمين غير مصرح ليهم.
+
+السياسات الأمنية اللي معمول بيها في كل APIs في GOSI مش هتتنفذ.
+
+الحالة 2️⃣ — لو ما ضفتش Policy زي Remove Header Authorization
+🔹 الهيدر Authorization هيكمل للـ backend كما هو.
+
+📉 النتيجة:
+
+ممكن توصل بيانات حساسة أو توكن داخلي (introspection token) للـ backend، وده خطر.
+
+ممكن backend يرفض الطلب لأنه شايف Authorization غير متوقّع.
+
+الحالة 3️⃣ — لو ما ضفتش VerifyAPIKey أو Verify OAuth v2.0 Access Token
+🔹 مافيش مصادقة على الإطلاق.
+
+📉 النتيجة:
+
+الـ API Proxy هيبقى مفتوح لأي طلب جاي.
+
+حتى مستخدم مش مُسجل في Developer App هيقدر ينفذ الـ API.
+
+لو الـ Apigee مربوط بسياسات product وApp، هتظهرلك Unauthorized (401) لما الـ UI يجرب لأنه مش هيتحقق منه.
+
+الحالة 4️⃣ — لو ما ضفتش AmeenSecurityCheck
+🔹 دي عادةً سياسة custom داخلية بتعمل فحص أمني إضافي (زي check على headers أو tokens داخلية بين الأنظمة).
+
+📉 النتيجة:
+
+هتخرّق standard الأمان الداخلي بتاع بيئة GOSI أو AMEEN.
+
+ممكن الـ proxy يتمنع من الـ deployment في بيئة UAT أو Production (لأن الـ security validation بيفشل).
+
+✅ الخلاصة:
+لو ضفت الـ Steps	لو ما ضفتهاش
+✅ يتحقق الأمان (API Key + OAuth)	❌ أي حد يقدر يستدعي الـ API
+✅ إزالة headers الحساسة	❌ ممكن تسريب Authorization
+✅ التوافق مع سياسات GOSI	❌ ممكن يتمنع من الاعتماد أو النشر
+✅ backend يستقبل request نظيف وآمن	❌ backend يستقبل بيانات غير مصرح بها
+💡 ملخص في جملة:
+
+لو ما حطّتش الـ Steps، الـ proxy هيشتغل “فنّيًا”،
+بس هيفقد كل وظائف الأمان والتحكم اللي معمول علشانها Apigee أصلاً.
+
+هل تحب أقولك إيه أقل 3 Policies ضرورية لازم تسيبها على الأقل عشان الـ proxy يشتغل بأمان؟
+
+You said:
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request/>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows/>
+<HTTPTargetConnection>
+<LoadBalancer>
+<Server name="APPServer"/>
+</LoadBalancer>
+<Path>/scenarios</Path>
+</HTTPTargetConnection>
+</TargetEndpoint>
+
+ده التارجت اند بوينت للفايل
+ChatGPT said:
+ممتاز جدًا 👏
+الملف اللي انت حاطه ده هو ملف TargetEndpoint، وده فعلاً مسؤول عن توجيه الطلب من Apigee إلى الـ backend الحقيقي.
+
+دلوقتي خليني أشرحلك:
+1️⃣ إيه معنى اللي مكتوب فيه دلوقتي
+2️⃣ ليه محتاج تعدله
+3️⃣ إزاي تعمله صح بحيث يتماشى مع التاسك بتاعك (/v1/owner-sphere/b2b/{regNo}/suggestions → OSB → AI)
+
+🧠 أولًا: شرح الكود اللي عندك حاليًا
+<HTTPTargetConnection>
+  <LoadBalancer>
+    <Server name="APPServer"/>
+  </LoadBalancer>
+  <Path>/scenarios</Path>
+</HTTPTargetConnection>
+ده معناه:
+
+Apigee بيبعت الـ request إلى سيرفر اسمه APPServer (وده بيكون متعرّف في TargetServers section في Apigee).
+
+وبيزود عليه المسار /scenarios.
+
+يعني لو الـ APPServer URL مثلًا = https://ownersphere.gov.sa,
+فالـ request النهائي هيبقى:
+
+https://ownersphere.gov.sa/scenarios
+🎯 المطلوب منك في التاسك
+التاسك بيقول إنك تعمل API Proxy جديد لمسار:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+وده المفروض يروح للـ backend (Owner Sphere) أو الـ AI service عبر الـ OSB.
+
+فأنت محتاج تخلي الـ TargetEndpoint يوجّه الـ request للـ backend الصح.
+
+✅ التعديل الصحيح المقترح
+خلي الكود كده:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="default">
+  <Description>Target endpoint for Owner Sphere Suggestions API</Description>
+  <FaultRules/>
+
+  <!-- ✅ قبل ما request يروح للـ backend -->
+  <PreFlow name="PreFlow">
+    <Request>
+      <!-- لو حبيت تضيف header أو logging -->
+    </Request>
+    <Response/>
+  </PreFlow>
+
+  <!-- ✅ بعد ما response يرجع من الـ backend -->
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response>
+      <!-- ممكن تضيف response transformation أو cleanup -->
+    </Response>
+  </PostFlow>
+
+  <Flows/>
+
+  <!-- 👇 إعداد الاتصال الفعلي -->
+  <HTTPTargetConnection>
+    <LoadBalancer>
+      <!-- ده اسم الـ Target Server اللي معرف في Apigee -->
+      <Server name="OSBServer"/>
+    </LoadBalancer>
+
+    <!-- ده المسار داخل الـ backend -->
+    <Path>/owner-sphere/b2b</Path>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+🧩 شرح النقاط المهمة:
+العنصر	المعنى
+<Server name="OSBServer"/>	ده اسم السيرفر اللي هيكلم الـ backend (يتعرف في Apigee → Target Servers section). ممكن يكون اسمه مختلف عندكم (زي OWNERSPHERE_SERVER أو AI_SERVER).
+<Path>/owner-sphere/b2b</Path>	ده الجزء اللي بيتزود على الـ URL في السيرفر الهدف.
+<PreFlow>	تقدر تستخدمه لو عايز تضيف headers زي x-api-key أو x-trace-id.
+<PostFlow>	تستخدمه لو حابب تنسّق الرد من الـ backend.
+📊 مثال عملي كامل على الرحلة بعد التعديل
+المرحلة	URL
+Client (UI)	https://ameenfea12.apigee.net/v1/owner-sphere/b2b/123456789/suggestions
+Apigee Proxy Endpoint	/v1/owner-sphere/b2b
+Apigee Target Endpoint	/owner-sphere/b2b
+Backend (OSB → AI)	https://osb.gov.sa/owner-sphere/b2b/123456789/suggestions
+💡 ملاحظة مهمة:
+تأكد إن:
+
+اسم السيرفر اللي في <Server name="..."/> موجود فعلاً في Apigee → Environment → Target Servers
+(لو مش موجود ممكن تعمل واحد جديد وتحدد فيه الـ URL الفعلي بتاع الـ OSB أو AI)
+
+الـ BasePath في ProxyEndpoint مطابق للـ path في TargetEndpoint.
+
+هل تحب أقولك دلوقتي إزاي تتأكد إن الـ Target Server (OSBServer) متسجل ومربوط صح في Apigee؟
+
+You said:
+ايوه
+ChatGPT said:
+تمام 👌
+خلينا نمشي خطوة بخطوة — هنراجع مع بعض إزاي تتأكد إن الـ Target Server (اللي هو OSBServer مثلًا) متسجل ومربوط صح في Apigee، لأن ده جزء أساسي عشان البروكسي يقدر يوصّل الطلب للـ backend.
+
+🔍 الخطوة 1: افتح إعدادات الـ Environment
+في Apigee dashboard، من القائمة الجانبية اختر:
+Admin → Environments
+(أو في بعض الإصدارات: من القائمة فوق اختار البيئة ameenfea12 ثم "Target Servers").
+
+هتلاقي كل الـ environments اللي عندك (زي: test, prod, ameenfea12).
+
+اضغط على البيئة اللي انت شغال فيها (في حالتك واضح إنها ameenfea12).
+
+🧩 الخطوة 2: افتح قائمة Target Servers
+بعد ما تفتح البيئة:
+
+هتلاقي تبويب اسمه Target Servers أو Servers
+(على حسب واجهة Apigee عندكم — في بعض الإصدارات بيكون على اليمين أو تحت).
+
+⚙️ الخطوة 3: شوف السيرفر اللي محتاجه
+افتح السيرفرات المسجلة عندك وشوف هل في واحد اسمه مثلاً:
+
+OSBServer
+أو
+
+OWNERSPHERE_SERVER
+أو أي اسم مشابه.
+
+لو موجود ✅ تمام، تأكد من الإعدادات التالية:
+
+الحقل	القيمة المطلوبة
+Name	نفس الاسم اللي استخدمته في ملف TargetEndpoint.xml
+Host	الـ domain الفعلي بتاع الـ backend (مثلاً osb.gosi.gov.sa)
+Port	443 (لو HTTPS)
+SSL Enabled	✔️ مفعّل لو السيرفر بيستخدم HTTPS
+🆕 الخطوة 4: لو السيرفر مش موجود — أنشئه جديد
+لو مش لاقي السيرفر اللي محتاجه:
+
+اضغط Add Target Server.
+
+املأ القيم دي:
+
+الحقل	القيمة المقترحة
+Name	OSBServer
+Host	osb.gosi.gov.sa (أو الـ endpoint الفعلي اللي بيكلم الـ backend)
+Port	443
+SSL Enabled	✅
+Enabled	✅
+ثم اضغط Save.
+
+✅ الخطوة 5: اربطه مع الـ TargetEndpoint
+ارجع دلوقتي إلى ملف TargetEndpoint.xml، وتأكد إن اسم السيرفر هو نفس الاسم بالضبط:
+
+<Server name="OSBServer"/>
+لو اسم السيرفر في Apigee مثلًا هو OwnerSphereServer، لازم تغيره كده:
+
+<Server name="OwnerSphereServer"/>
+🧠 مثال عملي متكامل
+1️⃣ Target Server (في Apigee UI)
+Name	Host	Port	SSL
+OSBServer	osb.gosi.gov.sa	443	✅
+2️⃣ TargetEndpoint.xml
+<HTTPTargetConnection>
+  <LoadBalancer>
+    <Server name="OSBServer"/>
+  </LoadBalancer>
+  <Path>/owner-sphere/b2b</Path>
+</HTTPTargetConnection>
+لو حابب، تقدر تبعتلي لقطة (أو نص الإعدادات) الخاصة بالـ Target Server اللي عندك، وأنا أقولك لو محتاج تعديل فيها.
+هل تحب أشرح كمان إزاي تتأكد إن الاتصال فعلاً شغال من Apigee للـ backend (بمعنى: تجربة الـ Target Server نفسه)؟
+
+You said:
+مش عارف اوصل للسيرفرات المتسجله عندي
+ChatGPT said:
+تمام جدًا 💪 خلينا نحلها خطوة بخطوة لأن واجهة Apigee Edge / X بتختلف من إصدار لإصدار، فهقولك الطريقة العامة + البديلة لو الواجهة مختلفة عندك.
+
+🧭 الطريقة الأساسية (من الـ UI)
+🔹 الخطوة 1: افتح الـ Admin أو الـ Environment
+من الشريط اللي فوق (أو الجانب)، شوف القوائم دي:
+
+Dashboard | APIs | Publish | Analytics | Admin | Help
+
+اضغط على Admin ✅
+
+🔹 الخطوة 2: اختار الـ Environment
+بعد ما تدخل على Admin:
+
+في الجزء العلوي هتلاقي اختيار البيئة (environment)
+مثلاً:
+
+Organization: ameenfea12
+Environments: test / prod / ameenfea12
+اختار البيئة اللي انت شغال فيها (غالبًا ameenfea12).
+
+🔹 الخطوة 3: ادخل على “Target Servers”
+بعد ما تختار البيئة، هتلاقي تبويب أو قسم اسمه:
+
+Target Servers
+
+أو أحيانًا يكون تحته Environment Configuration → Target Servers
+
+هي دي الصفحة اللي فيها كل السيرفرات المسجّلة.
+
+⚙️ الطريقة البديلة (لو ما ظهرتش في الـ UI)
+بعض حسابات Apigee بيكون فيها صلاحيات محدودة وما بيظهرش فيها الـ Admin tab.
+في الحالة دي، تقدر تشوف السيرفرات المسجّلة بـ API call من خلال Apigee API نفسها 👇
+
+📡 استخدم Apigee Management API
+افتح Postman أو أي أداة API وجرّب الطلب ده:
+
+GET https://api.enterprise.apigee.com/v1/organizations/ameenfea12/environments/{env}/targetservers
+استبدل {env} باسم البيئة الفعلي (مثلاً test أو ameenfea12).
+
+وضيف Authorization header:
+
+Authorization: Basic {base64(username:password)}
+لو الصلاحيات تمام، هيرجعلك JSON فيه كل السيرفرات اللي متسجّلة.
+مثلاً:
+
+[
+  {
+    "name": "OSBServer",
+    "host": "osb.gosi.gov.sa",
+    "port": 443,
+    "isEnabled": true
+  }
+]
+🚧 لو برضو مش ظاهر
+ده معناه إن حسابك (user role) ملوش صلاحية يشوف أو يعدّل الـ Target Servers.
+في الحالة دي:
+
+لازم تراسل الـ Apigee admin في الفريق عندكم (غالبًا DevOps أو Integration team)
+وتطلب منه يا:
+
+يضيفلك صلاحية Environment Admin
+
+أو يبعثلك قائمة السيرفرات المسجلة بالفعل
+
+هل تقدر تبعتلي سطر أو صورة فيها الـ URL اللي في المتصفح لما تكون فاتح صفحة الـ API Proxy؟
+(هتكون حاجة زي
+https://apigee.google.com/edge/proxy-edit/ameenfea12/OSP_EstablishmentServiceAPIProxy/revision/1/develop)
+علشان أقولك بالضبط فين مكان الـ Target Servers عندك في الواجهة الحالية.
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+
+Organization Users
+Organization Roles
+TLS Certificates
+Organization History
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+Organization Users
+Organization 
+ameenfea12
+
+
+
+Organization Users
+
+Search
+
+All
+
+1-5 of 5  
+
+User
+
+User
+
+Email
+
+Roles
+
+Actions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+admin admin
+
+AAMEEN@gosi.gov.sa
+
+Organization Administrator
+
+Remove
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ameen DEV
+
+ameen@gosi.gov.sa
+
+Organization Administrator
+
+Remove
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ameenuser@gosi.gov.sa
+
+ameenuser@gosi.gov.sa
+
+readonly
+
+Remove
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gosiuser@gosi.gov.sa
+
+gosiuser@gosi.gov.sa
+
+Organization Administrator
+
+Remove
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tcsuser@gosi.gov.sa
+
+tcsuser@gosi.gov.sa
+
+Organization Administrator
+
+Remove
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+ChatGPT said:
+تمام ✅
+كده واضح إنك فاتح تبويب Admin → Organization Users، وده خاص بالمستخدمين والصلاحيات — مش إعدادات الـ Target Servers.
+
+اللي انت محتاج توصله هو مكان Target Servers داخل Environment Configuration.
+خليني أوجّهك بالضبط حسب الواجهة اللي عندك 👇
+
+🧭 الخطوات للوصول إلى الـ Target Servers في واجهتك الحالية
+من القائمة العليا، اضغط على Admin (أنت فعلًا فيها ✅).
+
+بصّ على الجانب الأيسر أو في القوائم الفرعية، هتلاقي حاجة زي:
+
+Environments
+
+أو Environment Configuration
+
+لما تفتحها، هتلاقي قائمة فيها:
+
+Target Servers
+
+Key Value Maps (KVMs)
+
+Caches
+
+TLS Certificates
+
+اختر منها Target Servers 🔹
+
+لو ما لقيتش “Target Servers” في أي مكان داخل Admin، فده معناه واحد من الاتنين:
+
+الواجهة اللي عندك قديمة (Apigee Edge Classic) — أحيانًا تكون مقسومة Tabs مختلفة.
+
+أو إن صلاحيات المستخدم الحالي (gosiuser@gosi.gov.sa) مش مفعّلة للوصول إلى إعدادات البيئة.
+
+💡 الحل في الحالة دي
+جرب واحدة من الطريقتين:
+
+🔸 الطريقة الأولى (من داخل الـ API Proxy نفسه)
+افتح الـ Proxy اللي شغال عليه (زي OSP_EstablishmentServiceAPIProxy)
+
+من تبويب Develop
+
+في الشمال، شوف لو في قسم اسمه:
+
+Target Servers
+أو
+
+TargetEndpoint → HTTPTargetConnection → Server
+ممكن تضيف السيرفر مباشرة من هنا بكتابة الاسم اللي المفروض يكون مسجّل في البيئة (مثلاً OSBServer أو OwnerSphereServer).
+
+🔸 الطريقة الثانية (من خلال API)
+لو ما عندكش صلاحية UI كافية، استخدم Apigee Management API بنفس الحساب:
+
+GET https://api.enterprise.apigee.com/v1/organizations/ameenfea12/environments/intranet/targetservers
+🔹 استبدل intranet باسم البيئة الحقيقية (ممكن تكون مكتوبة في شاشة الـ Proxy كـ "Environment: intranet").
+🔹 استخدم basic auth لحساب admin مثل:
+
+Authorization: Basic base64(gosiuser@gosi.gov.sa:your_password)
+هيطلعلك JSON زي ده:
+
+[
+  {
+    "name": "OwnerSphereServer",
+    "host": "osb.gosi.gov.sa",
+    "port": 443,
+    "isEnabled": true
+  }
+]
+هل عايز أقولك إزاي تعمل Target Server جديد يدويًا (يعني تضيفه بنفسك بدل ما تدور عليه)؟
+ده أحيانًا بيكون أسهل لو السيرفر مش متسجل أصلًا.
+
+You said:
+طيب قولي كده ايه اللي عملناه في المرحله الاولي
+ChatGPT said:
+تمام 💪 خلينا نلخص بوضوح المرحلة الأولى اللي كنت شغال عليها، خطوة بخطوة، وده اللي أنجزته بالضبط 👇
+
+🧩 المرحلة الأولى: إنشاء الـ API Proxy في Apigee
+🎯 الهدف:
+إنك تنشئ Proxy API جديدة في Apigee تمثل الـ endpoint:
+
+v1/owner-sphere/b2b/{regNo}/suggestions
+ودي تكون هي الطبقة اللي بتتعامل بين الـ UI و الـ backend (OSB → AI).
+
+✅ اللي اتعمل فعليًا:
+1. فتحت Apigee ودخلت على الـ Dashboard → API Proxies
+وشفت الباترن بتاع الأسماء (زي TR_FraudCaseAPIProxy و FS_SAMAValidatetIBANV2APIProxy)
+فعرفت نمط التسمية اللي الفريق بيستخدمه.
+
+2. أنشأت Proxy جديدة
+وسميتها على نفس النمط:
+
+OSP_EstablishmentServiceAPIProxy
+(أو الاسم اللي اخترته وقت الإنشاء)
+
+وده بيكون ملف الـ Proxy الرئيسي اللي بيحتوي على:
+
+ProxyEndpoint.xml → يمثل واجهة الـ API (اللي المستخدمين بيكلموها)
+
+TargetEndpoint.xml → يمثل السيرفر اللي الـ API هتوصله فعلاً (backend / OSB)
+
+3. نزلت نسخة من Proxy تانية (bundle) كنموذج
+عشان تاخد منها الهيكل، وبعد كده عملت Create from bundle
+لكن واجهتك مشكلة إن الباندل كان فاضي بعد تغيير الاسم → وده طبيعي لأن Apigee بتتحقق من الملفات الداخلية (structure + manifest).
+
+4. فتحت الـ Develop tab للـ Proxy الجديدة
+وشفت إن عندك:
+
+ProxyEndpoint (default)
+
+TargetEndpoint (default)
+
+شوية Policies موجودة بالفعل:
+
+AmeenSecurityCheck
+
+Remove Header Authorization
+
+Verify OAuth v2.0 Access Token
+
+VerifyApiKey
+
+5. اتكلمنا عن الفرق بين:
+Proxy Endpoints → الواجهة اللي المستخدم بيكلمها (UI → Apigee)
+
+Target Endpoints → المكان اللي Apigee تبعته له فعليًا (Apigee → backend أو OSB أو AI)
+
+6. شفنا إن داخل كل واحد فيهم في:
+PreFlow → اللي بيتنفذ قبل ما الطلب يتبعت (زي security checks أو header modifications)
+
+PostFlow → اللي بيتنفذ بعد ما يرجع الرد (زي logging أو response transformations)
+
+7. راجعت محتوى ProxyEndpoint.xml و TargetEndpoint.xml
+وشفنا إنهم لسه فاضيين (default template)
+وقلنا إن الخطوة الجاية هي تعديلهم بحيث:
+
+Proxy endpoint يشير إلى المسار الجديد (/v1/owner-sphere/b2b/{regNo}/suggestions)
+
+Target endpoint يشير إلى الـ Target Server اللي هيوصل للـ OSB أو AI
+
+🎯 النتيجة النهائية للمرحلة الأولى:
+✅ عندك الآن:
+
+Proxy API جديدة في Apigee جاهزة للتعديل
+
+Policies جاهزة تقدر تستخدمها في الـ flows
+
+فهم واضح للعلاقة بين Proxy و Target
+
+باقي إنك تحدد الـ Target Server اللي هتوصله وتربطه بالـ Proxy
+
+المرحلة الجاية إن شاء الله 👇
+🔹 نربط الـ Proxy دي بالـ Target Server المناسب (OSB أو AI)
+🔹 ونضبط المسارات (BasePath و Target Path)
+🔹 ونضيف policies اللي تخص الأمان أو التحويلات المطلوبة
+
+تحب أكمّلك دلوقتي بالخطوات المفصلة للمرحلة التانية؟
+
+You said:
+لخطوة 2: تعمل Developer App + Product
+
+خش ع الخطوه التانيه
+ChatGPT said:
+تمام يا نجم 💪 نبدأ المرحلة التانية خطوة بخطوة —
+ودي بعنوان 👇
+
+🧩 المرحلة الثانية: إنشاء API Product و Developer App
+🎯 الهدف من المرحلة دي
+Apigee لازم تربط الـ API Proxy اللي عملناها بحاجة تديها صلاحيات الوصول.
+وده بيتم من خلال جزئين:
+
+API Product → بتحدد أي APIs مسموح الوصول ليها.
+
+Developer App → بتمثل التطبيق اللي هيستخدم الـ APIs دي (زي “Owner Sphere UI”).
+
+👣 الخطوات التفصيلية
+🔹 الخطوة 1: إنشاء API Product
+من القائمة العليا، روح إلى:
+Publish → API Products
+
+اضغط على + API Product أو Create New Product
+
+عبّي البيانات كده 👇
+
+الحقل	القيمة المقترحة
+Display Name	OwnerSphereSuggestionsProduct
+Name	owner-sphere-suggestions-product
+Environment	intranet (أو البيئة اللي فيها الـ proxy)
+API Proxies	اختار الـ Proxy اللي أنشأتها (مثلاً OSP_EstablishmentServiceAPIProxy)
+Quota	(اختياري) مثلاً 1000 request/hour
+Access	Public (ممكن تخليها Private لو هتتحكم بالتطبيقات فقط)
+ثم اضغط Save ✅
+
+🔹 الخطوة 2: إنشاء Developer App
+من نفس قائمة Publish، روح إلى:
+Developers → Developer Apps
+
+اضغط + Developer App
+
+عبّي القيم كده:
+
+الحقل	القيمة المقترحة
+App Name	OwnerSphereApp
+Developer	اختار developer موجود (أو أنشئ واحد جديد باسم owner.sphere@gosi.gov.sa)
+API Products	اختار المنتج اللي أنشأته في الخطوة اللي قبلها (OwnerSphereSuggestionsProduct)
+Callback URL	خليه فاضي أو حط URL تجريبي (مش مهم دلوقتي)
+اضغط Save ✅
+
+🔹 الخطوة 3: خُد الـ API Key
+بعد ما تحفظ الـ App، هتظهرلك Consumer Key و Consumer Secret
+ودي المفاتيح اللي الـ UI أو أي نظام خارجي هيستخدمها علشان يعمل Authentication في الـ API Gateway.
+
+💡 باختصار:
+✅ Product = بيحدد الـ APIs المسموح بيها
+
+✅ App = بتمثل العميل اللي يستخدمها
+
+🔑 API Key = المفتاح اللي يربط بينهم
+
+هل تحب أشرحلك دلوقتي إزاي تضيف الـ Key validation في الـ Proxy (يعني تربط الـ VerifyApiKey policy فعلاً بالمفاتيح دي)؟
+ده بيكون المرحلة الثالثة.
+
+You said:
+عاوز ارحع للخطوه الاولي وةاخلي اي ريكويست لازم يعدي علي verifyapikey and ameensecurity
+ChatGPT said:
+تمام جدًا 👌 نرجع مع بعض للمرحلة الأولى ونضيف التعديل اللي يخلي أي request لازم يعدّي على
+🔹 VerifyApiKey
+🔹 و AmeenSecurityCheck
+
+وده بيتعمل داخل ProxyEndpoint.xml (في الـ PreFlow بتاع الـ Request).
+خليني أشرحلك بالخطوات وندي مثال عملي.
+
+🎯 الهدف
+كل request يوصل للـ proxy لازم:
+
+يتحقق من الـ API key (authentication)
+
+يعدي على policy الأمان الداخلية AmeenSecurityCheck
+
+🧩 الخطوات
+🔹 1. افتح ProxyEndpoint.xml
+هو الملف اللي شكله كده (أو مشابه):
+
+<ProxyEndpoint name="default">
+    <Description/>
+    <FaultRules/>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows/>
+    <HTTPProxyConnection>
+        <BasePath>/v1/owner-sphere/b2b/{regNo}/suggestions</BasePath>
+        <VirtualHost>AmeenVH</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+🔹 2. عدّل الـ <PreFlow> بحيث يضم الـ Policies
+خليها كده:
+
+<PreFlow name="PreFlow">
+    <Request>
+        <Step>
+            <Name>VerifyApiKey</Name>
+        </Step>
+        <Step>
+            <Name>AmeenSecurityCheck</Name>
+        </Step>
+    </Request>
+    <Response/>
+</PreFlow>
+🔹 3. تأكد إن السياسات دي موجودة في مجلد Policies (وده عندك فعلًا):
+VerifyApiKey.xml
+
+AmeenSecurityCheck.xml
+
+لو مش موجودين أو أسماؤهم مختلفة (زي verifyApiKey بحروف صغيرة)، لازم الاسم في <Name> يطابق اسم ملف الـ Policy بالضبط (بدون .xml).
+
+🔹 4. مثال كامل بعد التعديل
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <Description>Owner Sphere Suggestions Proxy</Description>
+    <FaultRules/>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>VerifyApiKey</Name>
+            </Step>
+            <Step>
+                <Name>AmeenSecurityCheck</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows/>
+    <HTTPProxyConnection>
+        <BasePath>/v1/owner-sphere/b2b/{regNo}/suggestions</BasePath>
+        <Properties/>
+        <VirtualHost>AmeenVH</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+✅ النتيجة
+أي request يدخل على المسار:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+هيعدي بالترتيب على:
+
+VerifyApiKey → يتحقق من الـ API Key اللي جاية من الـ Developer App
+
+AmeenSecurityCheck → يجري فحص الأمان الإضافي
+
+ولو واحدة منهم فشلت، Apigee هيرجع 403 أو 401 حسب نوع الفشل.
+
+هل تحب أضيف كمان الـ RemoveHeaderAuthorization و Verify OAuth v2.0 عشان يكون عندك chain أمان كاملة زي باقي الـ proxies اللي عندكم؟
+
+You said:
+<BasePath\>/v1/owner-sphere/b2b/{regNo}/suggestions</BasePath\>
+
+انت حاطط الباث كامل ليه مش حاطط البيز بس
+ChatGPT said:
+سؤال ممتاز جدًا 👏 وده بيدل إنك فاهم اللي بتعمله مش بس بتنفذ 👌
+
+خليني أوضحها ببساطة:
+
+🧩 الفرق بين BasePath و full path
+في Apigee، الـ <BasePath> داخل <HTTPProxyConnection> مش المفروض يحتوي على المسار الكامل اللي بعده متغيرات زي {regNo}.
+هو بيحدد النقطة الأساسية اللي الـ proxy دي هتشتغل عليها، مش المسار الكامل للـ endpoint.
+
+🔹 يعني إيه الكلام ده؟
+خليني أديك مثال عملي:
+
+الـ API عندك على الـ UI هي:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+ده الـ endpoint الفعلي اللي المستخدم بيطلبه،
+لكن داخل Apigee إحنا بنقسمها كده 👇
+
+العنصر	المعنى
+BasePath	الجزء الثابت اللي عليه الـ Proxy كلها، مثلاً /v1/owner-sphere/b2b
+Flow أو Route Rule	بيتعامل مع الجزء المتغير {regNo}/suggestions
+🔹 الشكل الصحيح في حالتك
+يبقى الأفضل تخليها كده:
+
+<HTTPProxyConnection>
+    <BasePath>/v1/owner-sphere/b2b</BasePath>
+    <VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+وبعدين جوه <Flows> أو داخل logic الـ route تضيف handling لبقية المسار:
+
+/{regNo}/suggestions
+وده يخليك مرن أكتر لو في المستقبل هتزود Endpoints تانية تحت نفس الـ base،
+زي:
+
+/v1/owner-sphere/b2b/{regNo}/details
+/v1/owner-sphere/b2b/{regNo}/owners
+💡 خلاصة القاعدة:
+BasePath = الجزء الثابت
+Flows أو Route = الجزء المتغير أو الخاص بكل API فرعية
+
+هل تحب أريك شكل XML كامل بعد التعديل ده (بـ BasePath فقط + flow خاص بالـ suggestions endpoint)؟
+
+You said:
+Flows أو Route = الجزء المتغير أو الخاص بكل API فرعية
+
+تتضاف في دي
+ChatGPT said:
+بالضبط ✅
+الجزء اللي فيه الـ Flows أو Routes بيتضاف جوه ProxyEndpoint (مش TargetEndpoint).
+وده لأن الـ ProxyEndpoint هو اللي بيتعامل مع الريكويست الجاي من المستخدم (client)،
+وبيقرر هيوجهها فين بعد كده.
+
+خليني أشرحها عملي وبالكود 👇
+
+📁 مكان إضافة الـ Flows
+الملف اللي اسمه مثلاً:
+
+apiproxy/proxies/default.xml
+جوه الملف ده هتلاقي حاجة زي كده:
+
+<ProxyEndpoint name="default">
+    <Description/>
+    <PreFlow name="PreFlow">
+        <Request>
+            <!-- هنا ممكن تحط Policies زي VerifyAPIKey -->
+        </Request>
+        <Response/>
+    </PreFlow>
+
+    <!-- هنا بتبدأ تضيف ال Flows -->
+    <Flows>
+        <Flow name="GetSuggestions">
+            <Condition>(proxy.pathsuffix MatchesPath "/{regNo}/suggestions") and (request.verb = "GET")</Condition>
+            <Request>
+                <!-- ممكن تضيف هنا Policies خاصة بال endpoint ده -->
+            </Request>
+            <Response/>
+        </Flow>
+    </Flows>
+
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+
+    <HTTPProxyConnection>
+        <BasePath>/v1/owner-sphere/b2b</BasePath>
+        <VirtualHost>AmeenVH</VirtualHost>
+    </HTTPProxyConnection>
+
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+⚙️ الشرح السريع:
+<BasePath> = الجزء الثابت زي ما اتفقنا (/v1/owner-sphere/b2b)
+
+<Flows> = فيها كل endpoint فرعي، زي /suggestions أو /details
+
+<PreFlow> = بيتنفذ قبل أي flow (تقدر تحط فيه سياسات عامة زي VerifyAPIKey و AmeenSecurityCheck)
+
+<PostFlow> = بيتنفذ بعد ما يخلص الـ flow (ممكن تحط فيه Logging أو Response Transformation)
+
+هل تحب أضيفلك دلوقتي مثال كامل عليه بالـ VerifyAPIKey و AmeenSecurityCheck محطوطين في الـ PreFlow؟
+
+You said:
+proxy end point default.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request>
+<Step>
+<Name>VerifyAPIKey</Name>
+</Step>
+<Step>
+<Name>AmeenSecurityCheck</Name>
+</Step>
+</Request>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows/>
+<HTTPProxyConnection>
+<BasePath>/v1/owner-sphere/b2b</BasePath>
+<Properties/>
+<VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+<RouteRule name="default">
+<TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+</ProxyEndpoint>
+ 
+target endpoint default.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request>
+<Step>
+<Name>VerifyAPIKey</Name>
+</Step>
+<Step>
+<Name>AmeenSecurityCheck</Name>
+</Step>
+</Request>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows/>
+<HTTPTargetConnection>
+<LoadBalancer>
+<Server name="APPServer"/>
+</LoadBalancer>
+<Path>/owner-sphere/b2b</Path>
+</HTTPTargetConnection>
+</TargetEndpoint>
+
+
+ده شكل الفايلين عندي دلوقت,, كده الدنيا تمام ولا ايه؟؟
+ChatGPT said:
+جميل جدًا إنك وصلت للمرحلة دي 👏
+لكن في عندك تفصيلتين مهمتين جدًا لازم نعدلهم علشان البروكسي يشتغل صح 100٪.
+
+خليني أوضحهم واحدة واحدة 👇
+
+✅ أولاً: VerifyAPIKey و AmeenSecurityCheck مكانهم الصحيح
+السياسات دي معمولة علشان تحقق من الريكويست اللي جاي من الكلاينت (يعني قبل ما يوصل للتارجت).
+
+بالتالي لازم تكون فقط في ProxyEndpoint.
+
+وجودهم داخل TargetEndpoint غلط — لأن التارجت هو اللي بيكلم السيرفر الداخلي بعد التحقق.
+
+📌 يعني:
+
+خليك حاطط الـ steps دول هنا ✅:
+
+<ProxyEndpoint name="default">
+    ...
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>VerifyAPIKey</Name>
+            </Step>
+            <Step>
+                <Name>AmeenSecurityCheck</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    ...
+</ProxyEndpoint>
+وشيلهم من الـ TargetEndpoint ❌.
+
+✅ ثانيًا: التارجت نفسه
+الـ TargetEndpoint المفروض بس يحدد السيرفر الداخلي اللي هيتبعتله الريكويست بعد ما يتأكد من السيكيوريتي.
+
+يعني يكون شكله كده:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="default">
+    <Description/>
+    <FaultRules/>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows/>
+    <HTTPTargetConnection>
+        <LoadBalancer>
+            <Server name="APPServer"/>
+        </LoadBalancer>
+        <Path>/owner-sphere/b2b</Path>
+    </HTTPTargetConnection>
+</TargetEndpoint>
+⚙️ النتيجة النهائية:
+✅ كل الريكويستات هتعدي على:
+
+VerifyAPIKey
+
+AmeenSecurityCheck
+
+✅ بعدين تتوجه للسيرفر الداخلي (APPServer).
+
+✅ يعني حماية على مستوى البروكسي بالكامل.
+
+❌ ماينفعش نحط الـ policies دي في التارجت لأن ده جزء داخلي من الفلو.
+
+تحب أقولك بعد كده إزاي تتأكد من إن السياسات دي بتتنفذ فعلاً لما تبعت request؟
+
+You said:
+hkh p,ajil lk hgjhv[j, ;]i jlhl ;g ph[i td hgo',i hgh,gd??
+ChatGPT said:
+أيوه بالضبط 💪
+اللي محتاج تعمله دلوقتي في الخطوة الأولى هو التعديل اللي قلناه:
+
+الخطوة الأولى (التنظيف والتظبيط):
+✅ افتح ملف ProxyEndpoint (default.xml)
+خليه فيه الـ policies دي في الـ PreFlow / Request زي كده:
+
+<PreFlow name="PreFlow">
+    <Request>
+        <Step>
+            <Name>VerifyAPIKey</Name>
+        </Step>
+        <Step>
+            <Name>AmeenSecurityCheck</Name>
+        </Step>
+    </Request>
+    <Response/>
+</PreFlow>
+❌ افتح ملف TargetEndpoint (default.xml)
+شيل منه الخطوتين دول (VerifyAPIKey وAmeenSecurityCheck).
+خليه كده:
+
+<PreFlow name="PreFlow">
+    <Request/>
+    <Response/>
+</PreFlow>
+✅ تأكد إن الـ RouteRule في الـ ProxyEndpoint بيربط فعلاً بالتارجت:
+
+<RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+بعد كده هنروح للخطوة التانية 👇
+وهي نتأكد من الاتصال بالسيرفر الداخلي (APPServer) — يعني لازم نراجع تعريفه في قسم "Target Servers" داخل Apigee.
+
+تحب أقولك بالظبط إزاي تفتح صفحة الـ Target Servers وتشوف السيرفرات المسجلة؟
+
+You said:
+تعالي نبدا بقا في الخطوه التانيه
+ChatGPT said:
+تمام ✅ نبدأ بالخطوة التانية خطوة بخطوة وبدون تعقيد 👇
+
+🧩 الخطوة التانية:
+"Create a Developer App for the Owner Sphere and create a Product for the new proxy"
+الهدف من الخطوة دي إنك:
+
+تفتح الوصول للـ API اللي انت عملته عن طريق API Product + Developer App
+ودي طريقة Apigee في إدارة صلاحيات استهلاك الـ APIs.
+
+🪜 الجزء الأول: إنشاء API Product
+ادخل على Apigee Dashboard.
+
+من الشريط الجانبي اختر:
+Publish → API Products
+
+اضغط على زر + API Product أو Create new API Product
+
+املا البيانات كده:
+
+Name: OwnerSphereProduct
+
+Display Name: Owner Sphere Product
+
+Description: (اختياري، مثلًا)
+Product that exposes Owner Sphere B2B API for AI integration.
+
+Environments: اختر البيئة اللي انت شغال فيها (زي test أو prod)
+
+API Proxies: اختار منها الـ proxy اللي انت لسه عامله (زي OSP_EstablishmentServiceAPIProxy)
+
+Operations: سيبها مفتوحة (أو حدد المسار /v1/owner-sphere/b2b/* لو عايز تحكم الوصول)
+
+Access: Public (أو Private لو هتربطه بتطبيقات معينة)
+
+Quota / Rate Limit: سيبها دلوقتي فاضية
+
+اضغط Save ✅
+
+🧩 الجزء الثاني: إنشاء Developer App
+من الشريط الجانبي في Apigee → اختر Publish → Apps
+
+اضغط + App
+
+املا الحقول كده:
+
+Name: OwnerSphereApp
+
+Developer: اختار Developer موجود (أو اعمل واحد جديد باسم owner.sphere@gosi.gov.sa)
+
+API Products: اختار الـ Product اللي لسه عملته OwnerSphereProduct
+
+Callback URL: سيبها فاضية (مش ضروري دلوقتي)
+
+Notes: “App for Owner Sphere B2B AI communication.”
+
+اضغط Create ✅
+
+بعد الحفظ، هيتولدلك API Key تلقائيًا 🔑
+وده اللي بيتحقق منه الـ VerifyAPIKey policy اللي حطيناه في الـ PreFlow.
+
+🔍 النتيجة
+اللي حصل دلوقتي:
+
+الـ Proxy بتاعك بقى مربوط بـ API Product.
+
+الـ Product مربوط بـ Developer App.
+
+الـ App معاها API Key → لازم الريكويست يبعته عشان يعدي من VerifyAPIKey ✅
+
+تحب دلوقتي أشرحلك إزاي تختبر الـ API بعد ما خلصنا الخطوة دي باستخدام الـ API Key؟
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+Products /
+OwnerSphereSuggestionsProduct
+Organization 
+ameenfea12
+
+
+
+OwnerSphereSuggestionsProduct
+
+Products give developers access to your APIs. Learn moreDeleteEdit
+
+Product Details
+
+Name
+
+OwnerSphereSuggestionsProduct
+
+Display Name
+
+OwnerSphereSuggestionsProduct
+
+Description
+
+
+
+Environment
+
+intranet private public
+
+Access
+
+Public
+
+Key Approval Type
+
+Automatic
+
+Quota
+
+                                     Select...                                     minute                                     hour                                     day                                     month                                 
+
+Allowed OAuth Scopes
+
+
+
+Resources
+
+
+
+Paths
+
+Resource Path
+
+API Proxies
+
+API Proxy
+
+OSP_EstablishmentServiceAPIProxy
+
+Istio Services
+
+Service Name
+
+Custom
+
+Attributes
+
+Name
+
+Value
+
+Developer Apps
+
+Search
+
+
+
+0-0 of 0  
+
+App
+
+Developer
+
+App Family
+
+Key
+
+Registered
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+ChatGPT said:
+تمام جدًا ✅
+كده أنت خلصت أول جزء من الخطوة التانية — عملت الـ API Product بنجاح 👏
+
+دلوقتي نكمل الجزء التاني وهو إنشاء الـ Developer App وربطه بالـ Product ده، بحيث تقدر تولّد API Key وتستخدمها مع الريكويستات.
+
+⚙️ الخطوة 2 (الجزء الثاني): إنشاء Developer App
+اتبع الخطوات دي بالضبط داخل Apigee 👇
+
+من الـ Apigee Dashboard
+اختار من الشريط الجانبي:
+Publish → Apps
+
+اضغط على الزر + App (أو "Create App" حسب الواجهة عندك)
+
+هتفتح شاشة فيها حقول، املاها كده:
+
+Name: OwnerSphereSuggestionsApp
+
+Display Name: Owner Sphere Suggestions App
+
+Developer:
+لو عندك Developer جاهز (زي gosiuser@gosi.gov.sa) اختاره.
+لو مش لاقي أي Developer، اضغط على "Create new Developer" واملِ:
+
+Email: ownersphere@gosi.gov.sa
+
+First Name: Owner
+
+Last Name: Sphere
+
+API Products:
+اختار منها الـ Product اللي عملته من شوية
+→ OwnerSphereSuggestionsProduct
+
+Callback URL: (سيبها فاضية)
+
+Notes: (اختياري مثلًا "App for Owner Sphere AI API Testing")
+
+اضغط Create / Save ✅
+
+🎯 بعد ما تخلص
+بعد إنشاء الـ App، هتلاقي جوهها جدول فيه API Key (Client ID).
+خد الـ Key ده — لأنه هو اللي لازم يتبعت في الهيدر بتاع كل API request كده:
+
+x-api-key: YOUR_API_KEY_HERE
+وده بالضبط اللي هيتحقق منه الـ VerifyAPIKey policy اللي انت حاططها في الـ PreFlow 👌
+
+هل عايزني أشرحلك دلوقتي إزاي تختبر الـ API وتتاكد إن الـ VerifyAPIKey policy شغالة فعلاً (باستخدام Postman أو curl)؟
+
+You said:
+
+Dashboard
+APIs
+Publish
+Analytics
+Admin
+Help
+gosiuser@gosi.gov.sa
+
+Dashboard /
+Developer Apps /
+OwnerSphereApp
+Organization 
+ameenfea12
+
+
+
+OwnerSphereApp
+
+Developer App Details
+
+Name
+
+OwnerSphereApp
+
+Display Name
+
+
+
+Registered
+
+Oct 12 2025 10:44 PM
+
+Developer
+
+Moayad Alsurayyi (MALSURAYYI@GOSI.GOV.SA)
+
+App Status
+
+Approved   Revoke
+
+Callback URL
+
+
+
+A callback URL is required only for 3-legged OAuth.
+
+Notes
+
+
+
+Credentials
+
+Issued
+
+Expiry
+
+Consumer Key
+
+Consumer Secret
+
+Status
+
+Actions
+
+Oct 12 2025 10:44 PM
+
+10 days ago
+
+Never
+
+ Show
+
+ Show
+
+Approved
+
+Revoke
+
+
+
+Product
+
+
+
+
+
+
+
+EstablishmentAPI
+
+Approved
+
+Revoke Remove
+
+
+
+OwnerSphereSuggestionsProduct
+
+Approved
+
+Revoke Remove
+
+
+
+ Product
+
+Credential
+
+Custom Attributes
+
+Name
+
+Value
+
+Actions
+
+
+
+
+
+Delete
+
+
+
+
+
+Delete
+
+Cancel Save
+
+© 2025 Apigee Corp. All rights reserved. Version 4.19.06.00
+
+انا لقيت واحد معمول بالفعل وضفت فيه البرودكت بتاعي,, كده تمام؟؟
+ChatGPT said:
+ممتــاز جدًا ✅
+كده انت فعليًا خلصت الخطوة التانية بالكامل 👏👏
+
+يعني دلوقتي عندك:
+
+✅ API Proxy معمول (OSP_EstablishmentServiceAPIProxy)
+
+وفيه سياسات (Policies):
+
+VerifyAPIKey
+
+AmeenSecurityCheck
+
+شغالة على الـ ProxyEndpoint فقط.
+
+✅ API Product اسمه OwnerSphereSuggestionsProduct
+
+مربوط بالـ Proxy اللي فوق.
+
+✅ Developer App اسمه OwnerSphereApp
+
+ومربوط بالـ Product بتاعك.
+
+وفيه Consumer Key (API Key) اللي هتستخدمها في اختبارك.
+
+🔍 المرحلة الجاية (الخطوة الثالثة)
+هي إنك تنشئ API (Request / Response) على مستوى الـ Backend Owner Sphere وتخليه ينادي AI Service.
+بمعنى:
+
+تعمل Proxy Class جديدة في الـ OWS backend.
+
+الـ Proxy دي تبعت Request للـ AI endpoint.
+
+وتتعامل مع Response من الـ AI.
+
+لكن قبل ما ندخل في دي، خليني أتأكد معاك:
+هل الـ API proxy اللي انت عملته (OSP_EstablishmentServiceAPIProxy) اتنشر (Deployed) في environment intranet أو private؟
+ولا لسه؟
+
+You said:
+عندي سوال, انا مضفتش المسار الكامل لحد دلوقت, المفروض اضيفه فين
+ChatGPT said:
+سؤال ممتاز جدًا 👌 وده في مكانه بالظبط — لأن المسار (Path) هو اللي بيحدد ازاي الريكويست هيوصل من الـ UI لحد السيرفر اللي وراه.
+خليني أشرحلك بالتفصيل البسيط:
+
+🎯 أولًا: يعني إيه “المسار الكامل”؟
+المسار الكامل المقصود هو الـ endpoint اللي المفروض الـ API ترد عليه، مثلًا:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+وده لازم يظهر في اثنين أماكن رئيسيين داخل الـ proxy files:
+
+🧩 1. في ملف الـ ProxyEndpoint (اللي هو proxy-endpoint/default.xml)
+ده الجزء اللي بيتعامل مع الـ client (الـ UI أو أي مستهلك للـ API).
+هنا بنحط BasePath اللي الـ API هتتعامل عليه علنًا من خلال Apigee.
+
+✅ مثال صح:
+<HTTPProxyConnection>
+    <BasePath>/v1/owner-sphere/b2b</BasePath>
+    <Properties/>
+    <VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+لو الـ UI هيبعت requests بالشكل ده:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+يبقى كده تمام — لأن Apigee هيكمّل المسار /suggestions بناءً على الـ flows أو rules اللي جوه.
+
+🧩 2. في ملف الـ TargetEndpoint (اللي هو target-endpoint/default.xml)
+ده الجزء اللي بيربط Apigee بالسيرفر الداخلي (OWS backend أو AI service).
+هنا بنحدد الـ path الداخلي اللي Apigee هيناديه على الـ target server.
+
+✅ مثال صح:
+<HTTPTargetConnection>
+    <LoadBalancer>
+        <Server name="APPServer"/>
+    </LoadBalancer>
+    <Path>/owner-sphere/b2b/{regNo}/suggestions</Path>
+</HTTPTargetConnection>
+هنا المسار لازم يكون كامل وواضح — لأنه ده اللي هيترسل فعليًا للـ backend.
+
+🧠 ملخص سريع
+الملف	الغرض	المسار اللي تحطه
+ProxyEndpoint	الجزء اللي بيستقبل الـ request من الـ client	/v1/owner-sphere/b2b
+TargetEndpoint	الجزء اللي بينادي الـ backend الحقيقي	/owner-sphere/b2b/{regNo}/suggestions
+هل تحب أوريك شكل نهائي للفايلين بعد التعديل بحيث يبقوا مطابقين للمطلوب في التاسك بتاعك؟
+
+You said:
+طب انا مضفتش الفلوو برضو؟؟
+ChatGPT said:
+🔥 ممتاز إنك خدت بالك من النقطة دي!
+فعلاً — لسه متكلمناش عن الـ Flows، ودي خطوة مهمة جدًا علشان الـ Proxy يعرف يمشي الريكويست في مسار معين (زي /suggestions مثلًا) بدل ما يفضل عام (generic) من غير أي route محدد.
+
+خليني أشرحها واحدة واحدة، وبعدها أديك الشكل النهائي كامل 👇
+
+🧩 يعني إيه Flow في Apigee؟
+الـ Flow هي ببساطة "قانون" أو "مسار تنفيذ" جوا الـ Proxy بيقول:
+
+لما الريكويست ييجي على path معين، نفّذ الخطوات دي (Policies معينة، Target معين... إلخ).
+
+يعني لو عندك أكتر من endpoint، كل واحد له Flow خاص بيه.
+
+🧱 تركيب الـ Flow
+بتتحط جوا ملف الـ ProxyEndpoint (default.xml)
+وبتكون بالشكل ده:
+
+<Flows>
+    <Flow name="GetSuggestions">
+        <Description>Handles AI establishment suggestions</Description>
+        <Request>
+            <Step>
+                <Name>VerifyAPIKey</Name>
+            </Step>
+            <Step>
+                <Name>AmeenSecurityCheck</Name>
+            </Step>
+        </Request>
+        <Response/>
+        <Condition>(proxy.pathsuffix MatchesPath "/{regNo}/suggestions") and (request.verb = "GET")</Condition>
+    </Flow>
+</Flows>
+🔍 شرح السطور
+<Flow name="GetSuggestions">
+اسم الفلو، مجرد اسم منطقي يساعدك تميّزها.
+
+<Condition>
+الشرط اللي يحدد امتى الفلو دي تشتغل.
+هنا بيقول: لو الـ path انتهى بـ /suggestions والـ method GET → اشتغل.
+
+<Request>
+جواه بتحط الـ Policies اللي عايزها تتنفذ قبل ما تبعت الريكويست للسيرفر.
+
+⚙️ فين نضيفها؟
+تحطها داخل ملف proxy-endpoint/default.xml
+في المكان ده بالضبط 👇
+
+<ProxyEndpoint name="default">
+    <Description/>
+    <FaultRules/>
+    <PreFlow name="PreFlow">...</PreFlow>
+    <PostFlow name="PostFlow">...</PostFlow>
+
+    <!-- هنا -->
+    <Flows>
+        <!-- Flow لكل API endpoint -->
+    </Flows>
+
+    <HTTPProxyConnection>...</HTTPProxyConnection>
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
+هل تحب أعملك نسخة كاملة وجاهزة من proxy-endpoint/default.xml
+فيها كل حاجة (PreFlow + Flow + Route + BasePath) متظبطة بالظبط لتاسكك /v1/owner-sphere/b2b/{regNo}/suggestions؟
+
+You said:
+انا مش فاهم حاجه, وحده وحده عشان اقدر افهمك
+ChatGPT said:
+تمام — خطوة بخطوة وبساطة كده، نبدأ بالأساسيات وبصغير: أول حاجة هنعملها دلوقتي هي إضافة Flow واحد خاص بالـ suggestions داخل ملف ProxyEndpoint/default.xml. لما نضيف الـ Flow ده، الـ Proxy هيعرف إمتى ينفّذ الكود الخاص بالنقطة دي (مثلاً لما يجي طلب GET على /.../{regNo}/suggestions).
+
+هنمشي على ٣ حاجات بسيطة الآن:
+
+أعطيك الـ XML اللي تنسخه.
+
+أقولك فين تلصقه بالظبط.
+
+أشرحلك إزاي تختبره بسرعة.
+
+1) الكود اللي انسخه (Flow واحد فقط)
+انسخ البلوك ده حرفيًا:
+
+<Flows>
+  <Flow name="GetSuggestions">
+    <Description>Handle suggestions for an establishment</Description>
+
+    <!-- Steps that will run for requests to this endpoint -->
+    <Request>
+      <!-- هذه السياسات عامة لكن يمكن تحديد سياسات خاصة هنا إن احتجت -->
+      <Step>
+        <Name>VerifyAPIKey</Name>
+      </Step>
+      <Step>
+        <Name>AmeenSecurityCheck</Name>
+      </Step>
+    </Request>
+
+    <Response/>
+    <!-- شرط تفعيل الفلو: المسار النهائي يطابق /{regNo}/suggestions و method = GET -->
+    <Condition>(proxy.pathsuffix MatchesPath "/{regNo}/suggestions") and (request.verb = "GET")</Condition>
+  </Flow>
+</Flows>
+2) فين تلصقه بالضبط
+افتح الملف apiproxy/proxies/default.xml (أو من واجهة Apigee: Develop → Proxy Endpoints → default).
+
+ابحث المكان اللي فيه الأقسام: PreFlow, PostFlow، وHTTPProxyConnection.
+
+قبل <HTTPProxyConnection> أو بعد <PostFlow> الصغير، الصق البلوك اللي فوق. النتيجة تكون شبيهة بهذا الترتيب:
+
+<PreFlow name="PreFlow"> ... </PreFlow>
+
+<PostFlow name="PostFlow"> ... </PostFlow>
+
+<!-- هنا الصق البلوك -->
+<Flows>
+  ... (Flow اللي فوق) ...
+</Flows>
+
+<HTTPProxyConnection>
+  <BasePath>/v1/owner-sphere/b2b</BasePath>
+  <VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+ملاحظة: بما إنك فعلاً حاطط VerifyAPIKey وAmeenSecurityCheck في الـ PreFlow العام، ممكن تكتفي بوجودهم هناك وتلغي تكرارهم داخل الـ Flow. لكن وجودهم داخل الـ Flow يضمن أنهم ينطبقوا خصيصًا على هذا المسار — متروك ليك. (لو مش عايز تكرار، احذف الـ Steps من داخل الـ Flow).
+
+3) احفظ، انشر، واختبر
+اضغط Save في الـ Proxy editor.
+
+اذهب لـ Overview واضغط Deploy → اختار environment intranet.
+
+بعدها اختبر بالـ curl أو Postman.
+
+مثال اختبار بسيط (باستخدام curl)
+استبدل YOUR_API_KEY بالـ Consumer Key اللي في الـ Developer App، و{regNo} برقم حقيقي للتجربة، وAPIGEE_HOST بالدومين بتاعكم (مثال تقريبي):
+
+curl -i -X GET "https://ameenfea12.apigee.net/v1/owner-sphere/b2b/123456789/suggestions" \
+  -H "x-api-key: YOUR_API_KEY"
+لو الـ VerifyAPIKey شغال، لو المفتاح صحيح هتوصلك للـ backend response أو خطأ من الـ backend.
+
+لو المفتاح خطأ أو مفقود، هيرجعلك Apigee جواب 401/403 من سياسة التحقق.
+
+إيه اللي هتحسّه بعد عمل الخطوات دي؟
+البروكسي هيبدأ يطبّق الفلو الخاص بـ suggestions على أي GET ييجي على /v1/owner-sphere/b2b/{regNo}/suggestions.
+
+لو حطيت السياسات في الـ PreFlow العام، هيتم التحقق قبل أي فلو — وده كويس للأمان.
+
+قلّي لو تحب:
+
+أعمل لك نفس البلوك بدون تكرار للـ VerifyAPIKey و AmeenSecurityCheck (لو هما موجودين بالفعل في PreFlow العام)، أو
+
+أساعدك تعمل اختبار الآن خطوة بخطوة (ارسللي الـ Consumer Key أو قلّي هتستخدم Postman وأنا أكتبلك إعدادات الطلب).
+
+نرجع خطوة بخطوة — قول لي تحب أعمل إيه بعد ما تلصق الكود وتعمل Save؟
+
+You said:
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+<Description/>
+<FaultRules/>
+<PreFlow name="PreFlow">
+<Request>
+<Step>
+<Name>VerifyAPIKey</Name>
+</Step>
+<Step>
+<Name>AmeenSecurityCheck</Name>
+</Step>
+</Request>
+<Response/>
+</PreFlow>
+<PostFlow name="PostFlow">
+<Request/>
+<Response/>
+</PostFlow>
+<Flows>
+<Flow name="Get Suggested Establishments">
+<Description>Get Suggested Establishments</Description>
+<Request/>
+<Response/>
+<Condition>(proxy.pathsuffix MatchesPath "") and (request.verb = "GET")</Condition>
+</Flow>
+</Flows>
+<HTTPProxyConnection>
+<BasePath>/v1/owner-sphere/b2b</BasePath>
+<Properties/>
+<VirtualHost>AmeenVH</VirtualHost>
+</HTTPProxyConnection>
+<RouteRule name="default">
+<TargetEndpoint>default</TargetEndpoint>
+</RouteRule>
+</ProxyEndpoint>
+ChatGPT said:
+تمام جدًا 👌، إنت قريب جدًا من الصح — بس محتاج تعديل بسيط جدًا في الـ Flow.
+خلينا نشرح بسرعة ونعملك النسخة المعدّلة الجاهزة.
+
+🔍 المشكلة فين بالضبط:
+في السطر ده:
+
+<Condition>(proxy.pathsuffix MatchesPath "") and (request.verb = "GET")</Condition>
+إنت سايب الـ MatchesPath فاضي ("")، يعني الفلو هيشتغل على المسار الجذري (/v1/owner-sphere/b2b) فقط —
+لكن إحنا عايزينه يشتغل لما المسار يكون بالشكل:
+
+/v1/owner-sphere/b2b/{regNo}/suggestions
+✅ الحل:
+استبدل الفلو كله بالنسخة الصحيحة دي:
+
+<Flow name="Get Suggested Establishments">
+  <Description>Get Suggested Establishments</Description>
+
+  <Request/>
+  <Response/>
+
+  <!-- الشرط الصح -->
+  <Condition>(proxy.pathsuffix MatchesPath "/{regNo}/suggestions") and (request.verb = "GET")</Condition>
+</Flow>
+🔧 النتيجة النهائية لملفك بعد التعديل:
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description/>
+  <FaultRules/>
+
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>VerifyAPIKey</Name>
+      </Step>
+      <Step>
+        <Name>AmeenSecurityCheck</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+
+  <Flows>
+    <Flow name="Get Suggested Establishments">
+      <Description>Get Suggested Establishments</Description>
+
+      <Request/>
+      <Response/>
+
+      <!-- هنا المسار الصحيح -->
+      <Condition>(proxy.pathsuffix MatchesPath "/{regNo}/suggestions") and (request.verb = "GET")</Condition>
+    </Flow>
+  </Flows>
+
+  <HTTPProxyConnection>
+    <BasePath>/v1/owner-sphere/b2b</BasePath>
+    <Properties/>
+    <VirtualHost>AmeenVH</VirtualHost>
+  </HTTPProxyConnection>
+
+  <RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>
+🧪 بعد كده اعمل الآتي:
+اضغط Save.
+
+اضغط Deploy على environment intranet.
+
+اختبر الطلب ده:
+
+curl -i -X GET "https://ameenfea12.apigee.net/v1/owner-sphere/b2b/123456789/suggestions" \
+  -H "x-api-key: YOUR_API_KEY"
+لو كل حاجة تمام، Apigee هيوصل الطلب للـ Target Endpoint (backend)، أو هيرجع Error من backend لو في مشكلة هناك.
+
+هل تحب دلوقتي نكمل ونربط الـ Target Endpoint (اللي هو مسار السيرفس الفعلي اللي بيرجع البيانات من الـ backend)؟
+
+You said:
+
+نرجع لموضوعنا, ايه الخطوه اللي بعد كده
+ChatGPT said:
+تمام 💪، إنت كده خلصت المرحلة التانية بنجاح (تعريف الـ Flow في الـ Proxy).
+دلوقتي نبدأ الخطوة التالتة 👇
+
+🧩 الخطوة الثالثة: ربط الـ Target Endpoint بالسيرفر الفعلي
+دي المرحلة اللي فيها بتحدد:
+
+الـ backend server اللي Apigee يبعث له الريكويست بعد ما يتحقق من الـ policies.
+
+وكمان تحدد المسار الداخلي (path) اللي بيروح عليه الريكويست داخل الـ backend.
+
+1️⃣ افتح ملف:
+/apiproxy/targets/default.xml
+إنت حاليًا عندك نسخة شبه دي:
+
+<TargetEndpoint name="default">
+  <Description/>
+  <FaultRules/>
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>VerifyAPIKey</Name>
+      </Step>
+      <Step>
+        <Name>AmeenSecurityCheck</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+  <Flows/>
+  <HTTPTargetConnection>
+    <LoadBalancer>
+      <Server name="APPServer"/>
+    </LoadBalancer>
+    <Path>/owner-sphere/b2b</Path>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+2️⃣ نحتاج نتأكد من حاجتين:
+✅ أولاً: السيرفر اللي اسمه APPServer متسجل في Apigee.
+روح على:
+
+Admin → Environments → Target Servers
+
+وتأكد إن فيه سيرفر اسمه APPServer
+ولو مش موجود، لازم تضيفه يدويًا وتحدد له:
+
+Name: APPServer
+
+Host: IP أو hostname بتاع السيرفر الفعلي
+(مثلاً: ownersphere-be.intranet.gosi.gov.sa)
+
+Port: غالبًا 8080 أو 443 حسب البيئة
+
+SSL Info: (اختياري لو بتستخدم HTTPS)
+
+✅ ثانيًا: تأكد إن الـ <Path> في الملف هو نفس المسار اللي backend بيتوقعه.
+مثلاً:
+لو backend بيستقبل الريكويست على:
+
+http://ownersphere-be.intranet.gosi.gov.sa/api/v1/establishments/{regNo}/suggestions
+يبقى لازم الـ <Path> يكون:
+
+<Path>/api/v1/establishments</Path>
+Apigee هيضيف عليها الجزء الأخير من الريكويست (/{regNo}/suggestions) أوتوماتيك لأنها جاية من الـ proxy path.
+
+✅ الشكل النهائي المقترح:
+<TargetEndpoint name="default">
+  <HTTPTargetConnection>
+    <LoadBalancer>
+      <Server name="APPServer"/>
+    </LoadBalancer>
+    <Path>/api/v1/establishments</Path>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+🔄 بعد التعديل:
+احفظ الملف.
+
+اعمل Deploy للـ API Proxy على environment intranet.
+
+اختبر الريكويست بنفس الـ curl اللي استخدمناه قبل كده.
+
+هل تحب أقولك بالضبط إزاي تضيف السيرفر APPServer في Apigee (خطوة بخطوة من الواجهة)؟
+
+You said:
+ايه الخطوه اللي بعدها
+ChatGPT said:
+تمام 👌،
+بما إنك خلصت الخطوة التالتة (ربط الـ Target Endpoint بالسيرفر الفعلي)، فدلوقتي نيجي لـ الخطوة الرابعة وهي المرحلة اللي بنبدأ فيها الاختبار والتأكد إن كل حاجة شغالة صح ✅
+
+🧾 الخطوة الرابعة: اختبار الـ API Proxy فعليًا
+الهدف هنا إنك تتأكد إن:
+
+الريكويست بيمر على الـ policies اللي ضفتها (VerifyAPIKey + AmeenSecurityCheck)
+
+الريكويست بيروح للسيرفر الفعلي (backend)
+
+الريسبونس بيرجع سليم من الـ backend
+
+1️⃣ أول حاجة: الحصول على الـ API Key
+من شاشة الـ Developer App اللي اسمها OwnerSphereApp:
+
+روح على قسم Credentials
+
+هتلاقي Consumer Key و Consumer Secret
+
+خُد الـ Consumer Key — ده هو الـ apikey اللي هتستخدمه في الريكويست
+
+2️⃣ اختبر باستخدام Curl (أو Postman)
+مثلاً:
+
+curl -X GET \
+  'https://ameenfea12-intranet.apigee.net/v1/owner-sphere/b2b/establishments/123456789/suggestions' \
+  -H 'apikey: <YOUR_CONSUMER_KEY>'
+✅ استبدل <YOUR_CONSUMER_KEY> بالـ key اللي جبته من الـ App
+
+3️⃣ لو الـ API شغال صح هتشوف:
+Status 200 OK
+
+Response JSON راجع من الـ backend
+(مثلاً قائمة الـ establishments المقترحة)
+
+4️⃣ لو حصل خطأ:
+الحالة	السبب المحتمل	الحل
+401 Unauthorized	الـ API Key غلط أو policy فشلت	تأكد من إنك بتحط الـ key الصحيح
+403 Forbidden	Policy AmeenSecurityCheck رفضت الريكويست	راجع إعدادات الأمان في الـ policy
+404 Not Found	الـ path في الـ Target غلط	تأكد من <Path> في target/default.xml
+500 Internal Server Error	backend فيه مشكلة	جرب تضرب backend مباشرة
+5️⃣ لو كل حاجة اشتغلت ✅
+يبقى كده:
+
+الـ proxy endpoint شغال
+
+الـ policies بتتطبق
+
+الـ route للـ backend سليم
+
+وتقدر بعد كده تنتقل للخطوة الخامسة 👇
+
+🔐 الخطوة الخامسة (الاختيارية): تفعيل الـ OAuth 2.0 أو إضافة Limits
+بعد ما تتأكد إن كل حاجة شغالة، تقدر تضيف:
+
+OAuth v2.0 policy لو عايز حماية أقوى من مجرد API key
+
+أو Spike Arrest / Quota لو عايز تحدد عدد الطلبات في الدقيقة أو الساعة
+
+هل عاوز نكمل في الخطوة الخامسة دي (تفعيل OAuth أو إضافة Rate Limit) ولا تفضل نعمل اختبار عملي مع curl الأول؟
+
+You said:
+انا معملتش حاجه في الباك اند بتاعي لحد لوقت
+ChatGPT said:
+تمام 💡 ده توضيح مهم جدًا — خلينا نوضح الصورة بهدوء واحدة واحدة 👇
+
+🎯 الوضع الحالي
+إنت دلوقتي خلصت إعداد الـ API Proxy في Apigee ✅
+لكن لسه ما ربطتش البروكسي فعليًا بالـ backend (يعني السيرفر اللي فيه الـ APIs الأصلية بتاعة Owner Sphere).
+
+بالتالي:
+
+Apigee دلوقتي يستقبل الريكويست على /v1/owner-sphere/b2b/...
+
+لكن لما يوصل للـ <TargetEndpoint> ما يلاقيش backend فعلي يروح له
+👉 فهيرجع Error (زي 404 أو 502 Bad Gateway)
+
+⚙️ المرحلة اللي محتاجين نعملها دلوقتي: ربط Apigee بالـ backend
+ودي هي الخطوة رقم (3 اللي كنا بنتكلم عنها سابقًا)، لكن هنفصلها هنا عمليًا 👇
+
+🧩 الخطوة 1: تأكد إن عندك Backend فعلي
+يعني لازم يكون عندك API حقيقية تقدر توصلها مباشرة (مثلاً في بيئة DEV أو UAT)
+زي:
+
+https://dev.owner-sphere.gosi.gov.sa/api/v1/establishments/suggestions
+لو لسه الـ backend ما اشتغلش أو مش جاهز — مفيش مشكلة
+تقدر مؤقتًا:
+
+تستخدم mock backend (زي RequestBin أو mock server بسيط)
+
+أو تخلي الـ TargetEndpoint مؤقتًا يرد برد ثابت (mock response داخل Apigee)
+
+🧱 الخطوة 2: تعديل الـ TargetEndpoint
+افتح الملف:
+
+/apiproxy/targets/default.xml
+وخليه بالشكل ده مؤقتًا لو عندك backend حقيقي:
+
+<TargetEndpoint name="default">
+  <HTTPTargetConnection>
+    <URL>https://dev.owner-sphere.gosi.gov.sa/api</URL>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+✅ لاحظ: هنا بنستخدم <URL> بدل <LoadBalancer> لأنك غالبًا هتستخدم endpoint واحد مش cluster.
+المسار /api هو base path للسيرفر الفعلي — عدله حسب بيئتك.
+
+🔄 الخطوة 3: Deploy التغييرات من جديد
+بعد التعديل:
+
+اعمل Save
+
+اعمل Deploy للـ Proxy على البيئة المناسبة (intranet أو test)
+
+جرب تبعت ريكويست تاني بالـ apikey
+
+🧪 الخطوة 4: اختبار (بـ Curl أو Postman)
+curl -X GET \
+  'https://ameenfea12-intranet.apigee.net/v1/owner-sphere/b2b/establishments/suggestions' \
+  -H 'apikey: <YOUR_CONSUMER_KEY>'
+لو الـ backend شغال ومربوط صح هتشوف response فعلي 🔥
+لو لسه backend مش جاهز، Apigee هيحاول يوصله ويرجعلك خطأ 502 أو timeout.
+
+هل عايزني أوريك إزاي تعمل mock backend مؤقت داخل Apigee بحيث تقدر تختبر كل حاجة من غير backend فعلي؟
+(ده مفيد جدًا لو backend لسه مش متاح.)
+
+
+
+
+No file chosenNo file chosen
+ChatGPT can make mistakes. Check important info.
