@@ -1,485 +1,1027 @@
-# 📚 **الشرح الكامل والشامل للـ Implementation من الألف للياء**
+# 📖 **شرح Implementation الكامل بالتفصيل**
 
 ---
 
-## 🎯 **1. الهدف الأساسي من المشروع**
+## **🎯 المهمة الأساسية:**
 
-### **المشكلة:**
-عندك مالك (Owner) بيسجل دخول على النظام، وعايز يختار المنشأة اللي هيشتغل عليها.
-النظام محتاج يقترح له منشآت بناءً على **الذكاء الاصطناعي (AI)**.
-
-### **الحل:**
-إنشاء **API** جديد يستدعي خدمة الـ AI ويرجع اقتراحات ذكية للمنشآت.
+إنشاء API جديد يعرض **اقتراحات المنشآت** (AI-Powered Suggestions) للمستخدمين في صفحة B2B، مع **قاعدة عمل مهمة**: الاقتراحات تظهر **مرة واحدة فقط** لكل منشأة.
 
 ---
 
-## 🧩 **2. المكونات الرئيسية في النظام**
+## **🏗️ Architecture Flow:**
 
-قبل ما نبدأ، خليني أشرحلك كل مكوّن في الـ Architecture:
-
-### **أ. UI (User Interface) - Angular**
-- ده الواجهة اللي المستخدم بيشوفها (الموقع أو التطبيق).
-- بيبعت **HTTP Request** للـ backend عشان يجيب البيانات.
-
----
-
-### **ب. Apigee (API Gateway)**
-**يعني إيه API Gateway؟**
-- تخيله **حارس البوابة** أو **الريسيبشن** في شركة.
-- أي طلب (request) جاي من UI لازم يعدّي على Apigee الأول.
-
-**وظيفته:**
-1. **التحقق من الهوية (Authentication):**
-   - يشيك إن الـ request فيه API Key صحيح.
-   - زي ما الحارس يتأكد إن معاك بطاقة دخول.
-
-2. **الأمان (Security):**
-   - بيطبّق سياسات أمان (مثلاً: AmeenSecurityCheck).
-   - بيمنع الطلبات المشبوهة أو الضارة.
-
-3. **التوجيه (Routing):**
-   - بيوجّه الطلب للمكان الصحيح (Backend، OSB، إلخ).
-
-4. **Rate Limiting:**
-   - بيحدد عدد الطلبات اللي ممكن تتبعت في الدقيقة/الساعة.
-   - يمنع الـ DDoS attacks.
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐      ┌─────────┐      ┌─────────┐
+│   UI/Web    │ ───► │   Apigee    │ ───► │ OWS Backend │ ───► │ Apigee  │ ───► │   OSB   │ ───► AI Service
+│             │      │   Proxy #1  │      │ (Controller)│      │ Proxy#2 │      │         │
+└─────────────┘      └─────────────┘      └─────────────┘      └─────────┘      └─────────┘
+                           │                     │                    │
+                           │                     │                    │
+                      Security/Auth         Business Logic      NEW (to create)
+                                                  │
+                                                  ▼
+                                           ┌─────────────┐
+                                           │  Database   │
+                                           │  (Tracking) │
+                                           └─────────────┘
+```
 
 ---
 
-### **ج. OWS Backend (Owner Sphere Backend) - Java/Spring Boot**
-**ده القلب النابض للنظام.**
+## **📁 Files Structure:**
 
-**وظيفته:**
-- استقبال الطلبات من Apigee.
-- تنفيذ **Business Logic** (المنطق التجاري).
-- الاتصال بقواعد البيانات.
-- استدعاء خدمات خارجية (زي OSB أو AI).
-- إرجاع النتيجة النهائية.
+### **1️⃣ DTOs (Data Transfer Objects):**
+مكان الملفات: `ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/dto/`
 
-**التقنيات المستخدمة:**
-- **Spring Boot** - Framework للـ Java
-- **RestTemplate** - للـ HTTP Calls
-- **JPA/Hibernate** - للتعامل مع Database
-- **Lombok** - لتبسيط الكود
+#### **أ) SuggestionsResponse.java**
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SuggestionsResponse implements Serializable {
+    private List<EstablishmentSuggestion> establishments;
+}
+```
 
----
-
-### **د. OSB (Oracle Service Bus)**
-**يعني إيه Service Bus؟**
-- تخيله **محطة الباص** اللي بتوصل بين أماكن مختلفة.
-- أو **مترجم** بين نظامين ما بيتكلموش نفس اللغة.
-
-**وظيفته:**
-- **Middleware** (وسيط) بين الـ Backend والخدمات الخارجية.
-- بيحوّل صيغة البيانات (Transformation).
-- بيوجّه الطلبات لأكثر من جهة (Routing).
-- بيعمل Logging و Monitoring.
-
-**ليه محتاجين OSB؟**
-- علشان نفصل الـ Backend عن الخدمات الخارجية.
-- لو الـ AI service اتغير مكانه أو طريقته، نعدّل OSB بس.
-- الـ Backend ما يتأثرش.
-
----
-
-### **هـ. AI Service (خدمة الذكاء الاصطناعي)**
-**ده النظام اللي بيشتغل عليه فريق الـ AI.**
-
-**وظيفته:**
-- استقبال بيانات المنشأة (Registration Number).
-- تحليلها باستخدام **Machine Learning Models**.
-- إرجاع قائمة بالمنشآت المقترحة مع نسبة التطابق.
-
-**مثال:**
+**الغرض:** Response الرئيسي للـ API  
+**المحتوى:** فقط array من establishments  
+**لماذا بسيط؟** لأن الـ API Spec يحدد Response بهذا الشكل فقط:
 ```json
-Request: { "regNo": 501234567 }
-
-Response: {
-  "suggestions": [
-    {
-      "establishmentId": 501999888,
-      "establishmentName": "شركة النجاح للتجارة",
-      "matchScore": 0.92,
-      "reason": "Similar industry"
-    }
-  ]
+{
+  "establishments": [...]
 }
 ```
 
 ---
 
-## 🔄 **3. الـ Flow الكامل (من البداية للنهاية)**
-
-### **السيناريو:**
-مالك اسمه "أحمد" دخل على النظام، وعايز يختار المنشأة اللي هيشتغل عليها.
-
----
-
-### **الخطوة 1: UI تبعت Request**
-```http
-GET https://ameenfea12.apigee.net/v1/owner-sphere/b2b/501234567/suggestions
-Headers:
-  apikey: AbLvRAQpDbkKi9haiVOzydAGShiDhpGC
+#### **ب) EstablishmentSuggestion.java**
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class EstablishmentSuggestion implements Serializable {
+    private String establishmentName;           // اسم المنشأة
+    private String establishmentLocation;       // موقع المنشأة
+    private DateInfo startDate;                 // تاريخ البداية
+    private Long unn;                           // رقم موحد وطني
+    private Long registrationNumber;            // رقم السجل
+    private BilingualText suggestionReason;     // سبب الاقتراح (عربي/انجليزي)
+}
 ```
 
-**شرح:**
-- الـ URL فيها رقم المنشأة: `501234567`
-- الـ `apikey` ده للتحقق من هوية التطبيق.
+**الغرض:** تمثيل منشأة واحدة مقترحة  
+**Fields:** كلها من الـ API Spec - كل field له معنى:
+- `establishmentName`: اسم المنشأة المقترحة
+- `establishmentLocation`: موقعها الجغرافي
+- `startDate`: تاريخ بدء النشاط
+- `unn`: Unified National Number
+- `registrationNumber`: رقم التسجيل
+- `suggestionReason`: **مهم جداً** - السبب بالعربي والانجليزي (مثال: "نفس المالك"، "Same Owner")
 
 ---
 
-### **الخطوة 2: Apigee Proxy #1 يستقبل الطلب**
+#### **ج) DateInfo.java**
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DateInfo implements Serializable {
+    private String entryFormat;    // "GREGORIAN" أو "HIJRI"
+    private String gregorian;      // "2025-10-26T12:30:00.000Z"
+    private String hijiri;         // "1447-04-23"
+}
+```
 
-**الـ Proxy:** `OSP_EstablishmentServiceAPIProxy`
-**المسار:** `/v1/owner-sphere/b2b/{regNo}/suggestions`
-
-**اللي بيحصل جوه Apigee:**
-1. **PreFlow (Request):**
-   ```xml
-   <Step><Name>VerifyAPIKey</Name></Step>
-   <Step><Name>AmeenSecurityCheck</Name></Step>
-   ```
-   - بيتحقق من الـ `apikey` صحيح ولا لأ.
-   - لو غلط → يرجع **401 Unauthorized**.
-   - لو صح → يكمل.
-
-2. **Routing:**
-   ```xml
-   <TargetEndpoint>default</TargetEndpoint>
-   ```
-   - بيوجّه الطلب للـ **OWS Backend**.
+**الغرض:** دعم التقويمين (الميلادي والهجري)  
+**لماذا؟** النظام السعودي يحتاج التاريخين دائماً  
+**Format:**
+- Gregorian: ISO 8601 format
+- Hijiri: Simple date format
 
 ---
 
-### **الخطوة 3: OWS Backend يستقبل الطلب**
+#### **د) SuggestionsActionRequest.java**
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SuggestionsActionRequest implements Serializable {
+    @NotNull(message = "Action is required")
+    private String action;              // "FOLLOWED", "SKIPPED", "VIEWED"
+    
+    @Min(value = 0)
+    private Integer followedCount;      // عدد المنشآت اللي تابعها المستخدم
+}
+```
 
-#### **أ. Controller يستقبل الطلب**
+**الغرض:** تسجيل إجراء المستخدم على الاقتراحات  
+**الـ Actions الممكنة:**
+- `FOLLOWED`: المستخدم تابع بعض/كل المنشآت المقترحة
+- `SKIPPED`: المستخدم تخطى كل الاقتراحات
+- `VIEWED`: المستخدم شاف الاقتراحات بس ما عمل شي
 
-📂 `B2BSuggestionsController.java`
+---
+
+### **2️⃣ Controller Layer:**
+مكان الملف: B2BSuggestionsController.java
 
 ```java
-@RestController
-@RequestMapping("/owner-sphere/b2b")
+@GosiRestController
+@Slf4j
+@RequestMapping(value = "/owner-sphere/b2b", produces = MediaType.APPLICATION_JSON_VALUE)
 public class B2BSuggestionsController {
 
     @Autowired
-    private OsbAiProxy osbAiProxy;
-
-    @GetMapping("/{regNo}/suggestions")
-    public ResponseEntity<SuggestionsResponse> getSuggestions(@PathVariable Long regNo) {
-        log.info("Received request for regNo: {}", regNo);
-        
-        // استدعاء الـ Proxy
-        SuggestionsResponse response = osbAiProxy.fetchAiSuggestions(regNo);
-        
-        return ResponseEntity.ok(response);
-    }
-}
+    private EstablishmentSuggestionsService suggestionsService;
 ```
 
-**شرح السطور:**
-
-| السطر | الشرح |
-|-------|-------|
-| `@RestController` | بيقول لـ Spring إن ده Controller بيرد JSON |
-| `@RequestMapping("/owner-sphere/b2b")` | المسار الأساسي |
-| `@GetMapping("/{regNo}/suggestions")` | المسار الفرعي + HTTP Method |
-| `@PathVariable Long regNo` | بياخد الرقم من الـ URL |
-| `osbAiProxy.fetchAiSuggestions(regNo)` | بينادي على الـ Proxy Service |
-| `ResponseEntity.ok(response)` | بيرجع HTTP 200 مع الـ response |
+**الغرض:** نقطة الدخول للـ API  
+**Annotations:**
+- `@GosiRestController`: Custom annotation للـ REST controllers في GOSI
+- `@Slf4j`: للـ logging
+- `@RequestMapping`: Base path لكل الـ endpoints
 
 ---
 
-#### **ب. Proxy Service يكلم Apigee**
+#### **Endpoint #1: GET Suggestions**
+```java
+@GetMapping("/{regNo}/suggestions")
+@AmeenReadOnlyTransaction
+public ResponseEntity<SuggestionsResponse> getSuggestions(
+    @PathVariable("regNo") @NotNull Long regNo
+) {
+    log.info("Received suggestions request for regNo: {}", regNo);
+    
+    // استخراج personId من JWT token
+    Long personId = getCurrentPersonId();
+    
+    // استدعاء الخدمة
+    SuggestionsResponse response = suggestionsService.getAiSuggestions(regNo, personId);
+    
+    log.info("Returning {} establishments for regNo: {}", 
+        response.getEstablishments() != null ? response.getEstablishments().size() : 0, 
+        regNo);
+    
+    return ResponseEntity.ok(response);
+}
+```
 
-📂 OsbAiProxy.java
+**الشرح التفصيلي:**
+1. **Path:** `/owner-sphere/b2b/{regNo}/suggestions`
+2. **Method:** GET (قراءة فقط)
+3. **Input:** رقم السجل (regNo) من الـ URL
+4. **Process:**
+   - يستخرج `personId` من JWT token (هوية المستخدم الحالي)
+   - يستدعي Service للحصول على الاقتراحات
+   - يرجع Response
+5. **@AmeenReadOnlyTransaction:** يفتح read-only transaction (ما يعدل على قاعدة البيانات)
+
+**⚠️ ملاحظة مهمة:** الـ API Spec **ما فيه** `personId` كـ query parameter، لذلك نستخرجه من الـ JWT token بدلاً من طلبه من المستخدم.
+
+---
+
+#### **Endpoint #2: POST Action**
+```java
+@PostMapping("/{regNo}/suggestions/action")
+@AmeenTransaction
+public ResponseEntity<Void> recordAction(
+    @PathVariable("regNo") @NotNull Long regNo,
+    @Valid @RequestBody SuggestionsActionRequest actionRequest
+) {
+    log.info("Recording action for regNo: {}, action: {}", regNo, actionRequest.getAction());
+    
+    suggestionsService.recordUserAction(
+        regNo, 
+        actionRequest.getAction(), 
+        actionRequest.getFollowedCount()
+    );
+    
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+}
+```
+
+**الشرح التفصيلي:**
+1. **Path:** `/owner-sphere/b2b/{regNo}/suggestions/action`
+2. **Method:** POST (كتابة/تعديل)
+3. **Input:** 
+   - `regNo` من URL
+   - `SuggestionsActionRequest` من Request Body
+4. **Process:**
+   - يستقبل إجراء المستخدم (follow/skip/view)
+   - يسجله في قاعدة البيانات
+   - يرجع 204 No Content (نجح بدون محتوى)
+5. **@AmeenTransaction:** يفتح read-write transaction (يعدل قاعدة البيانات)
+6. **@Valid:** يتحقق من صحة البيانات (مثلاً action مو null)
+
+---
+
+#### **Endpoint #3: Should Display (Utility)**
+```java
+@GetMapping("/{regNo}/suggestions/should-display")
+@AmeenReadOnlyTransaction
+public ResponseEntity<Boolean> shouldDisplaySuggestions(
+    @PathVariable("regNo") @NotNull Long regNo
+) {
+    boolean shouldDisplay = suggestionsService.shouldDisplaySuggestions(regNo);
+    log.info("Should display suggestions for regNo {}: {}", regNo, shouldDisplay);
+    return ResponseEntity.ok(shouldDisplay);
+}
+```
+
+**الغرض:** Utility endpoint للـ UI  
+**الفائدة:** الـ UI يقدر يتحقق قبل عرض الصفحة: هل يعرض panel الاقتراحات ولا لا؟  
+**Returns:**
+- `true`: عرض الاقتراحات (أول مرة)
+- `false`: لا تعرض (تم العرض سابقاً)
+
+---
+
+### **3️⃣ Service Layer (Business Logic):**
+مكان الملف: EstablishmentSuggestionsService.java
 
 ```java
+@Slf4j
+@Service
+public class EstablishmentSuggestionsService {
+
+    @Autowired
+    private OsbAiProxy osbAiProxy;  // للاتصال بـ AI
+    
+    @Autowired
+    private EstablishmentSuggestionsStatusRepository statusRepository;  // قاعدة البيانات
+```
+
+**الغرض:** يحتوي على **Business Logic الأساسية**  
+**Dependencies:**
+- `OsbAiProxy`: للاتصال بـ AI service
+- `EstablishmentSuggestionsStatusRepository`: للوصول لقاعدة البيانات
+
+---
+
+#### **Method #1: getAiSuggestions()**
+```java
+@Transactional(readOnly = true)
+public SuggestionsResponse getAiSuggestions(Long regNo, Long personId) {
+    log.info("Fetching AI suggestions for regNo: {}, personId: {}", regNo, personId);
+
+    // 1️⃣ تحقق: هل تم عرض الاقتراحات سابقاً؟
+    boolean alreadyShown = statusRepository.wereSuggestionsShown(regNo);
+
+    if (alreadyShown) {
+        // ✋ تم العرض سابقاً - أرجع response فاضي
+        log.info("Suggestions already shown for regNo: {}. Returning empty response.", regNo);
+        return new SuggestionsResponse(null);  // establishments = null
+    }
+
+    // 2️⃣ أول مرة - استدعي AI service
+    SuggestionsResponse response = osbAiProxy.fetchAiSuggestions(regNo);
+
+    // 3️⃣ سجل في قاعدة البيانات: "تم العرض"
+    recordSuggestionsShown(regNo, personId);
+
+    return response;  // أرجع الاقتراحات
+}
+```
+
+**الشرح بالخطوات:**
+
+**خطوة 1: التحقق من قاعدة البيانات**
+```java
+boolean alreadyShown = statusRepository.wereSuggestionsShown(regNo);
+```
+- يبحث في الجدول: هل يوجد سجل لهذا `regNo`؟
+- إذا موجود → `alreadyShown = true`
+- إذا مو موجود → `alreadyShown = false`
+
+**خطوة 2: إذا تم العرض سابقاً**
+```java
+if (alreadyShown) {
+    return new SuggestionsResponse(null);
+}
+```
+- يرجع response فاضي: `{ "establishments": null }`
+- الـ UI يفهم: لا تعرض panel الاقتراحات
+
+**خطوة 3: أول مرة - استدعاء AI**
+```java
+SuggestionsResponse response = osbAiProxy.fetchAiSuggestions(regNo);
+```
+- يستدعي Proxy للاتصال بـ AI
+- AI يرجع قائمة منشآت مقترحة
+
+**خطوة 4: التسجيل في قاعدة البيانات**
+```java
+recordSuggestionsShown(regNo, personId);
+```
+- ينشئ سجل جديد في الجدول
+- يحفظ: regNo + personId + timestamp + flag "shown = true"
+
+**النتيجة النهائية:**
+- **المرة الأولى:** AI suggestions ترجع → تنحفظ في DB → User يشوفها
+- **المرات اللاحقة:** DB تقول "تم العرض" → Null ترجع → User ما يشوف شي
+
+---
+
+#### **Method #2: recordUserAction()**
+```java
+@Transactional
+public void recordUserAction(Long regNo, String action, Integer followedCount) {
+    log.info("Recording action for regNo: {}, action: {}, count: {}", regNo, action, followedCount);
+
+    // 1️⃣ ابحث عن السجل الموجود
+    EstablishmentSuggestionsStatusEntity status = statusRepository.findByRegistrationNo(regNo)
+        .orElseThrow(() -> new IllegalStateException("Suggestions status not found for regNo: " + regNo));
+
+    // 2️⃣ حدّث السجل بالإجراء الجديد
+    status.setUserAction(action);                           // "FOLLOWED" / "SKIPPED" / "VIEWED"
+    status.setFollowedCount(followedCount != null ? followedCount : 0);
+    status.setActionDate(LocalDateTime.now());              // وقت الإجراء
+
+    // 3️⃣ احفظ التحديثات
+    statusRepository.save(status);
+    log.info("Action recorded successfully for regNo: {}", regNo);
+}
+```
+
+**الشرح:**
+1. **يبحث عن السجل:** لازم يكون موجود (لأن `recordSuggestionsShown()` أنشأه)
+2. **يحدّث الـ fields:**
+   - `userAction`: "FOLLOWED", "SKIPPED", أو "VIEWED"
+   - `followedCount`: عدد المنشآت اللي تابعها (0 إذا skipped)
+   - `actionDate`: الوقت الحالي
+3. **يحفظ:** UPDATE في قاعدة البيانات
+
+**مثال:**
+```
+Before: { regNo: 12345, shown: true, action: null, count: null }
+After:  { regNo: 12345, shown: true, action: "FOLLOWED", count: 3 }
+```
+
+---
+
+#### **Method #3: shouldDisplaySuggestions()**
+```java
+@Transactional(readOnly = true)
+public boolean shouldDisplaySuggestions(Long regNo) {
+    return !statusRepository.wereSuggestionsShown(regNo);
+}
+```
+
+**بسيط جداً:**
+- `true` → ما تم العرض → عرض الاقتراحات
+- `false` → تم العرض → لا تعرض
+
+---
+
+#### **Private Method: recordSuggestionsShown()**
+```java
+private void recordSuggestionsShown(Long regNo, Long personId) {
+    EstablishmentSuggestionsStatusEntity status = new EstablishmentSuggestionsStatusEntity();
+    status.setRegistrationNo(regNo);
+    status.setSuggestionsShown(true);           // 🔑 المفتاح: "تم العرض"
+    status.setFirstShownDate(LocalDateTime.now());
+    status.setPersonId(personId);
+    status.setFollowedCount(0);
+
+    statusRepository.save(status);
+    log.info("Recorded suggestions shown for regNo: {}, personId: {}", regNo, personId);
+}
+```
+
+**الغرض:** إنشاء سجل جديد = "تم عرض الاقتراحات لأول مرة"  
+**المحتوى:**
+- `registrationNo`: رقم المنشأة
+- `suggestionsShown`: **true** (هذا هو المهم!)
+- `firstShownDate`: متى تم العرض
+- `personId`: مين شاف الاقتراحات
+
+---
+
+### **4️⃣ Proxy Layer (HTTP Client):**
+مكان الملف: OsbAiProxy.java
+
+```java
+@Slf4j
 @Service
 public class OsbAiProxy {
 
     @Value("${api.base.url}")
-    private String apigeeBaseUrl;  // ← http://amnapigeedev.gosi.ins:9640
+    private String apigeeBaseUrl;  // http://amnapigeedev.gosi.ins:9640
 
     @Value("${app.apikey}")
-    private String apiKey;  // ← AbLvRAQpDbkKi9haiVOzydAGShiDhpGC
+    private String apiKey;         // API Key للـ Apigee
 
     private final RestTemplate restTemplate;
+```
 
-    public SuggestionsResponse fetchAiSuggestions(Long regNo) {
-        String requestId = UUID.randomUUID().toString();
-        log.info("[{}] Calling Apigee for regNo: {}", requestId, regNo);
+**الغرض:** الاتصال بـ AI Service عبر Apigee → OSB  
+**Configuration:**
+- `apigeeBaseUrl`: عنوان Apigee gateway
+- `apiKey`: مفتاح الأمان
 
-        try {
-            // 1️⃣ بناء الـ URL
-            String url = String.format(
-                "%s/v1/osb/ai/suggestions?regNo=%d", 
-                apigeeBaseUrl, 
-                regNo
+---
+
+#### **fetchAiSuggestions() Method:**
+```java
+public SuggestionsResponse fetchAiSuggestions(Long regNo) {
+    String requestId = UUID.randomUUID().toString();
+    log.info("[RequestId: {}] Fetching AI suggestions for regNo: {}", requestId, regNo);
+
+    try {
+        // 1️⃣ بناء URL
+        String url = String.format("%s/v1/osb/ai/suggestions?regNo=%d", apigeeBaseUrl, regNo);
+        // مثال: http://amnapigeedev.gosi.ins:9640/v1/osb/ai/suggestions?regNo=12345678
+        
+        // 2️⃣ تحضير Headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-Request-Id", requestId);     // للـ tracking
+        headers.set("apikey", apiKey);              // للـ authentication
+        
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        // 3️⃣ HTTP Call
+        ResponseEntity<SuggestionsResponse> response = restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            entity,
+            SuggestionsResponse.class
+        );
+
+        SuggestionsResponse body = response.getBody();
+        
+        if (body != null) {
+            log.info("[RequestId: {}] Successfully received {} establishments from AI", 
+                requestId, 
+                body.getEstablishments() != null ? body.getEstablishments().size() : 0
             );
-            // النتيجة: http://amnapigeedev.gosi.ins:9640/v1/osb/ai/suggestions?regNo=501234567
-
-            // 2️⃣ إعداد الـ Headers
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("X-Request-Id", requestId);
-            headers.set("apikey", apiKey);  // ← للتحقق في Apigee
-
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-
-            // 3️⃣ HTTP GET Request
-            ResponseEntity<SuggestionsResponse> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                SuggestionsResponse.class
-            );
-
-            return response.getBody();
-
-        } catch (HttpClientErrorException e) {
-            // 4xx errors
-            log.error("Client error: {}", e.getStatusCode());
-            return buildErrorResponse(requestId, "CLIENT_ERROR", "Invalid request");
-
-        } catch (HttpServerErrorException e) {
-            // 5xx errors
-            log.error("Server error: {}", e.getStatusCode());
-            return buildErrorResponse(requestId, "AI_SERVER_ERROR", "AI service error");
-
-        } catch (ResourceAccessException e) {
-            // Timeout
-            log.error("Timeout: {}", e.getMessage());
-            return buildErrorResponse(requestId, "AI_UNAVAILABLE", "AI unavailable");
-
-        } catch (Exception e) {
-            log.error("Unexpected error: {}", e.getMessage());
-            return buildErrorResponse(requestId, "ERROR", "Unexpected error");
         }
-    }
 
-    private SuggestionsResponse buildErrorResponse(String requestId, String status, String message) {
-        SuggestionsResponse fallback = new SuggestionsResponse();
-        fallback.setStatus(status);
-        fallback.setMessage(message);
-        fallback.setSuggestions(Collections.emptyList());
-        fallback.setRequestId(requestId);
-        fallback.setTimestamp(Instant.now().toEpochMilli());
-        return fallback;
+        return body;
+
+    } catch (HttpClientErrorException e) {
+        // 4xx errors (مثلاً 400 Bad Request)
+        log.error("[RequestId: {}] Client error calling AI service: {}", requestId, e.getStatusCode());
+        return new SuggestionsResponse(Collections.emptyList());
+
+    } catch (HttpServerErrorException e) {
+        // 5xx errors (مثلاً 500 Internal Server Error)
+        log.error("[RequestId: {}] Server error from AI service: {}", requestId, e.getStatusCode());
+        return new SuggestionsResponse(Collections.emptyList());
+
+    } catch (ResourceAccessException e) {
+        // Timeout / Connection refused
+        log.error("[RequestId: {}] AI service timeout or unreachable: {}", requestId, e.getMessage());
+        return new SuggestionsResponse(Collections.emptyList());
+
+    } catch (Exception e) {
+        // Any other error
+        log.error("[RequestId: {}] Unexpected error calling AI for regNo {}: {}", 
+            requestId, regNo, e.getMessage(), e);
+        return new SuggestionsResponse(Collections.emptyList());
     }
 }
 ```
 
-**شرح Error Handling:**
+**الشرح بالتفصيل:**
 
-| نوع الخطأ | متى يحصل | الرد |
-|-----------|----------|------|
-| `HttpClientErrorException` | لو Apigee رجع 400/404 | `CLIENT_ERROR` |
-| `HttpServerErrorException` | لو OSB أو AI رجع 500 | `AI_SERVER_ERROR` |
-| `ResourceAccessException` | لو حصل Timeout | `AI_UNAVAILABLE` |
-| `Exception` | أي خطأ تاني | `ERROR` |
-
-**في كل الحالات:** بيرجع response فيها:
-- `status`: نوع الخطأ
-- `suggestions`: قائمة فاضية `[]`
-- `message`: رسالة توضيحية
-
----
-
-### **الخطوة 4: Apigee Proxy #2 يستقبل الطلب من Backend**
-
-**الـ Proxy الجديد:** `OSB_AISuggestionsProxy` ← **لازم ينعمل**
-**المسار:** `/v1/osb/ai/suggestions`
-
-**اللي بيحصل:**
-1. **PreFlow:**
-   - بيتحقق من الـ `apikey` اللي Backend بعته.
-   
-2. **Routing:**
-   - بيوجّه الطلب للـ **OSB**.
-
----
-
-### **الخطوة 5: OSB يوصّل للـ AI**
-
-**OSB** بياخد الطلب من Apigee ويبعته للـ **AI Service**.
-
-**الـ AI Service:**
-- بيستقبل `regNo=501234567`
-- بيحلل البيانات باستخدام ML Models
-- بيرجع قائمة الاقتراحات:
-
-```json
-{
-  "status": "SUCCESS",
-  "suggestions": [
-    {
-      "establishmentId": 501999888,
-      "establishmentName": "شركة النجاح للتجارة",
-      "matchScore": 0.92,
-      "reason": "Similar industry",
-      "industry": "Retail",
-      "location": "Riyadh"
-    },
-    {
-      "establishmentId": 501777666,
-      "establishmentName": "مؤسسة التجارة المتقدمة",
-      "matchScore": 0.85,
-      "reason": "Same owner network",
-      "industry": "Wholesale",
-      "location": "Jeddah"
-    }
-  ]
-}
-```
-
----
-
-### **الخطوة 6: الرد يرجع عكس المسار**
-
-```
-AI → OSB → Apigee #2 → Backend → Apigee #1 → UI
-```
-
----
-
-## 📦 **4. DTOs (Data Transfer Objects)**
-
-### **أ. SuggestionsResponse**
+**1. بناء URL:**
 ```java
-public class SuggestionsResponse {
-    private String status;              // حالة الطلب
-    private List<EstablishmentSuggestion> suggestions;  // القائمة
-    private String message;             // رسالة إضافية
-    private String requestId;           // للـ tracking
-    private Long timestamp;             // وقت الرد
-}
+String url = String.format("%s/v1/osb/ai/suggestions?regNo=%d", apigeeBaseUrl, regNo);
 ```
+- Base: `http://amnapigeedev.gosi.ins:9640`
+- Path: `/v1/osb/ai/suggestions`
+- Query: `?regNo=12345678`
+- **Result:** `http://amnapigeedev.gosi.ins:9640/v1/osb/ai/suggestions?regNo=12345678`
 
-### **ب. EstablishmentSuggestion**
+**2. Headers:**
 ```java
-public class EstablishmentSuggestion {
-    private Long establishmentId;       // رقم المنشأة
-    private String establishmentName;   // الاسم
-    private Double matchScore;          // نسبة التطابق (0-1)
-    private String reason;              // سبب الاقتراح
-    private String industry;            // النشاط
-    private String location;            // الموقع
+headers.set("X-Request-Id", requestId);  // UUID للـ tracking/debugging
+headers.set("apikey", apiKey);           // مفتاح الأمان
+```
+
+**3. HTTP Call:**
+```java
+restTemplate.exchange(url, HttpMethod.GET, entity, SuggestionsResponse.class)
+```
+- يرسل GET request
+- ينتظر Response
+- يحوّل JSON → `SuggestionsResponse` object
+
+**4. Error Handling (مهم جداً!):**
+
+**أ) 4xx Errors (Client Errors):**
+```java
+catch (HttpClientErrorException e) {
+    // مثلاً: 400 Bad Request, 404 Not Found
+    return new SuggestionsResponse(Collections.emptyList());
+}
+```
+- المشكلة من طرفنا (wrong parameters, etc.)
+- يرجع list فاضي بدلاً من crash
+
+**ب) 5xx Errors (Server Errors):**
+```java
+catch (HttpServerErrorException e) {
+    // مثلاً: 500 Internal Server Error
+    return new SuggestionsResponse(Collections.emptyList());
+}
+```
+- المشكلة من AI service
+- يرجع list فاضي
+
+**ج) Timeout/Connection:**
+```java
+catch (ResourceAccessException e) {
+    // AI service down أو بطيء
+    return new SuggestionsResponse(Collections.emptyList());
 }
 ```
 
----
-
-## ⚙️ **5. Configuration (الإعدادات)**
-
-### **في application-local.properties:**
-
-```properties
-# Apigee URL
-api.base.url=http://amnapigeedev.gosi.ins:9640
-
-# API Key
-app.apikey=AbLvRAQpDbkKi9haiVOzydAGShiDhpGC
-
-# OSB Proxy Path
-osb.ai.apigee.path=/v1/osb/ai/suggestions
-
-# Timeout
-osb.ai.timeout=10000
-```
-
-**شرح:**
-- `api.base.url`: عنوان Apigee
-- `app.apikey`: المفتاح للتحقق
-- `osb.ai.apigee.path`: المسار للـ Proxy التاني
-- `osb.ai.timeout`: الانتظار الأقصى (10 ثواني)
+**الفلسفة:** **Graceful Degradation**
+- إذا AI service فشل → لا تكسر الـ API
+- أرجع list فاضي → User experience أفضل
 
 ---
 
-## 🧪 **6. الاختبار**
+### **5️⃣ Database Layer:**
 
-### **Request:**
-```bash
-curl -X GET \
-  'https://ameenfea12.apigee.net/v1/owner-sphere/b2b/501234567/suggestions' \
-  -H 'apikey: AbLvRAQpDbkKi9haiVOzydAGShiDhpGC'
+#### **أ) Entity (الجدول):**
+مكان الملف: EstablishmentSuggestionsStatusEntity.java
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = false)
+@Entity
+@Table(name = "OSP_ESTABLISHMENT_SUGGESTIONS_STATUS", schema = "OWS_ADMIN")
+public class EstablishmentSuggestionsStatusEntity extends Auditable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OSP_EST_SUGGESTIONS_SEQ")
+    @SequenceGenerator(name = "OSP_EST_SUGGESTIONS_SEQ", sequenceName = "OSP_EST_SUGGESTIONS_SEQ", allocationSize = 1)
+    @Column(name = "ID")
+    private Long id;
+
+    @Column(name = "REGISTRATION_NO", nullable = false, unique = true)
+    private Long registrationNo;  // 🔑 Unique constraint
+
+    @Column(name = "SUGGESTIONS_SHOWN", nullable = false)
+    private Boolean suggestionsShown = false;  // 🎯 المفتاح الرئيسي
+
+    @Column(name = "USER_ACTION", length = 20)
+    private String userAction;  // "FOLLOWED", "SKIPPED", "VIEWED"
+
+    @Column(name = "FOLLOWED_COUNT")
+    private Integer followedCount = 0;
+
+    @Column(name = "FIRST_SHOWN_DATE")
+    private LocalDateTime firstShownDate;
+
+    @Column(name = "ACTION_DATE")
+    private LocalDateTime actionDate;
+
+    @Column(name = "PERSON_ID")
+    private Long personId;
+}
 ```
 
-### **Response (Success):**
-```json
-{
-  "status": "SUCCESS",
-  "suggestions": [
-    {
-      "establishmentId": 501999888,
-      "establishmentName": "شركة النجاح للتجارة",
-      "matchScore": 0.92,
-      "reason": "Similar industry",
-      "industry": "Retail",
-      "location": "Riyadh"
+**الشرح:**
+
+**JPA Annotations:**
+- `@Entity`: هذا class يمثل جدول في قاعدة البيانات
+- `@Table`: اسم الجدول = `OSP_ESTABLISHMENT_SUGGESTIONS_STATUS`
+- `@Id`: Primary key
+- `@GeneratedValue`: auto-increment من sequence
+- `@Column`: تحديد اسم العمود والخصائص
+
+**Fields المهمة:**
+
+**1. registrationNo:**
+```java
+@Column(name = "REGISTRATION_NO", nullable = false, unique = true)
+private Long registrationNo;
+```
+- **Unique constraint:** كل منشأة لها سجل واحد فقط!
+- **Not null:** لازم يكون موجود
+
+**2. suggestionsShown:**
+```java
+@Column(name = "SUGGESTIONS_SHOWN", nullable = false)
+private Boolean suggestionsShown = false;
+```
+- **القلب النابض للـ business logic!**
+- `true` → تم العرض → لا تعرض مرة ثانية
+- `false` → ما تم العرض → عرض الاقتراحات
+
+**3. userAction:**
+```java
+@Column(name = "USER_ACTION", length = 20)
+private String userAction;
+```
+- "FOLLOWED": تابع منشآت
+- "SKIPPED": تخطى الكل
+- "VIEWED": شاف بس
+
+**4. followedCount:**
+```java
+@Column(name = "FOLLOWED_COUNT")
+private Integer followedCount = 0;
+```
+- إذا action = FOLLOWED → كم منشأة تابع؟
+- إذا action = SKIPPED → 0
+
+**5. Timestamps:**
+```java
+private LocalDateTime firstShownDate;  // متى تم العرض لأول مرة
+private LocalDateTime actionDate;      // متى المستخدم عمل action
+```
+
+**extends Auditable:**
+- يرث fields زي `createdBy`, `createdDate`, `lastModifiedBy`, `lastModifiedDate`
+- للـ auditing (مين عمل ايش ومتى)
+
+---
+
+#### **ب) Repository (الوصول للبيانات):**
+مكان الملف: `ownersphere/src/main/java/sa/gov/gosi/si/osp/business/ownersphere/repository/EstablishmentSuggestionsStatusRepository.java`
+
+```java
+public interface EstablishmentSuggestionsStatusRepository 
+    extends JpaRepository<EstablishmentSuggestionsStatusEntity, Long> {
+
+    /**
+     * ابحث عن سجل بواسطة registration number
+     */
+    Optional<EstablishmentSuggestionsStatusEntity> findByRegistrationNo(Long registrationNo);
+
+    /**
+     * تحقق: هل تم عرض الاقتراحات؟
+     */
+    default boolean wereSuggestionsShown(Long registrationNo) {
+        return findByRegistrationNo(registrationNo)
+            .map(EstablishmentSuggestionsStatusEntity::getSuggestionsShown)
+            .orElse(false);  // إذا مافي سجل → false (ما تم العرض)
     }
-  ],
-  "message": null,
-  "requestId": "abc-123-xyz",
-  "timestamp": 1729612345000
 }
 ```
 
-### **Response (Error - AI Unavailable):**
-```json
-{
-  "status": "AI_UNAVAILABLE",
-  "suggestions": [],
-  "message": "AI service is temporarily unavailable",
-  "requestId": "def-456-uvw",
-  "timestamp": 1729612350000
+**الشرح:**
+
+**1. JpaRepository:**
+```java
+extends JpaRepository<EstablishmentSuggestionsStatusEntity, Long>
+```
+- Spring Data JPA يعطيك methods جاهزة:
+  - `save()`: INSERT أو UPDATE
+  - `findById()`: ابحث بالـ ID
+  - `delete()`: احذف
+  - ... والكثير
+
+**2. findByRegistrationNo():**
+```java
+Optional<EstablishmentSuggestionsStatusEntity> findByRegistrationNo(Long registrationNo);
+```
+- Spring Data **يولّد** هذا الـ SQL تلقائياً:
+```sql
+SELECT * FROM OSP_ESTABLISHMENT_SUGGESTIONS_STATUS 
+WHERE REGISTRATION_NO = ?
+```
+- يرجع `Optional<Entity>`:
+  - موجود → `Optional.of(entity)`
+  - مو موجود → `Optional.empty()`
+
+**3. wereSuggestionsShown() - Default Method:**
+```java
+default boolean wereSuggestionsShown(Long registrationNo) {
+    return findByRegistrationNo(registrationNo)
+        .map(EstablishmentSuggestionsStatusEntity::getSuggestionsShown)
+        .orElse(false);
 }
 ```
 
----
+**الشرح خطوة بخطوة:**
 
-## 🔐 **7. الأمان (Security)**
-
-### **المستويات:**
-1. **API Key في Apigee:**
-   - كل request لازم فيه `apikey`
-   - لو مش موجود → 401
-
-2. **AmeenSecurityCheck:**
-   - فحص أمني إضافي داخلي
-   - بيتأكد من المصدر
-
-3. **OAuth 2.0 (اختياري):**
-   - للحماية الأقوى
-
----
-
-## 📊 **8. الخلاصة النهائية**
-
-### **المكونات:**
-| المكوّن | الوظيفة | التقنية |
-|---------|---------|---------|
-| UI | الواجهة | Angular |
-| Apigee #1 | أمان + توجيه | API Gateway |
-| Backend | منطق العمل | Spring Boot |
-| Apigee #2 | وسيط لـ OSB | API Gateway |
-| OSB | تحويل + توجيه | Oracle Service Bus |
-| AI | الذكاء الاصطناعي | ML Models |
-
-### **الـ Flow:**
+```java
+findByRegistrationNo(registrationNo)  // ابحث عن السجل
 ```
-UI → Apigee #1 → Backend → Apigee #2 → OSB → AI
-                                              ↓
-UI ← Apigee #1 ← Backend ← Apigee #2 ← OSB ← AI
+- يرجع `Optional<Entity>`
+
+```java
+.map(EstablishmentSuggestionsStatusEntity::getSuggestionsShown)
+```
+- إذا السجل موجود → خذ قيمة `suggestionsShown`
+- يرجع `Optional<Boolean>`
+
+```java
+.orElse(false)
+```
+- إذا السجل **موجود** → يرجع `true/false` (حسب الـ field)
+- إذا السجل **مو موجود** → يرجع `false` (default)
+
+**مثال:**
+```
+Case 1: سجل موجود + shown=true  → يرجع true
+Case 2: سجل موجود + shown=false → يرجع false
+Case 3: سجل مو موجود           → يرجع false
 ```
 
-### **الملفات:**
-1. `B2BSuggestionsController.java` - REST Controller
-2. OsbAiProxy.java - HTTP Client
-3. `SuggestionsResponse.java` - DTO
-4. `EstablishmentSuggestion.java` - DTO
-5. osp.properties - Configuration
+---
+
+#### **ج) SQL Script:**
+مكان الملف: `owner-sphere-db-scripts/migration_scripts/create_suggestions_status_table.sql`
+
+```sql
+-- 1️⃣ إنشاء Sequence (للـ auto-increment)
+CREATE SEQUENCE OSP_EST_SUGGESTIONS_SEQ
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+-- 2️⃣ إنشاء الجدول
+CREATE TABLE OSP_ESTABLISHMENT_SUGGESTIONS_STATUS (
+    ID NUMBER(19) NOT NULL,                              -- Primary Key
+    REGISTRATION_NO NUMBER(19) NOT NULL,                 -- رقم المنشأة (Unique)
+    SUGGESTIONS_SHOWN NUMBER(1) DEFAULT 0 NOT NULL,      -- 1=shown, 0=not shown
+    USER_ACTION VARCHAR2(20),                            -- FOLLOWED/SKIPPED/VIEWED
+    FOLLOWED_COUNT NUMBER(10) DEFAULT 0,                 -- عدد المتابعات
+    FIRST_SHOWN_DATE TIMESTAMP,                          -- متى تم العرض
+    ACTION_DATE TIMESTAMP,                               -- متى تم الإجراء
+    PERSON_ID NUMBER(19),                                -- مين شافها
+    CREATED_BY VARCHAR2(255),                            -- Audit
+    CREATED_DATE TIMESTAMP DEFAULT SYSTIMESTAMP,         -- Audit
+    LAST_MODIFIED_BY VARCHAR2(255),                      -- Audit
+    LAST_MODIFIED_DATE TIMESTAMP DEFAULT SYSTIMESTAMP,   -- Audit
+    CONSTRAINT PK_OSP_EST_SUGGESTIONS PRIMARY KEY (ID),  -- Primary Key
+    CONSTRAINT UK_OSP_EST_SUGGESTIONS_REG UNIQUE (REGISTRATION_NO)  -- Unique!
+);
+
+-- 3️⃣ إنشاء Indexes (للسرعة)
+CREATE INDEX IDX_OSP_EST_SUGG_REG_NO ON OSP_ESTABLISHMENT_SUGGESTIONS_STATUS(REGISTRATION_NO);
+CREATE INDEX IDX_OSP_EST_SUGG_SHOWN ON OSP_ESTABLISHMENT_SUGGESTIONS_STATUS(SUGGESTIONS_SHOWN);
+
+-- 4️⃣ Comments (للتوثيق)
+COMMENT ON TABLE OSP_ESTABLISHMENT_SUGGESTIONS_STATUS IS 'Tracks whether AI suggestions were shown for establishments';
+
+-- 5️⃣ Permissions
+GRANT SELECT, INSERT, UPDATE ON OSP_ESTABLISHMENT_SUGGESTIONS_STATUS TO OWS_USR;
+GRANT SELECT ON OSP_EST_SUGGESTIONS_SEQ TO OWS_USR;
+```
+
+**الشرح:**
+
+**1. Sequence:**
+- Oracle ما عنده `AUTO_INCREMENT` زي MySQL
+- بدلاً منه نستخدم `SEQUENCE`
+- كل INSERT جديد يأخذ رقم تلقائي (1, 2, 3, ...)
+
+**2. UNIQUE Constraint:**
+```sql
+CONSTRAINT UK_OSP_EST_SUGGESTIONS_REG UNIQUE (REGISTRATION_NO)
+```
+- **مهم جداً!** يضمن: منشأة واحدة = سجل واحد
+- لو حاولت INSERT نفس `regNo` مرتين → Oracle يرفض
+
+**3. Indexes:**
+```sql
+CREATE INDEX IDX_OSP_EST_SUGG_REG_NO ON ... (REGISTRATION_NO);
+```
+- يسرّع البحث بـ `registrationNo`
+- بدون index → البحث بطيء (Full Table Scan)
+- مع index → البحث سريع (Index Seek)
+
+**4. Permissions:**
+```sql
+GRANT SELECT, INSERT, UPDATE ON ... TO OWS_USR;
+```
+- يعطي صلاحيات للـ application user (OWS_USR)
+- يقدر يقرأ/يضيف/يعدل
+- **ما يقدر** يحذف (ما فيه DELETE)
 
 ---
 
-**هل فيه أي جزء محتاج توضيح أكتر؟** 🤔
+## **🔄 Complete Flow Example:**
+
+### **Scenario: User يدخل على منشأة لأول مرة**
+
+```
+1️⃣ UI → Apigee Proxy #1
+   GET /v1/owner-sphere/b2b/12345678/suggestions
+   Headers: { Authorization: Bearer <JWT>, x-apikey: xxx }
+
+2️⃣ Apigee Proxy #1 → OWS Backend (Controller)
+   ✅ Validates JWT
+   ✅ Checks API key
+   ✅ Routes to B2BSuggestionsController
+
+3️⃣ Controller.getSuggestions(12345678)
+   ├─ Extracts personId from JWT → 999
+   └─ Calls service.getAiSuggestions(12345678, 999)
+
+4️⃣ Service.getAiSuggestions()
+   ├─ Checks DB: statusRepository.wereSuggestionsShown(12345678)
+   │  └─ SELECT * FROM OSP_ESTABLISHMENT_SUGGESTIONS_STATUS WHERE REGISTRATION_NO = 12345678
+   │  └─ Result: ❌ No record found → returns false
+   │
+   ├─ alreadyShown = false → First time!
+   │
+   ├─ Calls osbAiProxy.fetchAiSuggestions(12345678)
+   │
+   └─ Calls recordSuggestionsShown(12345678, 999)
+      └─ INSERT INTO OSP_ESTABLISHMENT_SUGGESTIONS_STATUS 
+          (ID, REGISTRATION_NO, SUGGESTIONS_SHOWN, PERSON_ID, FIRST_SHOWN_DATE, ...)
+          VALUES (1, 12345678, 1, 999, SYSTIMESTAMP, ...)
+
+5️⃣ OsbAiProxy.fetchAiSuggestions()
+   ├─ Builds URL: http://apigee.../v1/osb/ai/suggestions?regNo=12345678
+   ├─ Sends GET request with apikey header
+   └─ Apigee Proxy #2 → OSB → AI Service
+      └─ AI returns: { "establishments": [
+            {
+              "establishmentName": "شركة النور للتجارة",
+              "registrationNumber": 987654321,
+              "suggestionReason": {
+                "arabic": "نفس المالك",
+                "english": "Same Owner"
+              },
+              ...
+            },
+            ...
+          ]}
+
+6️⃣ Service returns response to Controller
+   └─ Response: { "establishments": [...] }
+
+7️⃣ Controller returns HTTP 200 OK
+   └─ Body: { "establishments": [...] }
+
+8️⃣ UI receives suggestions
+   ├─ Shows suggestions panel
+   └─ User sees: "نقترح عليك متابعة هذه المنشآت: شركة النور للتجارة، ..."
+```
+
+---
+
+### **Scenario: User يرجع لنفس المنشأة (مرة ثانية)**
+
+```
+1️⃣-3️⃣ Same as above...
+
+4️⃣ Service.getAiSuggestions()
+   ├─ Checks DB: statusRepository.wereSuggestionsShown(12345678)
+   │  └─ SELECT * FROM OSP_ESTABLISHMENT_SUGGESTIONS_STATUS WHERE REGISTRATION_NO = 12345678
+   │  └─ Result: ✅ Record found! { id: 1, shown: true }
+   │  └─ Returns true
+   │
+   ├─ alreadyShown = true → Skip AI call!
+   │
+   └─ return new SuggestionsResponse(null);
+      └─ Response: { "establishments": null }
+
+5️⃣ Controller returns HTTP 200 OK
+   └─ Body: { "establishments": null }
+
+6️⃣ UI receives null
+   ├─ ❌ Doesn't show suggestions panel
+   └─ Redirects user to B2B page directly
+```
+
+---
+
+### **Scenario: User يتابع منشآت**
+
+```
+1️⃣ UI → POST /v1/owner-sphere/b2b/12345678/suggestions/action
+   Body: { "action": "FOLLOWED", "followedCount": 3 }
+
+2️⃣ Controller.recordAction(12345678, request)
+
+3️⃣ Service.recordUserAction(12345678, "FOLLOWED", 3)
+   ├─ Finds existing record: findByRegistrationNo(12345678)
+   │  └─ SELECT * FROM ... WHERE REGISTRATION_NO = 12345678
+   │  └─ Returns: { id: 1, shown: true, action: null, ... }
+   │
+   └─ Updates record:
+      └─ UPDATE OSP_ESTABLISHMENT_SUGGESTIONS_STATUS
+          SET USER_ACTION = 'FOLLOWED',
+              FOLLOWED_COUNT = 3,
+              ACTION_DATE = SYSTIMESTAMP
+          WHERE ID = 1
+
+4️⃣ Controller returns HTTP 204 No Content
+   └─ Success!
+```
+
+---
+
+## **📊 Database State Timeline:**
+
+```
+⏰ Time: T0 (قبل أي شي)
+┌─────────────────────────────────────────────────┐
+│  OSP_ESTABLISHMENT_SUGGESTIONS_STATUS Table     │
+├─────────────────────────────────────────────────┤
+│  (empty - no records)                           │
+└─────────────────────────────────────────────────┘
+
+⏰ Time: T1 (User visits regNo=12345678 - First Time)
+┌──────┬────────────┬─────────┬────────┬─────────┬──────────────┬────────────┬──────────┐
+│ ID   │ REGIS_NO   │ SHOWN   │ ACTION │ COUNT   │ FIRST_SHOWN  │ ACTION_DT  │ PERSON   │
+├──────┼────────────┼─────────┼────────┼─────────┼──────────────┼────────────┼──────────┤
+│ 1    │ 12345678   │ 1       │ NULL   │ 0       │ 2025-10-26   │ NULL       │ 999      │
+│      │            │         │        │         │ 02:30:00     │            │          │
+└──────┴────────────┴─────────┴────────┴─────────┴──────────────┴────────────┴──────────┘
+
+⏰ Time: T2 (User follows 3 establishments)
+┌──────┬────────────┬─────────┬──────────┬─────────┬──────────────┬────────────┬──────────┐
+│ ID   │ REGIS_NO   │ SHOWN   │ ACTION   │ COUNT   │ FIRST_SHOWN  │ ACTION_DT  │ PERSON   │
+├──────┼────────────┼─────────┼──────────┼─────────┼──────────────┼────────────┼──────────┤
+│ 1    │ 12345678   │ 1       │ FOLLOWED │ 3       │ 2025-10-26   │ 2025-10-26 │ 999      │
+│      │            │         │          │         │ 02:30:00     │ 02:35:00   │          │
+└──────┴────────────┴─────────┴──────────┴─────────┴──────────────┴────────────┴──────────┘
+
+⏰ Time: T3 (User visits again - Second Time)
+┌──────┬────────────┬─────────┬──────────┬─────────┬──────────────┬────────────┬──────────┐
+│ ID   │ REGIS_NO   │ SHOWN   │ ACTION   │ COUNT   │ FIRST_SHOWN  │ ACTION_DT  │ PERSON   │
+├──────┼────────────┼─────────┼──────────┼─────────┼──────────────┼────────────┼──────────┤
+│ 1    │ 12345678   │ 1  ←────┼──────────┼─────────┼──────────────┼────────────┼──────────┤
+│      │            │ TRUE!   │ FOLLOWED │ 3       │ 2025-10-26   │ 2025-10-26 │ 999      │
+│      │            │ ↓       │          │         │ 02:30:00     │ 02:35:00   │          │
+│      │            │ Skip AI!│          │         │              │            │          │
+└──────┴────────────┴─────────┴──────────┴─────────┴──────────────┴────────────┴──────────┘
+```
+
+---
+
+## **🎯 Business Rules Summary:**
+
+### **Rule #1: Show Once**
+```
+IF (record exists in DB with shown=true)
+  THEN return null → UI skips panel
+  ELSE call AI → save to DB → return suggestions
+```
+
+### **Rule #2: Unique Establishment**
+```
+CONSTRAINT: One record per registrationNo
+→ Can't have duplicate entries
+→ Prevents "showing twice" bug
+```
+
+### **Rule #3: Action Tracking**
+```
+User can:
+  - FOLLOW (some/all establishments) → Count > 0
+  - SKIP (all) → Count = 0
+  - VIEW (just close) → Count = 0
+```
+
+---
+
+## **🛠️ Error Handling Philosophy:**
+
+### **Graceful Degradation:**
+```java
+// ❌ Bad approach:
+if (aiServiceFails) {
+    throw new RuntimeException("AI failed!");  // Breaks entire API
+}
+
+// ✅ Good approach:
+if (aiServiceFails) {
+    return new SuggestionsResponse(Collections.emptyList());  // Empty list
+}
+```
+
+**Why?**
+- AI service فشل → User يشوف صفحة فاضية (أحسن من error page)
+- Logging موجود → Developers يعرفون المشكلة
+- User experience ما ينكسر
+
+---
+
+## **📝 Key Takeaways:**
+
+1. **DTOs** = Contract مع الـ UI (per API Spec)
+2. **Controller** = Entry point (HTTP layer)
+3. **Service** = Business logic ("show once" rule)
+4. **Proxy** = External calls (AI service)
+5. **Repository** = Database access
+6. **Entity** = Database table representation
+7. **SQL Script** = Database schema
+
+**The Flow:**
+```
+HTTP Request → Controller → Service → [Check DB]
+                                      ├─ Already shown? → Return null
+                                      └─ First time? → Call AI → Save DB → Return suggestions
+```
+
+---
+
+🎉 **هذا هو الـ Implementation الكامل!**
