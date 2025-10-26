@@ -1,244 +1,426 @@
-Summarized conversation historyI'll write a short todo list to track this explanation task and next implementation actions, then I'll provide the full A→Z implementation explanation in Arabic and actionable next steps. 
+# 🔐 Apigee KVM (Key-Value Maps) Setup Guide
 
-Created 7 todos
-
-أبدأ بشرح ما طلبت — شرح تفصيلي من الألف إلى الياء لِـ "B2B Suggested establishments" بناءً على كل التعديلات والملفات اللي عملناها في المشروع، ثم أعلّق على النقاط المفتوحة، المشاكل اللي ظهرت أثناء البناء (build)، وخطة تنفيذ واضحة للخطوات التالية مع مرفقات عملية (أين أعمل التغييرات، ماذا أرسل للـ Infra/DB/UI/AI teams، وكيف أتحقق من الشغل محلياً).
-
-## ما سأغطيه الآن
-- نظرة عامة على الحل والهندسة المعمارية
-- قائمة الملفات الأساسية والغرض منها (مصدر/مسار)
-- تدفق الطلب من الواجهة إلى AI (خطوة بخطوة)
-- نموذج البيانات (DTOs) والشكل النهائي للـ JSON
-- طبقة الخدمة (قواعد العمل: عرض مرة واحدة فقط وتسجيل الإجراءات)
-- طبقة الـ proxy (الاتصال بـ Apigee / OSB / AI) ومعالجة الأخطاء
-- المخزن (JPA) وتخطيط الـ DB + السكربت
-- قضايا البناء الحالية (لماذا فشل mvn وكيف نحلها)
-- كيف تختبر محلياً (خطوات سريعة)
-- حالات الحافة والاعتبارات الأمنية
-- عناصر العمل التالية (من يحتاج يتدخل وماذا يفعل)
-- ملاحظات ختامية وملخص سريع
-
-## 1) نظرة عامة على الحل (Architecture)
-الحل صُمم كخدمة في وحدة ownersphere داخل المشروع. الهدف: عند زيارة صفحة مؤسسة (establishment) في واجهة B2B تُعرض "Suggested Establishments" مقترحة من خدمة AI — لكن فقط مرة واحدة لكل تسجيل مؤسسة (regNo). إذا قام المستخدم بأي تفاعل (Followed, Partially Followed, Skipped, View) تُسجل الحالة وتُمنع الإظهار لاحقاً.
-
-الخط الزمني للطلب:
-1. UI يطلب اقتراحات لمؤسسة برقم تسجيل regNo عبر Apigee Proxy (UI → Apigee Proxy #1).
-2. Apigee يمرر الطلب إلى خدمة OWS/ownersphere (REST API الجديد).
-3. الخدمة تتحقق في قاعدة البيانات هل الاقتراحات ظهرت سابقاً لهذه المؤسسة:
-   - إذا نُفِذت سابقاً: تُعيد [] (قائمة فارغة) أو علامة "لا عرض".
-   - إذا لا: تستدعي Apigee (أو OSB عبر Apigee) الذي يتصل بالـ AI (متطلب infra).
-4. تستقبل الخدمة استجابة AI (قائمة اقتراحات)، تُسجل أن الاقتراحات عُرضت (row في DB)، وتُعيد الاستجابة للـ UI.
-5. عندما يتفاعل المستخدم (Follow/Skip/Connect) يتم POST لواجهة actions ليُسَجّل الإجراء ويُحدّث السجل.
-
-ملاحظات:
-- Outbound إلى AI يجب أن يمر عبر Apigee (تم تعديل الـ proxy لطلب Apigee URL).
-- سياسة "عرض مرة واحدة" تُطبّق على مستوى registrationNumber، وليست per-user بالوقت الحالي (يمكن توسيع لاحقاً).
-
-## 2) الملفات الأساسية التي تم إنشاؤها/تعديلها (مسارات + غرض)
-(أدرج فقط الملفات المهمة لتنفيذ الميزة)
-
-- API interface + impl (مطابقة لمعايير المشروع)
-  - `osp-api/src/main/java/sa/gov/gosi/si/osp/api/b2b/B2BSuggestionsApi.java`
-    - واجهة API (GET/POST endpoints): تعريف المسارات والـ DTOs على مستوى الـ API module.
-  - `osp-api/src/main/java/sa/gov/gosi/si/osp/api/b2b/B2BSuggestionsApiImpl.java`
-    - تطبيق الـ API، يحتوي على الترحيل إلى الطبقة الخدمية (`EstablishmentSuggestionsService`).
-    - ملاحظة: `getCurrentPersonId()` حالياً placeholder ويجب ربطه بالسياق الأمني (JWT).
-
-- DTOs (في وحدة ownersphere لكي تكون متاحة للخدمة والـ proxy)
-  - `ownersphere/src/main/java/.../dto/SuggestionsResponse.java`
-    - الحقل الرئيسي: `List<EstablishmentSuggestion> establishments` (مطابق للمواصفة).
-  - `ownersphere/src/main/java/.../dto/EstablishmentSuggestion.java`
-    - الحقول: `establishmentName`, `establishmentLocation`, `DateInfo startDate`, `Long unn`, `String registrationNumber`, `BilingualText suggestionReason`.
-  - `ownersphere/src/main/java/.../dto/DateInfo.java`
-    - الحقول: `entryFormat`, `gregorian`, `hijiri`.
-  - `ownersphere/src/main/java/.../dto/SuggestionsActionRequest.java`
-    - لالتقاط أفعال المستخدم (action enum/ string, followedCount) من UI.
-
-- خدمة الأعمال (Service)
-  - `ownersphere/src/main/java/.../service/EstablishmentSuggestionsService.java`
-    - تحقق ما إذا عُرضت الاقتراحات مسبقاً، استدعاء proxy، تسجيل الحالة، وتحديث حالة الإجراء.
-
-- الـ proxy (Outbound client)
-  - `ownersphere/src/main/java/.../proxy/service/OsbAiProxy.java`
-    - مسؤول عن استدعاء Apigee endpoint (يستخدم RestTemplate أو HttpClient).
-    - يقرأ الـ base URL و apiKey من خصائص التطبيق (application.properties).
-    - يتعامل مع استثناءات HTTP وtimeouts ويقوم بفallback إلى `empty` response (degrade gracefully).
-
-- الكيان (JPA Entity) والمستودع
-  - `ownersphere/src/main/java/.../domain/EstablishmentSuggestionsStatusEntity.java`
-    - Fields: id (sequence), registrationNo (unique), suggestionsShown (Boolean), userAction (String), followedCount (Integer), firstShownDate (Timestamp), actionDate (Timestamp), personId (Long).
-    - ورث `Auditable` ليتوافق مع بقية المشروع.
-  - `ownersphere/src/main/java/.../repository/EstablishmentSuggestionsStatusRepository.java`
-    - JpaRepository مع طرق بحث findByRegistrationNo(...) ومساعدة boolean wereSuggestionsShown(...).
-
-- DB script
-  - `owner-sphere-db-scripts/migration_scripts/create_suggestions_status_table.sql`
-    - إنشاء SEQUENCE وTABLE مع constraints وindex وgrants.
-
-- وثائق Apigee
-  - `APIGEE_OSB_PROXY_SETUP.md` (شرح كيف تهيئ الـ proxy، KVM للمفاتيح، وإنشاء Developer App).
-
-## 3) تدفق الطلب مفصّل (مثال GET)
-1. UI -> GET /api/b2b/{regNo}/suggestions (تمرير regNo كـ path param).
-2. `B2BSuggestionsApiImpl.getSuggestions(regNo)` يُستدعى.
-   - يستخرج `personId` من السياق (حالياً return 1L placeholder).
-   - ينادي `EstablishmentSuggestionsService.getAiSuggestions(regNo, personId)`.
-3. `EstablishmentSuggestionsService.getAiSuggestions`
-   - يستدعي repository: `wereSuggestionsShown(regNo)`:
-     - إذا true => يعيد `SuggestionsResponse` مع empty `establishments`.
-     - إذا false:
-       - يدعو `OsbAiProxy.fetchAiSuggestions(regNo)`.
-       - عند نجاح الاستدعاء: يسجل row جديد في `OSP_ESTABLISHMENT_SUGGESTIONS_STATUS` مع suggestionsShown=true, firstShownDate=now, personId=...، ثم يعيد الـ response كما هو.
-       - عند فشل الاستدعاء (timeout أو 5xx): سجّل خطأ في اللوج، وأعد `SuggestionsResponse` مع empty `establishments` (graceful fallback).
-4. UI يعرض الاقتراحات (إن وُجدت). عند أي تفاعل، UI ترسل POST إلى `/api/b2b/{regNo}/suggestions/action` مع body `SuggestionsActionRequest`.
-5. `B2BSuggestionsApiImpl.recordAction` ينادي `service.recordUserAction(regNo, request)`.
-   - الخدمة تحدث السجل (userAction, followedCount, actionDate) — بحيث بعد أي فعل تُعتبر العملية "مكتملة".
-
-## 4) نموذج البيانات (JSON نهائي كما في المواصفة)
-الاستجابة المتوقعة من الـ API (مطابقة حرفياً للمواصفة):
-
-{
-  "establishments": [
-    {
-      "establishmentName": "شركة مثال",
-      "establishmentLocation": "الرياض",
-      "startDate": {
-        "entryFormat": "01/01/1440",
-        "gregorian": "2019-09-11",
-        "hijiri": "1440-01-01"
-      },
-      "unn": 123456789,
-      "registrationNumber": "1234567890",
-      "suggestionReason": {
-        "arabic": "سبب بالعربية",
-        "english": "reason in english"
-      }
-    },
-    ...
-  ]
-}
-
-ملاحظات: `suggestionReason` يستخدم كائن bilingual (`BilingualText` موجود في الـ common-library)؛ الحقول قد تُملأ من AI أو من منطق داخلي.
-
-## 5) قواعد العمل الأساسية (Business rules)
-- "Show once" rule:
-  - بمجرد أن تُعرض الاقتراحات لأول مرة على أي مستخدم أو يتم أي تفاعل (Followed / Skipped / Viewed) تُسجّل السجل وتمنع الإظهار لاحقاً (per registrationNumber).
-- أي فعل (Follow/Skip/View/Connect) يُعتبر إتماماً للعملية ويمنع إعادة العرض.
-- إذا فشل استدعاء AI: الخدمة تعيد قائمة فارغة بدلاً من خطأ 5xx (degrade gracefully).
-- سجل التتبع يحتفظ بـ personId (لتحليل لاحق)، firstShownDate و actionDate.
-- (اقتراح مستقبلي) يمكن تغيير القاعدة لتكون per-user بدلاً من per-establishment إن طُلِب.
-
-## 6) الـ Proxy (تفاصيل التنفيذ والمقاومات)
-- `OsbAiProxy` يقوم باستدعاء Apigee URL مُكوّن من property `api.base.url` (مثلاً `https://apigee.company.local`).
-- يضيف Header `x-api-key` من `app.apikey` أو تُمخزن في Apigee KVM (تبع infra).
-- إعدادات timeout قابلة للتحديد عبر `osb.ai.timeout`.
-- عند استجابة 200: يحول JSON إلى `SuggestionsResponse` DTO.
-- عند HttpClientErrorException/HttpServerErrorException/ResourceAccessException: يلتقط الاستثناء، يسجل خطأ، ويُعيد `new SuggestionsResponse(Collections.emptyList())`.
-- يجب أن يكون استدعاء الـ proxy قابل للاختبار (تقليد/mock) في الاختبارات.
-
-## 7) JPA / DB + SQL Script
-- الكيان `EstablishmentSuggestionsStatusEntity` يُخزن:
-  - id (sequence `OSP_EST_SUGGESTIONS_SEQ`),
-  - registration_no (unique),
-  - suggestions_shown (boolean),
-  - user_action (varchar),
-  - followed_count (number),
-  - first_shown_date (timestamp),
-  - action_date (timestamp),
-  - person_id (number).
-- سجل SQL: `create_suggestions_status_table.sql` أنشأ sequence + table + index + grants. المساهمة التالية: تسليم الملف لـ DBA ليجري التنفيذ في dev/test/prod.
-- بعد إنشاء الجدول تأكد من أن التطبيق لديه الصلاحية للـ insert/update/select.
-
-## 8) قضايا البناء (Build) التي ظهرت وكيف نحلها
-أثناء تنفيذ وتجميع المشروع ظهر خطأ أساسي في مرحلة الـ compile يخص ملفات QueryDSL المولّدة التي تشير إلى `javax.annotation.processing.Generated` مما أدى إلى فشل `mvn clean install`.
-
-السبب: إصدار JDK/annotation API أو الاعتماديات (dependencies) لم تشمل `javax.annotation-api` أو لم يكن classpath الخاص annotation processor يحتوي النوع `Generated`. هذا شائع عندما تُولّد ملفات QueryDSL أو JPA Metamodel والتي تستخدم `javax.annotation.Generated`.
-
-مقترحات الحل:
-1. في `ownersphere/pom.xml` أو الـ parent pom أضف dependency لـ javax.annotation:
-   - للمشاريع التي تستخدم Java 9+ قد تحتاج إلى:
-     - `javax.annotation:javax.annotation-api:1.3.2` أو أحدث
-     - أو `jakarta.annotation:jakarta.annotation-api:1.3.5` حسب النسخة المطلوبة
-   - مثال (pom.xml):
-     <dependency>
-       <groupId>javax.annotation</groupId>
-       <artifactId>javax.annotation-api</artifactId>
-       <version>1.3.2</version>
-     </dependency>
-   - ثم شغّل `mvn clean compile -DskipTests` مجدداً.
-2. إذا كان الـ build يستخدم Java 11+ وملفات الـ generated تستخدم `javax.annotation.processing.Generated` وفي حالات أخرى تتطلب تعديل plugin لطبق `-parameters` أو استخدام إصدار QueryDSL متوافق.
-3. بديل: إعادة توليد الـ Q-classes باستخدام نسخة QueryDSL متوافقة أو تغيير الـ imports في الأصناف المولدة — لكن هذا أقل استحساناً لأنه يتطلب تعديل مولدات الكود.
-
-أنا مُستعد الآن لإضافة هذا التغيير مباشرة إلى `ownersphere/pom.xml` وأقوم بتشغيل build فحص محلي لو سمحت تأكيد إنك تريد أني أطبق الحل (أضيف dependency وأشغّل mvn) — أستطيع تنفيذ خطوة واحدة الآن وأتحقق من نتيجة البناء. (ملاحظة: سأعدّل فقط pom الخاص بالموديول ownersphere إن ذلك يناسب تنظيم المشروع).
-
-## 9) كيف تختبر العمل محلياً (خطوات عملية)
-- متطلبات:
-  - JDK (مطابق لمشروع، على الأغلب Java 11 أو 17 — تأكد من نسخة المشروع).
-  - Maven.
-  - قاعدة بيانات dev (يمكن استخدام Oracle local أو dockerized db) — أو إعداد ملف application-dev.properties لتأشير إلى قاعدة dev.
-- خطوات تشغيل سريعة (محلي):
-  - تأكد من تحديث الخصائص:
-    - `application.properties` أو `application-dev.properties` يحتوي:
-      - api.base.url=https://apigee.dev.example
-      - app.apikey=xxxxx (يمكن وضع قيمة dummy أثناء الاختبار)
-      - osb.ai.timeout=5000
-  - إن كنت ستجرب فقط الخدمة دون الحاجة للـ AI، قم بعمل Mock للـ OsbAiProxy (باستخدام Mockito في اختبار الوحدة) ليُعيد sample SuggestionsResponse.
-  - شغّل build:
-    - mvn -pl ownersphere -am clean package -DskipTests
-  - شغّل التطبيق (أو كتابة اختبار integration بسيط باستخدام SpringBootTest مع MockBean لـ OsbAiProxy).
-  - اختبر endpoints عبر curl/Postman:
-    - GET http://localhost:8080/api/b2b/123456/suggestions
-    - POST http://localhost:8080/api/b2b/123456/suggestions/action  body: {"action":"FOLLOWED", "followedCount":1}
-
-سأدرج أوامر PowerShell جاهزة إن رغبت.
-
-## 10) حالات الحافة (Edge cases)
-- regNo غير معروف/غير صالح: الخدمة يجب أن تُعيد 400 أو [] حسب سياق المواصفة؛ حالياً نعتمد على validation قبل الوصول للخدمة.
-- اتصال AI بطيء أو فشل: نرجع [] ونسجل خطأ في اللوج؛ يجب التنبيه في الـ monitoring.
-- قفزات concurrency: عدة طلبات لـ same regNo تقريباً في وقت متقارب قد تؤدي إلى race condition حيث يُطلب AI مرتين قبل أن يسجل DB أن الاقتراحات عُرضت. حلول:
-  - استخدام قفل صف (DB lock) أو شرط upsert atomic (INSERT ... ON CONFLICT أو MERGE) بناءً على الـ DB.
-  - أو تحقق مجدد بعد حصول النتيجة قبل إدخال السجل.
-- تعدد المستخدمين vs per-user requirement: المواصفات الحالية per-establishment. إن أردنا per-user يجب تعديل الـ key لتكون (personId, registrationNo).
-- تغيّر صيغة استجابة AI: يجب وجود طبقة معالجة لتحويل الاستجابة إلى `EstablishmentSuggestion` مع الحقول المطلوبة.
-
-## 11) عناصر العمل التالية — من يحتاج ماذا
-- Infra (Apigee admin):
-  - إنشاء Proxy #1 (UI → OWS) وتوجيه endpoint الصحيح.
-  - إنشاء Proxy #2 أو تعديل flow OWS → OSB → AI، إعداد KVM لـ apiKey.
-  - إنشاء Developer App وAPI Product إن لزم.
-- DBA:
-  - تطبيق `create_suggestions_status_table.sql` في بيئات dev/test/prod والتحقق من الصلاحيات.
-- Security team:
-  - تأكيد اسم الـ claim في JWT الذي يحوي `personId` أو كيف نستخرجهواضح كيفية الوصول له من الـ SecurityContext. أحتاج قيمة الـ claim أو مثال عن الـ JWT payload.
-- AI team / OSB:
-  - تأكيد endpoint الذي يجب استدعاؤه (URL، method، headers، body) وحقل `suggestionReason` وتنسيق التواريخ، وأيضاً ما إذا كان علينا تمرير سياق إضافي (قطاع، نوع، history).
-- Frontend/UI:
-  - استلام نماذج JSON وأحداث (Follow, Skip, Connect) وواجهة المستخدم لـ "Show once" + أزرار Select All / Refresh / Skip.
-- QA/Testing:
-  - كتابة اختبارات وحدية لخدمة وproxy وintegration test mocking OsbAiProxy.
-
-## 12) ملخص تنفيذ التغييرات التي قمت بها (ماذا تغير في الكود)
-- أضفت واجهة API وImplementation مطابقين لمعايير المشروع.
-- بنية DTOs تم وضعها في وحدة ownersphere لكي تكون متاحة للـ service والـ proxy.
-- كتبت منطق الخدمة الذي يطبق "عرض مرة واحدة" ويستدعي proxy للـ AI.
-- أنشأت proxy مع fallback عند فشل الاتصال.
-- أنشأت Entity وRepository لتتبع حالة العرض وإجراءات المستخدم.
-- أضفت SQL DDL لإنشاء الجدول sequence.
-- وثقت متطلبات Apigee وكيفية الإعداد (ملف MD).
-
-التحقق: بعد التعديلات حاولت تشغيل build وواجهت خطأ متعلق بالـ generated classes والـ javax.annotation.Generated — حاجة لإضافة dependency أو تهيئة الـ annotation processing classpath.
-
-## 13) هل أطبق الآن إصلاح build تلقائياً؟
-أقدر أطبق التعديل التالي الآن:
-- أضيف dependency `javax.annotation:javax.annotation-api:1.3.2` إلى `ownersphere/pom.xml` (أو إلى parent pom إذا هذا مناسب).
-- أشغّل `mvn -pl ownersphere -am clean compile -DskipTests` وأوافيك بالنتيجة (PASS/FAIL مع الأخطاء).
-
-هذا سيحل غالباً مشكلة `cannot find symbol: Generated`. أريد تأكيد منك للمتابعة بتنفيذ هذه الخطوة الآن. إن وافقت أطبّق التغيير وأشغّل البناء، ثم أقدّم تقرير مبسّط: ما تمّ، والنتيجة (نجح/فشل) وما التالي.
+## Overview
+KVM (Key-Value Maps) provides secure, centralized configuration management in Apigee. This is the **recommended approach for production** instead of hardcoding values in application.properties.
 
 ---
 
-ما تريده الآن:
-- هل أضيف dependency المذكور إلى `ownersphere/pom.xml` وأشغّل build للتحقق من حل مشكلة الـ Generated؟ (أقترح نعم — لأن هذا يفتح الطريق لاختبارات إضافية والتحقق من تكامل الخدمة).
-- أو هل تفضّل أن أصف بقية الخطوات تفصيلاً إضافياً (مثل تغييرات الـ pom، أمثلة curl جاهزة للـ UI، أو نصائح لتحسين race-condition) قبل أن أعدل الكود؟
+## 🎯 Benefits of Using KVM
 
-أنتظر موافقتك لأكمل التعديل والعَدّ build.
+✅ **Security**: Encrypt sensitive data (API keys, passwords)  
+✅ **Centralized**: Manage configs across multiple proxies  
+✅ **Environment-specific**: Different values for dev/test/prod  
+✅ **No code changes**: Update values without redeploying backend  
+✅ **Audit trail**: Track who changed what and when  
+
+---
+
+## 📋 Step-by-Step Instructions
+
+### Step 1: Create KVM in Apigee
+
+#### 1.1 Navigate to KVM Console
+```
+Apigee Edge Console → Admin → Environments → Key Value Maps
+```
+
+#### 1.2 Select Environment
+Choose the environment where you want to create KVM:
+- `dev`
+- `test`
+- `prod`
+
+**Note:** You need to create KVM separately for each environment.
+
+#### 1.3 Create New KVM
+
+Click **+ Key Value Map** button
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| **Name** | `owner-sphere-config` | Must be same across all environments |
+| **Encrypted** | ✅ **Yes** | Recommended for API keys |
+
+Click **Add** button.
+
+---
+
+### Step 2: Add Key-Value Entries
+
+#### 2.1 Add Entries to KVM
+
+For each environment (dev/test/prod), add these entries:
+
+| Key | Value (Dev) | Value (Test) | Value (Prod) | Encrypted |
+|-----|------------|--------------|--------------|-----------|
+| `api.base.url` | `https://apigee-dev.gosi.sa` | `https://apigee-test.gosi.sa` | `https://apigee.gosi.sa` | No |
+| `app.apikey` | `LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s` | `<TEST_API_KEY>` | `<PROD_API_KEY>` | ✅ Yes |
+| `osb.ai.timeout` | `10000` | `10000` | `5000` | No |
+
+**To add each entry:**
+1. Click **+ Entry**
+2. Enter **Key** name
+3. Enter **Value**
+4. Click **Add**
+
+---
+
+### Step 3: Create Apigee Policy to Read KVM
+
+#### 3.1 Create KVM-GetConfig.xml Policy
+
+This policy will be added to **Apigee Proxy #2** (OSB → AI proxy).
+
+**File:** `apiproxy/policies/KVM-GetConfig.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations name="KVM-GetConfig" mapIdentifier="owner-sphere-config">
+    <Scope>environment</Scope>
+    <Get assignTo="private.api.base.url">
+        <Key>
+            <Parameter>api.base.url</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="private.app.apikey">
+        <Key>
+            <Parameter>app.apikey</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="private.osb.ai.timeout">
+        <Key>
+            <Parameter>osb.ai.timeout</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>
+```
+
+**Explanation:**
+- `mapIdentifier`: Name of your KVM (`owner-sphere-config`)
+- `Scope`: `environment` (can also be `organization` or `apiproxy`)
+- `Get assignTo`: Creates flow variables you can reference later
+- `private.*`: Variables prefixed with `private` are not exposed in response
+
+#### 3.2 Add Policy to Proxy Flow
+
+Edit your **Proxy #2** flow configuration:
+
+**File:** `apiproxy/proxies/default.xml`
+
+```xml
+<ProxyEndpoint name="default">
+    <PreFlow>
+        <Request>
+            <!-- Step 1: Verify API Key from UI request -->
+            <Step>
+                <Name>VerifyAPIKey</Name>
+            </Step>
+            
+            <!-- Step 2: Get configuration from KVM -->
+            <Step>
+                <Name>KVM-GetConfig</Name>
+            </Step>
+            
+            <!-- Step 3: Security checks -->
+            <Step>
+                <Name>AmeenSecurityCheck</Name>
+            </Step>
+        </Request>
+    </PreFlow>
+    
+    <!-- ... rest of flow ... -->
+</ProxyEndpoint>
+```
+
+---
+
+### Step 4: Use KVM Values in Target Connection
+
+#### 4.1 Dynamic Target URL
+
+**File:** `apiproxy/targets/default.xml`
+
+```xml
+<TargetEndpoint name="default">
+    <HTTPTargetConnection>
+        <!-- Use KVM variable for base URL -->
+        <URL>{private.api.base.url}/osb/ai/suggestions</URL>
+        
+        <LoadBalancer>
+            <Server name="OSB-Server-1"/>
+        </LoadBalancer>
+    </HTTPTargetConnection>
+    
+    <PreFlow>
+        <Request>
+            <!-- Add API key from KVM to request header -->
+            <Step>
+                <Name>AssignMessage-AddAPIKey</Name>
+            </Step>
+        </Request>
+    </PreFlow>
+</TargetEndpoint>
+```
+
+#### 4.2 Create Policy to Add API Key Header
+
+**File:** `apiproxy/policies/AssignMessage-AddAPIKey.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage-AddAPIKey">
+    <Set>
+        <Headers>
+            <!-- Add API key from KVM to outgoing request -->
+            <Header name="apikey">{private.app.apikey}</Header>
+            
+            <!-- Optional: Add timeout header -->
+            <Header name="timeout">{private.osb.ai.timeout}</Header>
+        </Headers>
+    </Set>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" type="request"/>
+</AssignMessage>
+```
+
+---
+
+## 🔧 Backend Configuration (No Changes Needed!)
+
+### Current Setup (application.properties)
+```properties
+api.base.url=https://apigee.gosi.sa
+app.apikey=LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s
+osb.ai.timeout=10000
+```
+
+### With KVM Setup
+Your backend (`OsbAiProxy.java`) will continue to use `application.properties` values:
+
+```java
+@Value("${api.base.url}")
+private String apiBaseUrl;
+
+@Value("${app.apikey}")
+private String apiKey;
+
+@Value("${osb.ai.timeout}")
+private int timeout;
+```
+
+**Key Point:** 
+- KVM is used **inside Apigee** (between Apigee Proxy #2 → OSB → AI)
+- Your backend still uses `application.properties` (between OWS → Apigee Proxy #2)
+- This provides **two layers** of configuration
+
+---
+
+## 🎯 Two Configuration Layers
+
+### Layer 1: Backend → Apigee Proxy #2
+**Source:** `application.properties` in your Spring Boot app
+
+```
+OWS Backend → Apigee Proxy #2
+Uses: app.apikey from application.properties
+```
+
+### Layer 2: Apigee Proxy #2 → OSB → AI
+**Source:** KVM in Apigee
+
+```
+Apigee Proxy #2 → OSB → AI Service
+Uses: KVM values (can be different per environment)
+```
+
+---
+
+## 📊 Environment-Specific Configuration
+
+### Development Environment
+```
+KVM: owner-sphere-config (dev)
+├── api.base.url = https://apigee-dev.gosi.sa
+├── app.apikey = LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s
+└── osb.ai.timeout = 10000
+```
+
+### Test Environment
+```
+KVM: owner-sphere-config (test)
+├── api.base.url = https://apigee-test.gosi.sa
+├── app.apikey = <DIFFERENT_TEST_KEY>
+└── osb.ai.timeout = 10000
+```
+
+### Production Environment
+```
+KVM: owner-sphere-config (prod)
+├── api.base.url = https://apigee.gosi.sa
+├── app.apikey = <DIFFERENT_PROD_KEY>
+└── osb.ai.timeout = 5000  (faster timeout for prod)
+```
+
+---
+
+## ✅ Testing KVM Configuration
+
+### Test 1: Verify KVM Exists
+```
+Apigee Console → Admin → Environments → dev → Key Value Maps
+Confirm: owner-sphere-config is listed
+```
+
+### Test 2: Test in Apigee Trace
+
+1. Open Apigee Proxy #2
+2. Click **Trace** tab
+3. Start trace session
+4. Send test request
+5. Verify in trace:
+   - `KVM-GetConfig` policy executed successfully
+   - Variables populated: `private.api.base.url`, `private.app.apikey`
+
+### Test 3: Check Variable Values
+
+Add a debug policy to see KVM values:
+
+**File:** `apiproxy/policies/Debug-KVMValues.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JavaScript name="Debug-KVMValues" timeLimit="200">
+    <Source>
+        print("API Base URL: " + context.getVariable("private.api.base.url"));
+        print("API Key: " + context.getVariable("private.app.apikey"));
+        print("Timeout: " + context.getVariable("private.osb.ai.timeout"));
+    </Source>
+</JavaScript>
+```
+
+---
+
+## 🔒 Security Best Practices
+
+### 1. Always Encrypt Sensitive Data
+```
+KVM Creation:
+☑ Encrypted = Yes (for API keys, passwords, tokens)
+☐ Encrypted = No (for URLs, timeouts, non-sensitive data)
+```
+
+### 2. Use Different Keys per Environment
+- **Dev:** Development key (can be shared)
+- **Test:** Test key (restricted access)
+- **Prod:** Production key (highly restricted, rotated regularly)
+
+### 3. Limit KVM Access
+```
+Apigee Console → Admin → Roles
+Create role with KVM read-only access
+Assign to developers (not full admin)
+```
+
+### 4. Audit KVM Changes
+```
+Apigee Console → Admin → Audit Logs
+Filter by: Key Value Maps
+Review: Who changed what and when
+```
+
+---
+
+## 🚨 Troubleshooting
+
+### Issue: KVM variable is undefined
+
+**Cause:** KVM policy not executed or wrong variable name
+
+**Solution:**
+1. Check policy order in flow (KVM-GetConfig should run early)
+2. Verify variable name: `{private.api.base.url}` (with curly braces)
+3. Check KVM scope: `environment` vs `organization`
+
+### Issue: Encrypted values not decrypting
+
+**Cause:** KVM not created as encrypted
+
+**Solution:**
+1. Delete existing KVM
+2. Recreate with **Encrypted = Yes**
+3. Re-add all entries
+
+### Issue: Different values in different environments
+
+**Cause:** This is **expected behavior** - that's the point of KVM!
+
+**Solution:**
+- Verify each environment has correct values
+- Use Apigee Trace to see actual values used
+
+---
+
+## 📋 KVM Setup Checklist
+
+### Environment: Dev
+- [ ] Create KVM: `owner-sphere-config` (encrypted)
+- [ ] Add entry: `api.base.url`
+- [ ] Add entry: `app.apikey` (encrypted)
+- [ ] Add entry: `osb.ai.timeout`
+- [ ] Create policy: `KVM-GetConfig.xml`
+- [ ] Update Proxy #2 flow to use KVM
+- [ ] Test in Apigee Trace
+
+### Environment: Test
+- [ ] Create KVM: `owner-sphere-config` (encrypted)
+- [ ] Add entry: `api.base.url`
+- [ ] Add entry: `app.apikey` (encrypted)
+- [ ] Add entry: `osb.ai.timeout`
+- [ ] Verify same policies work in test
+
+### Environment: Prod
+- [ ] Create KVM: `owner-sphere-config` (encrypted)
+- [ ] Add entry: `api.base.url`
+- [ ] Add entry: `app.apikey` (encrypted)
+- [ ] Add entry: `osb.ai.timeout`
+- [ ] Verify same policies work in prod
+- [ ] Set up API key rotation schedule
+
+---
+
+## 🔄 Next Steps After KVM Setup
+
+Once KVM is configured:
+
+1. ✅ KVM created in all environments
+2. ⏳ Create Apigee Proxy #2 (use KVM values)
+3. ⏳ Test end-to-end flow
+4. ⏳ Update documentation with actual KVM names
+
+---
+
+## 📝 Summary
+
+| Item | Value | Status |
+|------|-------|--------|
+| **KVM Name** | `owner-sphere-config` | ⏳ |
+| **Encrypted** | Yes | ⏳ |
+| **Environments** | dev, test, prod | ⏳ |
+| **Entries** | 3 (api.base.url, app.apikey, osb.ai.timeout) | ⏳ |
+| **Policies Created** | KVM-GetConfig.xml, AssignMessage-AddAPIKey.xml | ⏳ |
+
+---
+
+**Questions?**
+
+Need help with:
+- Creating KVM in Apigee Console?
+- Writing KVM policies?
+- Testing KVM values?
+
+Let me know! 🚀
+
+---
+
+**Last Updated:** October 26, 2025  
+**Status:** Ready for KVM creation
