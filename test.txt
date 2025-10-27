@@ -1,426 +1,485 @@
-# 🔐 Apigee KVM (Key-Value Maps) Setup Guide
+# 📊 B2B AI Suggestions - مقارنة بين المطلوب والمنفذ
 
-## Overview
-KVM (Key-Value Maps) provides secure, centralized configuration management in Apigee. This is the **recommended approach for production** instead of hardcoding values in application.properties.
+## 🎯 ملخص التنفيذ
 
----
-
-## 🎯 Benefits of Using KVM
-
-✅ **Security**: Encrypt sensitive data (API keys, passwords)  
-✅ **Centralized**: Manage configs across multiple proxies  
-✅ **Environment-specific**: Different values for dev/test/prod  
-✅ **No code changes**: Update values without redeploying backend  
-✅ **Audit trail**: Track who changed what and when  
+### ✅ اللي اتعمل بناءً على الـ Spec
+### ⚠️ اللي اتعمل اجتهاد (محتاج تأكيد)
+### ❌ اللي ناقص
 
 ---
 
-## 📋 Step-by-Step Instructions
+## 1️⃣ API Endpoint
 
-### Step 1: Create KVM in Apigee
-
-#### 1.1 Navigate to KVM Console
+### ✅ **المطلوب من الـ Spec:**
 ```
-Apigee Edge Console → Admin → Environments → Key Value Maps
+Method: GET
+Endpoint: /owner-sphere/b2b/{regNo}/suggestions
+Path Parameter: regNo (establishment registration number)
+Headers: 
+  - Authorization: Bearer <token>
+  - x-apikey: <apikey>
+  - Content-Type: application/json
 ```
 
-#### 1.2 Select Environment
-Choose the environment where you want to create KVM:
-- `dev`
-- `test`
-- `prod`
+### ✅ **اللي اتعمل:**
+```java
+// File: B2BSuggestionsApi.java
+@GetMapping("/{regNo}/suggestions")
+ResponseEntity<SuggestionsResponse> getSuggestions(@PathVariable("regNo") Long regNo);
 
-**Note:** You need to create KVM separately for each environment.
-
-#### 1.3 Create New KVM
-
-Click **+ Key Value Map** button
-
-| Field | Value | Notes |
-|-------|-------|-------|
-| **Name** | `owner-sphere-config` | Must be same across all environments |
-| **Encrypted** | ✅ **Yes** | Recommended for API keys |
-
-Click **Add** button.
-
----
-
-### Step 2: Add Key-Value Entries
-
-#### 2.1 Add Entries to KVM
-
-For each environment (dev/test/prod), add these entries:
-
-| Key | Value (Dev) | Value (Test) | Value (Prod) | Encrypted |
-|-----|------------|--------------|--------------|-----------|
-| `api.base.url` | `https://apigee-dev.gosi.sa` | `https://apigee-test.gosi.sa` | `https://apigee.gosi.sa` | No |
-| `app.apikey` | `LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s` | `<TEST_API_KEY>` | `<PROD_API_KEY>` | ✅ Yes |
-| `osb.ai.timeout` | `10000` | `10000` | `5000` | No |
-
-**To add each entry:**
-1. Click **+ Entry**
-2. Enter **Key** name
-3. Enter **Value**
-4. Click **Add**
-
----
-
-### Step 3: Create Apigee Policy to Read KVM
-
-#### 3.1 Create KVM-GetConfig.xml Policy
-
-This policy will be added to **Apigee Proxy #2** (OSB → AI proxy).
-
-**File:** `apiproxy/policies/KVM-GetConfig.xml`
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<KeyValueMapOperations name="KVM-GetConfig" mapIdentifier="owner-sphere-config">
-    <Scope>environment</Scope>
-    <Get assignTo="private.api.base.url">
-        <Key>
-            <Parameter>api.base.url</Parameter>
-        </Key>
-    </Get>
-    <Get assignTo="private.app.apikey">
-        <Key>
-            <Parameter>app.apikey</Parameter>
-        </Key>
-    </Get>
-    <Get assignTo="private.osb.ai.timeout">
-        <Key>
-            <Parameter>osb.ai.timeout</Parameter>
-        </Key>
-    </Get>
-</KeyValueMapOperations>
+// File: B2BSuggestionsApiImpl.java
+@RequestMapping(value = "/owner-sphere/b2b")
 ```
 
-**Explanation:**
-- `mapIdentifier`: Name of your KVM (`owner-sphere-config`)
-- `Scope`: `environment` (can also be `organization` or `apiproxy`)
-- `Get assignTo`: Creates flow variables you can reference later
-- `private.*`: Variables prefixed with `private` are not exposed in response
+**✅ Status: مطابق 100%**
 
-#### 3.2 Add Policy to Proxy Flow
+---
 
-Edit your **Proxy #2** flow configuration:
+## 2️⃣ Response Body Structure
 
-**File:** `apiproxy/proxies/default.xml`
+### ✅ **المطلوب من الـ Spec:**
+```json
+{
+   "establishments":[
+      {
+         "establishmentName":"string",
+         "establishmentLocation":"string",
+         "startDate":{
+            "entryFormat":"GREGORIAN",
+            "gregorian":"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "hijiri":"yyyy-MM-dd"
+         },
+         "unn":0,
+         "registrationNumber":0,
+         "suggestionReason":{
+            "arabic":"string",
+            "english":"string"
+         }
+      }
+   ]
+}
+```
 
-```xml
-<ProxyEndpoint name="default">
-    <PreFlow>
-        <Request>
-            <!-- Step 1: Verify API Key from UI request -->
-            <Step>
-                <Name>VerifyAPIKey</Name>
-            </Step>
-            
-            <!-- Step 2: Get configuration from KVM -->
-            <Step>
-                <Name>KVM-GetConfig</Name>
-            </Step>
-            
-            <!-- Step 3: Security checks -->
-            <Step>
-                <Name>AmeenSecurityCheck</Name>
-            </Step>
-        </Request>
-    </PreFlow>
+### ✅ **اللي اتعمل:**
+```java
+// SuggestionsResponse.java
+public class SuggestionsResponse {
+    private List<EstablishmentSuggestion> establishments; ✅
+}
+
+// EstablishmentSuggestion.java
+public class EstablishmentSuggestion {
+    private String establishmentName;           ✅
+    private String establishmentLocation;       ✅
+    private DateInfo startDate;                 ✅
+    private Long unn;                           ✅
+    private Long registrationNumber;            ✅
+    private BilingualText suggestionReason;     ✅
+}
+
+// DateInfo.java
+public class DateInfo {
+    private String entryFormat;   ✅
+    private String gregorian;     ✅
+    private String hijiri;        ✅
+}
+```
+
+**✅ Status: مطابق 100%**
+
+---
+
+## 3️⃣ Data Types - تحتاج تأكيد
+
+### ⚠️ **اجتهاد مني (محتاج تأكيد من AI Team):**
+
+| Field | اللي عملته | محتاج تتأكد |
+|-------|-----------|-------------|
+| `unn` | `Long` | هل هو `Long` ولا `String`? |
+| `registrationNumber` | `Long` | هل هو `Long` ولا `String`? |
+| `startDate.gregorian` | `String` | الـ format بالظبط: `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`? |
+| `startDate.hijiri` | `String` | الـ format بالظبط: `yyyy-MM-dd`? |
+
+**⚠️ Action Required:** اسأل الـ AI Team عن:
+1. Sample response فعلي من الـ AI
+2. الـ data types الصح
+3. الـ date formats بالظبط
+
+---
+
+## 4️⃣ Business Logic - "Show Once"
+
+### ⚠️ **المطلوب (مش مذكور في الـ Spec بالظبط):**
+الـ Spec مقالش حاجة عن "show once per establishment" - ده كان من كلامك في أول المحادثة.
+
+### ✅ **اللي اتعمل:**
+```java
+// EstablishmentSuggestionsService.java
+public SuggestionsResponse getAiSuggestions(Long registrationNo, Long personId) {
+    // 1. Check profileData JSON for aiSuggestionsShown flag
+    if (profileData.getAiSuggestionsShown() == true) {
+        return empty list; // Already shown before
+    }
     
-    <!-- ... rest of flow ... -->
-</ProxyEndpoint>
+    // 2. First time - call AI
+    SuggestionsResponse aiResponse = osbAiProxy.fetchAiSuggestions(regNo);
+    
+    // 3. Update flag in JSON
+    profileData.setAiSuggestionsShown(true);
+    profileData.setAiSuggestionsFirstShownDate(LocalDate.now().toString());
+    
+    return aiResponse;
+}
 ```
+
+### ⚠️ **محتاج تتأكد:**
+1. هل فعلاً المطلوب "show once per establishment"?
+2. ولا المطلوب "show once per owner + establishment"?
+3. لو اتعرضت للـ owner A، وجه owner B يشوفها؟
+
+**⚠️ Action Required:** تأكد من الـ business rule بالظبط
 
 ---
 
-### Step 4: Use KVM Values in Target Connection
+## 5️⃣ AI Call - إذا فشل
 
-#### 4.1 Dynamic Target URL
+### ✅ **المطلوب من الـ Spec:**
+> "What will happen if the AI call fails?"
 
-**File:** `apiproxy/targets/default.xml`
-
-```xml
-<TargetEndpoint name="default">
-    <HTTPTargetConnection>
-        <!-- Use KVM variable for base URL -->
-        <URL>{private.api.base.url}/osb/ai/suggestions</URL>
+### ✅ **اللي اتعمل:**
+```java
+// OsbAiProxy.java
+public SuggestionsResponse fetchAiSuggestions(Long registrationNo) {
+    try {
+        // Call AI via Apigee
+        return restTemplate.exchange(...);
         
-        <LoadBalancer>
-            <Server name="OSB-Server-1"/>
-        </LoadBalancer>
-    </HTTPTargetConnection>
-    
-    <PreFlow>
-        <Request>
-            <!-- Add API key from KVM to request header -->
-            <Step>
-                <Name>AssignMessage-AddAPIKey</Name>
-            </Step>
-        </Request>
-    </PreFlow>
-</TargetEndpoint>
+    } catch (HttpClientErrorException | HttpServerErrorException | 
+             ResourceAccessException e) {
+        log.error("AI service failed", e);
+        
+        // Graceful degradation - return empty list
+        return SuggestionsResponse.builder()
+            .establishments(Collections.emptyList())
+            .build();
+    }
+}
 ```
 
-#### 4.2 Create Policy to Add API Key Header
-
-**File:** `apiproxy/policies/AssignMessage-AddAPIKey.xml`
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage name="AssignMessage-AddAPIKey">
-    <Set>
-        <Headers>
-            <!-- Add API key from KVM to outgoing request -->
-            <Header name="apikey">{private.app.apikey}</Header>
-            
-            <!-- Optional: Add timeout header -->
-            <Header name="timeout">{private.osb.ai.timeout}</Header>
-        </Headers>
-    </Set>
-    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
-    <AssignTo createNew="false" type="request"/>
-</AssignMessage>
-```
+**✅ Status: منفذ - لكن محتاج تتأكد:**
+- هل المطلوب empty list؟
+- ولا المطلوب error response (400/500)?
+- ولا المطلوب cached data?
 
 ---
 
-## 🔧 Backend Configuration (No Changes Needed!)
+## 6️⃣ Apigee Infrastructure
 
-### Current Setup (application.properties)
+### ✅ **المطلوب من الـ Spec:**
+```
+1. Create Apigee Proxy #1: v1/owner-sphere/b2b/{regNo}/suggestions → Owner Sphere backend
+2. Create Developer App + API Product
+3. Create Apigee Proxy #2: OWS → OSB → AI
+4. Create KVM
+```
+
+### ✅ **اللي اتعمل:**
+| Task | Status | Details |
+|------|--------|---------|
+| Proxy #1 | ✅ Done | `/v1/owner-sphere/b2b` → OWS backend |
+| Developer App | ✅ Done | API Key: `LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s` |
+| API Product | ✅ Done | `owner-sphere-b2b-product` |
+| Proxy #2 | ❌ Pending | محتاج AI endpoint URL |
+| KVM | ⏳ Optional | يفضل للـ production |
+
+---
+
+## 7️⃣ اللي اتعمل اجتهاد (TODO List)
+
+### ⚠️ **Backend Code - محتاج بيانات فعلية:**
+
+#### 1. **OsbAiProxy.java** - URL & Headers
+```java
+// Line ~70 - PLACEHOLDER
+String url = apiBaseUrl + "/TODO_APIGEE_PROXY_PATH" + "?regNo=" + registrationNo;
+
+// Line ~75 - PLACEHOLDER
+headers.set("TODO_API_KEY_HEADER_NAME", apiKey);
+```
+
+**⚠️ محتاج تحدد:**
+- [ ] ما هو الـ path بتاع Apigee Proxy #2 بالظبط؟
+- [ ] اسم الـ header للـ API key: `x-apikey` أم `apikey` أم `Authorization`؟
+- [ ] هل في headers تانية محتاجة (مثل `request-id`, `correlation-id`)?
+
+---
+
+#### 2. **B2BSuggestionsApiImpl.java** - PersonId Extraction
+```java
+// Line ~70 - PLACEHOLDER
+private Long getCurrentPersonId() {
+    return 1L; // TODO: Extract from JWT
+}
+```
+
+**⚠️ محتاج تحدد:**
+- [ ] ما هو الـ claim name للـ personId في الـ JWT؟
+- [ ] كيف تستخرجه من `SecurityContextHolder`?
+- [ ] هل هو `Long` أم `String`?
+
+**⚠️ اسأل Security Team**
+
+---
+
+#### 3. **OwnerProfileData.java** - JSON Fields
+```java
+// Added fields (اجتهاد)
+private Boolean aiSuggestionsShown;
+private String aiSuggestionsFirstShownDate;
+```
+
+**⚠️ محتاج تتأكد:**
+- [ ] هل فعلاً يتخزن في الـ JSON `profileData`?
+- [ ] ولا يفضل أعمدة منفصلة في الجدول؟
+- [ ] هل الـ date format `String` ISO مناسب ولا `LocalDate`?
+
+---
+
+#### 4. **EstablishmentSuggestion.java** - suggestionReason
+```java
+private BilingualText suggestionReason; // WHO populates this?
+```
+
+**⚠️ محتاج تتأكد:**
+- [ ] مين اللي يملأ الـ `suggestionReason`؟
+  - الـ AI service نفسه؟
+  - ولا الـ backend بتاعك؟
+- [ ] لو الـ backend، إيه اللوجيك؟
+
+**⚠️ اسأل AI Team**
+
+---
+
+#### 5. **application.properties** - Configuration
 ```properties
+# Current values (اجتهاد)
 api.base.url=https://apigee.gosi.sa
 app.apikey=LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s
 osb.ai.timeout=10000
 ```
 
-### With KVM Setup
-Your backend (`OsbAiProxy.java`) will continue to use `application.properties` values:
+**⚠️ محتاج تتأكد:**
+- [ ] هل الـ `api.base.url` صح؟
+- [ ] هل الـ timeout 10 seconds مناسب؟
+- [ ] هل في configs تانية محتاجة؟
 
+---
+
+## 8️⃣ Error Responses - مش منفذة
+
+### ❌ **المطلوب من الـ Spec:**
+```json
+400 Bad Request:
+{
+  "code": "string",
+  "message": {
+    "arabic": "string",
+    "english": "string"
+  },
+  "status": "string",
+  "timeStamp": "yyyy-MM-dd'T'hh:mm:ss.s'Z'"
+}
+
+422 Unprocessable Entity:
+{
+  "code": "string",
+  "details": [
+    {
+      "code": "string",
+      "message": {
+        "arabic": "string",
+        "english": "string"
+      }
+    }
+  ],
+  "message": {
+    "arabic": "string",
+    "english": "string"
+  },
+  "status": "string",
+  "timeStamp": "yyyy-MM-dd'T'hh:mm:ss.s'Z'"
+}
+```
+
+### ❌ **اللي اتعمل:**
+مفيش error handling مخصص - بيستخدم الـ default Spring error handling
+
+**❌ Action Required:**
+- [ ] هل محتاج custom error DTOs؟
+- [ ] ولا الـ framework error handling كافي؟
+- [ ] محتاج exception handlers?
+
+---
+
+## 9️⃣ Database Schema
+
+### ⚠️ **اللي اتعمل (اجتهاد):**
 ```java
-@Value("${api.base.url}")
-private String apiBaseUrl;
-
-@Value("${app.apikey}")
-private String apiKey;
-
-@Value("${osb.ai.timeout}")
-private int timeout;
+// OwnerSphereProfileEntity.java
+// Uses existing column: PROFILEDATA (JSON)
+// Stores inside JSON:
+{
+  "profilePicURL": "...",
+  "aiSuggestionsShown": true,
+  "aiSuggestionsFirstShownDate": "2025-10-27"
+}
 ```
 
-**Key Point:** 
-- KVM is used **inside Apigee** (between Apigee Proxy #2 → OSB → AI)
-- Your backend still uses `application.properties` (between OWS → Apigee Proxy #2)
-- This provides **two layers** of configuration
+**⚠️ محتاج تتأكد:**
+- [ ] هل الـ JSON approach مناسب؟
+- [ ] ولا تفضل أعمدة منفصلة؟
+- [ ] محتاج DBA approval?
+
+**Alternatives:**
+1. ✅ **Current:** JSON في column موجود (no schema change)
+2. ❌ **Alternative:** Add columns `AI_SUGGESTIONS_SHOWN`, `AI_SUGGESTIONS_FIRST_SHOWN_DATE`
 
 ---
 
-## 🎯 Two Configuration Layers
+## 🔟 Repository Query
 
-### Layer 1: Backend → Apigee Proxy #2
-**Source:** `application.properties` in your Spring Boot app
+### ⚠️ **اللي اتعمل (اجتهاد):**
+```java
+// OwnerSphereProfileRepository.java
+@Query("SELECT p FROM OwnerSphereProfileEntity p " +
+       "JOIN p.establishment e " +
+       "WHERE e.registrationNo = :registrationNo")
+Optional<OwnerSphereProfileEntity> findByEstablishmentRegistrationNo(Long registrationNo);
+```
 
-```
-OWS Backend → Apigee Proxy #2
-Uses: app.apikey from application.properties
-```
-
-### Layer 2: Apigee Proxy #2 → OSB → AI
-**Source:** KVM in Apigee
-
-```
-Apigee Proxy #2 → OSB → AI Service
-Uses: KVM values (can be different per environment)
-```
+**⚠️ محتاج تتأكد:**
+- [ ] هل الـ query صح؟
+- [ ] هل في performance concerns?
+- [ ] محتاج index على `registrationNo`?
 
 ---
 
-## 📊 Environment-Specific Configuration
+## 📋 خلاصة: اللي محتاج تسأل عنه
 
-### Development Environment
-```
-KVM: owner-sphere-config (dev)
-├── api.base.url = https://apigee-dev.gosi.sa
-├── app.apikey = LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s
-└── osb.ai.timeout = 10000
-```
+### 🔴 **Priority 1 - Critical (بيوقف الشغل):**
 
-### Test Environment
+#### 1. من **AI Team:**
 ```
-KVM: owner-sphere-config (test)
-├── api.base.url = https://apigee-test.gosi.sa
-├── app.apikey = <DIFFERENT_TEST_KEY>
-└── osb.ai.timeout = 10000
-```
+Subject: AI Service Details for B2B Suggestions
 
-### Production Environment
-```
-KVM: owner-sphere-config (prod)
-├── api.base.url = https://apigee.gosi.sa
-├── app.apikey = <DIFFERENT_PROD_KEY>
-└── osb.ai.timeout = 5000  (faster timeout for prod)
+Questions:
+1. What is the AI endpoint URL? (full path)
+2. Sample JSON response from AI?
+3. Data types: is unn Long or String? registrationNumber?
+4. Who populates suggestionReason? AI or backend?
+5. Date format for gregorian and hijiri?
+6. Expected response time (timeout)?
 ```
 
----
-
-## ✅ Testing KVM Configuration
-
-### Test 1: Verify KVM Exists
+#### 2. من **Apigee/OSB Team:**
 ```
-Apigee Console → Admin → Environments → dev → Key Value Maps
-Confirm: owner-sphere-config is listed
+Subject: Apigee Proxy #2 Configuration
+
+Questions:
+1. What is the Proxy #2 base path?
+2. API key header name: x-apikey or apikey or Authorization?
+3. Any other required headers (request-id, correlation-id)?
+4. Query parameter format for regNo?
+5. OSB routing configuration?
 ```
 
-### Test 2: Test in Apigee Trace
+#### 3. من **Security Team:**
+```
+Subject: JWT PersonId Extraction
 
-1. Open Apigee Proxy #2
-2. Click **Trace** tab
-3. Start trace session
-4. Send test request
-5. Verify in trace:
-   - `KVM-GetConfig` policy executed successfully
-   - Variables populated: `private.api.base.url`, `private.app.apikey`
-
-### Test 3: Check Variable Values
-
-Add a debug policy to see KVM values:
-
-**File:** `apiproxy/policies/Debug-KVMValues.xml`
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<JavaScript name="Debug-KVMValues" timeLimit="200">
-    <Source>
-        print("API Base URL: " + context.getVariable("private.api.base.url"));
-        print("API Key: " + context.getVariable("private.app.apikey"));
-        print("Timeout: " + context.getVariable("private.osb.ai.timeout"));
-    </Source>
-</JavaScript>
+Questions:
+1. JWT claim name for personId?
+2. Data type: Long or String?
+3. How to extract from SecurityContextHolder?
+4. Code example?
 ```
 
 ---
 
-## 🔒 Security Best Practices
+### 🟡 **Priority 2 - Important (محتاج قرار):**
 
-### 1. Always Encrypt Sensitive Data
+#### 4. من **Product Owner/Business:**
 ```
-KVM Creation:
-☑ Encrypted = Yes (for API keys, passwords, tokens)
-☐ Encrypted = No (for URLs, timeouts, non-sensitive data)
-```
+Subject: B2B Suggestions Business Rules
 
-### 2. Use Different Keys per Environment
-- **Dev:** Development key (can be shared)
-- **Test:** Test key (restricted access)
-- **Prod:** Production key (highly restricted, rotated regularly)
-
-### 3. Limit KVM Access
-```
-Apigee Console → Admin → Roles
-Create role with KVM read-only access
-Assign to developers (not full admin)
+Questions:
+1. "Show once" means:
+   - Once per establishment (any owner)?
+   - Once per owner + establishment?
+2. If AI fails, should we:
+   - Return empty list (current)?
+   - Return error response?
+   - Use cached data?
+3. Do we need custom error responses (400/422/500)?
 ```
 
-### 4. Audit KVM Changes
+#### 5. من **DBA/Lead:**
 ```
-Apigee Console → Admin → Audit Logs
-Filter by: Key Value Maps
-Review: Who changed what and when
+Subject: Database Schema for AI Suggestions Tracking
+
+Questions:
+1. Store in JSON (current approach) or add columns?
+2. Performance concerns?
+3. Need index on registrationNo?
 ```
 
 ---
 
-## 🚨 Troubleshooting
+### 🟢 **Priority 3 - Nice to Have:**
 
-### Issue: KVM variable is undefined
-
-**Cause:** KVM policy not executed or wrong variable name
-
-**Solution:**
-1. Check policy order in flow (KVM-GetConfig should run early)
-2. Verify variable name: `{private.api.base.url}` (with curly braces)
-3. Check KVM scope: `environment` vs `organization`
-
-### Issue: Encrypted values not decrypting
-
-**Cause:** KVM not created as encrypted
-
-**Solution:**
-1. Delete existing KVM
-2. Recreate with **Encrypted = Yes**
-3. Re-add all entries
-
-### Issue: Different values in different environments
-
-**Cause:** This is **expected behavior** - that's the point of KVM!
-
-**Solution:**
-- Verify each environment has correct values
-- Use Apigee Trace to see actual values used
+#### 6. من **DevOps:**
+```
+Questions:
+1. KVM setup in dev/test/prod?
+2. API key rotation policy?
+3. Monitoring/alerting setup?
+```
 
 ---
 
-## 📋 KVM Setup Checklist
+## 📊 الملف النهائي للمقارنة
 
-### Environment: Dev
-- [ ] Create KVM: `owner-sphere-config` (encrypted)
-- [ ] Add entry: `api.base.url`
-- [ ] Add entry: `app.apikey` (encrypted)
-- [ ] Add entry: `osb.ai.timeout`
-- [ ] Create policy: `KVM-GetConfig.xml`
-- [ ] Update Proxy #2 flow to use KVM
-- [ ] Test in Apigee Trace
-
-### Environment: Test
-- [ ] Create KVM: `owner-sphere-config` (encrypted)
-- [ ] Add entry: `api.base.url`
-- [ ] Add entry: `app.apikey` (encrypted)
-- [ ] Add entry: `osb.ai.timeout`
-- [ ] Verify same policies work in test
-
-### Environment: Prod
-- [ ] Create KVM: `owner-sphere-config` (encrypted)
-- [ ] Add entry: `api.base.url`
-- [ ] Add entry: `app.apikey` (encrypted)
-- [ ] Add entry: `osb.ai.timeout`
-- [ ] Verify same policies work in prod
-- [ ] Set up API key rotation schedule
+| Component | Status | Notes |
+|-----------|--------|-------|
+| **API Interface** | ✅ Done | Matches spec 100% |
+| **API Implementation** | ⚠️ 90% | Missing: JWT extraction |
+| **DTOs** | ✅ Done | Matches spec structure |
+| **Service Logic** | ⚠️ 80% | Need to confirm business rule |
+| **AI Proxy** | ⚠️ 50% | Placeholders for URL/headers |
+| **Database** | ⚠️ Done | Using JSON (need confirmation) |
+| **Error Handling** | ⚠️ Basic | AI failure returns empty list |
+| **Apigee Proxy #1** | ✅ Done | UI → OWS |
+| **Apigee Proxy #2** | ❌ Pending | Need AI endpoint |
+| **Developer App** | ✅ Done | API Key created |
+| **KVM** | ⏳ Optional | For production |
 
 ---
 
-## 🔄 Next Steps After KVM Setup
+## ✅ الخطوات التالية
 
-Once KVM is configured:
+### هذا الأسبوع:
+1. ✉️ Send emails to AI Team, Security Team, Apigee Team
+2. 📞 Get answers for all placeholder TODOs
+3. 🔧 Update code with real values
+4. 🧪 Test with actual AI endpoint
 
-1. ✅ KVM created in all environments
-2. ⏳ Create Apigee Proxy #2 (use KVM values)
-3. ⏳ Test end-to-end flow
-4. ⏳ Update documentation with actual KVM names
-
----
-
-## 📝 Summary
-
-| Item | Value | Status |
-|------|-------|--------|
-| **KVM Name** | `owner-sphere-config` | ⏳ |
-| **Encrypted** | Yes | ⏳ |
-| **Environments** | dev, test, prod | ⏳ |
-| **Entries** | 3 (api.base.url, app.apikey, osb.ai.timeout) | ⏳ |
-| **Policies Created** | KVM-GetConfig.xml, AssignMessage-AddAPIKey.xml | ⏳ |
+### الأسبوع الجاي:
+5. 🏗️ Create Apigee Proxy #2
+6. 🔐 Setup KVM (optional)
+7. ✅ End-to-end testing
+8. 📝 Update documentation
 
 ---
 
-**Questions?**
-
-Need help with:
-- Creating KVM in Apigee Console?
-- Writing KVM policies?
-- Testing KVM values?
-
-Let me know! 🚀
-
----
-
-**Last Updated:** October 26, 2025  
-**Status:** Ready for KVM creation
+**تاريخ المراجعة:** 27 أكتوبر 2025  
+**الحالة:** 70% مكتمل - محتاج بيانات فعلية من الفرق الأخرى
