@@ -1,1001 +1,230 @@
-# 📋 وثائق تغطية الاختبارات الشاملة - B2B AI Suggestions Feature
-
-**التاريخ:** 28 أكتوبر 2025  
-**المشروع:** Owner Sphere - B2B AI Suggestions  
-**إجمالي الاختبارات:** 33 اختبار ✅  
-**نسبة النجاح:** 100% (0 فشل، 0 أخطاء)
-
----
-
-## 📊 ملخص التغطية العامة
-
-```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Test Class                              │ Tests │ Status      │
-├─────────────────────────────────────────────────────────────────┤
-│  B2BIntegrationFlowSimplifiedTest        │   6   │ ✅ PASS     │
-│  ApigeeFlowSimulationTest                │  13   │ ✅ PASS     │
-│  OsbAiProxyTest                          │   9   │ ✅ PASS     │
-│  EstablishmentSuggestionsServiceTest     │   5   │ ✅ PASS     │
-├─────────────────────────────────────────────────────────────────┤
-│  TOTAL                                   │  33   │ ✅ 100%     │
+│                         FRONTEND                                │
+│  User clicks "Show AI Suggestions" for Establishment 501234567  │
 └─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🏗️ نظرة عامة على البنية المعمارية المختبَرة
-
-```
-┌─────────────┐      ┌───────────────┐      ┌──────────────┐      ┌────────┐
-│    UI/B2B   │ ───► │  Apigee       │ ───► │   Backend    │ ───► │   AI   │
-│   Client    │      │  Proxy #1     │      │  (OWS)       │      │ Service│
-│             │      │ - VerifyAPIKey│      │              │      │        │
-│             │      │ - JWT Check   │      │              │      │        │
-└─────────────┘      │ - CORS        │      └──────────────┘      └────────┘
-                     └───────────────┘             │
-                                                   │
-                                                   ▼
-                                          ┌───────────────┐
-                                          │  Apigee       │
-                                          │  Proxy #2     │
-                                          │ - VerifyAPIKey│
-                                          │ - Timeout 30s │
-                                          └───────────────┘
-                                                   │
-                                                   ▼
-                                          ┌───────────────┐
-                                          │      OSB      │
-                                          │  (Transform)  │
-                                          └───────────────┘
-                                                   │
-                                                   ▼
-                                          ┌───────────────┐
-                                          │  AI Service   │
-                                          │  (External)   │
-                                          └───────────────┘
-```
-
----
-
-## 🎯 الجزء الأول: اختبارات التكامل الشاملة
-### B2BIntegrationFlowSimplifiedTest (6 اختبارات)
-
-**الموقع:**  
-`src/test/java/sa/gov/gosi/si/osp/business/ownersphere/integration/B2BIntegrationFlowSimplifiedTest.java`
-
-**الهدف:**  
-اختبار منطق الأعمال الكامل من استرجاع الملف الشخصي → استدعاء AI → حفظ الأعلام → إرجاع النتائج
-
----
-
-#### Test 1: `testCompleteFlow_HappyPath_Success` ✅
-
-**الوصف:**  
-اختبار السيناريو السعيد الكامل - كل شيء يعمل بشكل صحيح
-
-**الخطوات:**
-1. 🔍 البحث عن الملف الشخصي في قاعدة البيانات
-2. 📞 استدعاء خدمة AI عبر OsbAiProxy
-3. 💾 حفظ علامة "تم عرض الاقتراحات" في الملف الشخصي
-4. ✅ إرجاع 3 منشآت مقترحة
-
-**التحقق:**
-```java
-- تأكد أن النتيجة تحتوي على 3 منشآت
-- تأكد أن AI تم استدعاؤها مرة واحدة
-- تأكد أن الملف الشخصي تم حفظه مع الأعلام:
-  • aiSuggestionsShown = true
-  • aiSuggestionsFirstShownDate = "2025-10-28"
-```
-
-**البيانات المستخدمة:**
-- رقم التسجيل: 501234567
-- رقم الهوية: 1000123456
-- عدد المنشآت: 3
-
----
-
-#### Test 2: `testProfileNotFound_CallsAI` ✅
-
-**الوصف:**  
-عندما لا يوجد ملف شخصي في قاعدة البيانات
-
-**السلوك المتوقع:**
-- ✅ استدعاء AI بدون تتبع (no tracking)
-- ✅ إرجاع 2 منشآت من AI
-- ❌ عدم حفظ أي شيء (لا يوجد ملف للتحديث)
-
-**الكود المختبَر:**
-```java
-// في EstablishmentSuggestionsService
-if (!profileOptional.isPresent()) {
-    log.warn("No profile found. Returning AI suggestions without tracking.");
-    return osbAiProxy.fetchAiSuggestions(registrationNo);
-}
-```
-
----
-
-#### Test 3: `testAIService_EmptyResponse_Handled` ✅
-
-**الوصف:**  
-عندما يرجع AI قائمة فارغة
-
-**السلوك المتوقع:**
-- ✅ إرجاع قائمة فارغة للمستخدم
-- ✅ حفظ الأعلام (حتى لو القائمة فارغة)
-- ✅ عدم حدوث أخطاء
-
-**لماذا نحفظ الأعلام؟**
-لمنع استدعاء AI مرة أخرى إذا لم يكن هناك اقتراحات
-
----
-
-#### Test 4: `testAIService_Exception_Propagates` ✅
-
-**الوصف:**  
-عندما يحدث خطأ في خدمة AI (مثل timeout)
-
-**السلوك المتوقع:**
-- ❌ انتشار الاستثناء للطبقة العليا
-- ❌ عدم حفظ الملف الشخصي (فشل العملية)
-
-**الكود المختبَر:**
-```java
-@Test
-void testAIService_Exception_Propagates() {
-    when(osbProxy.fetchAiSuggestions(TEST_REG_NO))
-        .thenThrow(new RuntimeException("AI Service Timeout"));
-    
-    assertThrows(RuntimeException.class, () -> {
-        service.getAiSuggestions(TEST_REG_NO, TEST_PERSON_ID);
-    });
-    
-    verify(repository, never()).save(any());
-}
-```
-
----
-
-#### Test 5: `testAlreadyShown_SkipsAICall` ✅
-
-**الوصف:**  
-عندما تم عرض الاقتراحات مسبقاً (علامة aiSuggestionsShown = true)
-
-**السلوك المتوقع:**
-- ❌ عدم استدعاء AI
-- ❌ عدم حفظ الملف
-- ✅ إرجاع قائمة فارغة
-
-**السيناريو:**
-```
-User → يطلب الاقتراحات للمرة الثانية
-System → يتحقق من العلامة
-System → يجد أن العلامة = true
-System → يرجع قائمة فارغة مباشرة (توفير التكلفة)
-```
-
----
-
-#### Test 6: `testMultipleEstablishments_MappedCorrectly` ✅
-
-**الوصف:**  
-التحقق من تعيين منشآت متعددة بشكل صحيح (عربي/إنجليزي)
-
-**التحقق:**
-```java
-for (EstablishmentSuggestion est : result.getEstablishments()) {
-    assertNotNull(est.getRegistrationNumber());
-    assertNotNull(est.getSuggestionReason());
-    
-    BilingualText reason = (BilingualText) est.getSuggestionReason();
-    assertNotNull(reason.getArabic());   // "سبب الاقتراح رقم 1"
-    assertNotNull(reason.getEnglish());  // "Suggestion reason #1"
-}
-```
-
-**البيانات المختبَرة:**
-- 5 منشآت
-- كل منشأة لها نص ثنائي اللغة (عربي + إنجليزي)
-
----
-
-## 🔐 الجزء الثاني: اختبارات Apigee Gateway
-### ApigeeFlowSimulationTest (13 اختباراً)
-
-**الموقع:**  
-`src/test/java/sa/gov/gosi/si/osp/business/ownersphere/integration/ApigeeFlowSimulationTest.java`
-
-**الهدف:**  
-محاكاة سياسات Apigee الأمنية والتحكم في التدفق
-
----
-
-### 🔹 Apigee Proxy #1 Tests (Tests 1-7)
-
-#### Test 1: `testApigeeProxy1_PolicyChain_Success` ✅
-
-**الوصف:**  
-سلسلة السياسات الكاملة - VerifyAPIKey → AmeenSecurityCheck → Backend
-
-**Policy Chain:**
-```
-Request → VerifyAPIKey → AmeenSecurityCheck → Transform Headers → Backend
-   ✅          ✅               ✅                    ✅            200 OK
-```
-
-**Headers المحولة:**
-- `X-Forwarded-For: 10.0.0.1`
-- `X-Request-Id: req-xxx`
-- `X-Apigee-Proxy: owner-sphere-proxy`
-
----
-
-#### Test 2-4: VerifyAPIKey Policy Tests ✅
-
-**Test 2: Valid API Key**
-```
-Input:  apikey: "LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s"
-Output: 200 OK → يمر للسياسة التالية
-```
-
-**Test 3: Invalid API Key**
-```
-Input:  apikey: "wrong-key-123"
-Output: 401 Unauthorized
-Error:  "Invalid API Key"
-```
-
-**Test 4: Missing API Key**
-```
-Input:  (no apikey header)
-Output: 401 Unauthorized
-Error:  "Missing API Key"
-```
-
----
-
-#### Test 5-6: AmeenSecurityCheck (JWT) Tests ✅
-
-**Test 5: Valid JWT**
-```
-Input:  Authorization: "Bearer eyJhbGciOiJSUzI1NiJ9.xxx.yyy"
-Output: 200 OK → يمر للـ Backend
-```
-
-**Test 6: Expired JWT**
-```
-Input:  Authorization: "Bearer expired-token-xyz"
-Output: 401 Unauthorized
-Error:  "Token expired"
-```
-
-**JWT Validation Logic:**
-```java
-if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-    return 401; // Missing JWT
-}
-
-String jwt = authHeader.substring(7);
-if (jwt.contains("expired")) {
-    return 401; // Expired JWT
-}
-```
-
----
-
-#### Test 7: `testApigeeProxy1_RateLimit_QuotaExceeded_RejectsRequest` ✅
-
-**الوصف:**  
-محاكاة تجاوز الحد المسموح من الطلبات
-
-**Scenario:**
-```
-Policy: Rate Limit
-Quota:  100 requests per minute
-Status: 101st request
-Result: 429 Too Many Requests
-```
-
-**Response:**
-```json
-{
-  "statusCode": 429,
-  "errorMessage": "Rate limit exceeded. Try again later."
-}
-```
-
----
-
-### 🔹 Apigee Proxy #2 Tests (Tests 8-10)
-
-#### Test 8: `testApigeeProxy2_BackendToAI_Success` ✅
-
-**الوصف:**  
-التوجيه من Backend → Apigee Proxy #2 → OSB → AI
-
-**Flow:**
-```
-Backend → Apigee Proxy #2 (verify x-apikey) → OSB → AI Service
-  ✅            ✅                                ✅      ✅
-```
-
-**Target Endpoint:**
-```
-http://apigee-fea12.gosi.sa/osb/ai/v1/suggestions?regNo=501234567
-```
-
----
-
-#### Test 9: `testApigeeProxy2_Timeout_ExceedsLimit_ReturnsError` ✅
-
-**الوصف:**  
-اختبار سياسة Timeout (30 ثانية)
-
-**Policy Configuration:**
-```xml
-<ResponseTimeout>30000</ResponseTimeout> <!-- 30 seconds -->
-```
-
-**Test Scenario:**
-```
-AI Response Time: 35 seconds
-Apigee Action:    يقطع الاتصال بعد 30 ثانية
-Result:           504 Gateway Timeout
-```
-
----
-
-#### Test 10: `testApigeeProxy2_CircuitBreaker_MultipleFailures_OpensCircuit` ✅
-
-**الوصف:**  
-نمط Circuit Breaker عند فشل متكرر
-
-**Circuit States:**
-```
-Closed (Normal) → 5 failures → Half-Open → Test → Open (Block)
-     ✅                ❌           ⚠️        ❌      🚫
-```
-
-**Scenario:**
-1. 5 استدعاءات فاشلة متتالية
-2. Circuit يفتح تلقائياً
-3. الطلبات الجديدة ترفض فوراً (503 Service Unavailable)
-
----
-
-### 🔹 End-to-End & Additional Tests (Tests 11-13)
-
-#### Test 11: `testEndToEnd_CompleteFlow_Success` ✅
-
-**الوصف:**  
-التدفق الكامل عبر Proxy #1 و Proxy #2
-
-**Complete Journey:**
-```
-UI → Apigee Proxy #1 → Backend → Apigee Proxy #2 → OSB → AI
-✅        ✅              ✅            ✅           ✅     ✅
-```
-
-**Validations:**
-- ✅ API Key صحيح في كلا الـ Proxies
-- ✅ JWT صالح
-- ✅ Headers محولة بشكل صحيح
-- ✅ Response من AI مستلَم
-
----
-
-#### Test 12: `testApigeeProxy1_HeaderTransformation_AddsRequestId` ✅
-
-**الوصف:**  
-إضافة/تحويل Headers
-
-**Transformation:**
-```
-Before Apigee:
-  Authorization: Bearer xxx
-  apikey: yyy
-
-After Apigee:
-  Authorization: Bearer xxx
-  apikey: yyy
-  X-Forwarded-For: 10.0.0.1         ← Added
-  X-Request-Id: req-1730123456789   ← Added
-  X-Apigee-Proxy: owner-sphere-proxy ← Added
-```
-
----
-
-#### Test 13: `testApigeeProxy1_CORS_PreflightRequest_ReturnsCorrectHeaders` ✅
-
-**الوصف:**  
-طلب CORS Preflight (OPTIONS request)
-
-**Important Note:**  
-CORS Preflight يجب أن يمر **قبل** فحص API Key
-
-**Request:**
-```http
-OPTIONS /b2b/501234567/suggestions HTTP/1.1
-Origin: https://gosi.sa
-Access-Control-Request-Method: GET
-```
-
-**Response:**
-```http
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
-Access-Control-Allow-Headers: Content-Type, Authorization, apikey
-Access-Control-Max-Age: 3600
-```
-
-**Logic:**
-```java
-if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-    // Skip all security checks
-    return corsHeaders + 200 OK;
-}
-```
-
----
-
-## 🌐 الجزء الثالث: اختبارات OSB → AI Proxy
-### OsbAiProxyTest (9 اختبارات)
-
-**الموقع:**  
-`src/test/java/sa/gov/gosi/si/osp/business/ownersphere/proxy/service/OsbAiProxyTest.java`
-
-**الهدف:**  
-اختبار الاتصال بخدمة AI الخارجية ومعالجة الأخطاء
-
----
-
-#### Test 1: `testFetchAiSuggestions_Success_ReturnsEstablishments` ✅
-
-**الوصف:**  
-السيناريو السعيد - AI يرجع منشآت
-
-**Request:**
-```http
-GET /osb/ai/v1/suggestions?regNo=501234567
-Headers:
-  Content-Type: application/json
-  X-Request-Id: uuid
-  TODO_API_KEY_HEADER_NAME: xxx
-```
-
-**Response:**
-```json
-{
-  "establishments": [
-    {
-      "registrationNumber": 501000001,
-      "suggestionReason": {
-        "arabic": "سبب الاقتراح",
-        "english": "Suggestion reason"
-      }
-    }
-  ]
-}
-```
-
----
-
-#### Test 2-3: HTTP Error Handling ✅
-
-**Test 2: 400 Bad Request**
-```
-Scenario: رقم تسجيل غير صحيح
-Response: 400 BAD_REQUEST
-Result:   Empty list (لا يعطل النظام)
-```
-
-**Test 3: 500 Internal Server Error**
-```
-Scenario: خطأ في خدمة AI
-Response: 500 INTERNAL_SERVER_ERROR
-Result:   Empty list + Log error
-```
-
-**Error Handling Code:**
-```java
-try {
-    ResponseEntity<SuggestionsResponse> response = 
-        restTemplate.exchange(url, HttpMethod.GET, entity, SuggestionsResponse.class);
-    return response.getBody();
-} catch (HttpClientErrorException e) {
-    log.error("Client error calling AI service: {}", e.getStatusCode());
-    return buildEmptyResponse();
-} catch (HttpServerErrorException e) {
-    log.error("Server error from AI service: {}", e.getStatusCode());
-    return buildEmptyResponse();
-}
-```
-
----
-
-#### Test 4-5: Network Errors ✅
-
-**Test 4: Connection Timeout**
-```
-Scenario: AI service لا يستجيب خلال 10 ثواني
-Error:    ResourceAccessException: Connection timeout
-Result:   Empty list
-```
-
-**Test 5: Connection Refused**
-```
-Scenario: AI service غير متاح (server down)
-Error:    ResourceAccessException: Connection refused
-Result:   Empty list
-```
-
-**Configuration:**
-```java
-@Value("${osb.ai.timeout:10000}") // 10 seconds default
-private int timeout;
-```
-
----
-
-#### Test 6: `testFetchAiSuggestions_UnexpectedException_ReturnsEmpty` ✅
-
-**الوصف:**  
-أي استثناء غير متوقع
-
-**Scenarios Covered:**
-- NullPointerException
-- IllegalArgumentException
-- RuntimeException (generic)
-
-**Result:**
-```java
-log.error("Unexpected error calling AI for regNo {}", regNo, e);
-return buildEmptyResponse();
-```
-
----
-
-#### Test 7-9: Edge Cases ✅
-
-**Test 7: Null Response**
-```
-AI returns: null body
-Result:     Empty list
-```
-
-**Test 8: Empty Establishments**
-```
-AI returns: { "establishments": [] }
-Result:     Empty list (valid)
-```
-
-**Test 9: Malformed JSON**
-```
-AI returns: Invalid JSON
-Error:      HttpMessageConversionException
-Result:     Empty list
-```
-
----
-
-## 📊 الجزء الرابع: اختبارات طبقة الخدمة
-### EstablishmentSuggestionsServiceTest (5 اختبارات)
-
-**الموقع:**  
-`src/test/java/sa/gov/gosi/si/osp/business/ownersphere/service/EstablishmentSuggestionsServiceTest.java`
-
-**الهدف:**  
-اختبار منطق طبقة الخدمة (orchestration layer)
-
----
-
-#### Test 1: `testGetAiSuggestions_FirstTime_Success` ✅
-
-**الوصف:**  
-أول مرة يطلب فيها المستخدم الاقتراحات
-
-**Flow:**
-```
-1. Find profile → Found
-2. Check flag → aiSuggestionsShown = null (first time)
-3. Call AI → Returns 3 establishments
-4. Save profile:
-   - aiSuggestionsShown = true
-   - aiSuggestionsFirstShownDate = "2025-10-28"
-5. Return results
-```
-
----
-
-#### Test 2: `testGetAiSuggestions_AlreadyShown_ReturnsEmpty` ✅
-
-**الوصف:**  
-عندما العلامة = true (تم العرض مسبقاً)
-
-**Flow:**
-```
-1. Find profile → Found
-2. Check flag → aiSuggestionsShown = true ⚠️
-3. Skip AI call (cost saving)
-4. Return empty list
-```
-
-**Business Rule:**
-> "الاقتراحات تُعرض مرة واحدة فقط لكل منشأة"
-
----
-
-#### Test 3: `testGetAiSuggestions_ProfileNotFound_StillCallsAI` ✅
-
-**الوصف:**  
-لا يوجد ملف شخصي لكن نستدعي AI
-
-**Reason:**
-```
-حتى لو لا يوجد ملف للتتبع، نريد إعطاء المستخدم الاقتراحات
-```
-
-**Flow:**
-```
-1. Find profile → Not Found ❌
-2. Log warning
-3. Call AI anyway → Returns suggestions
-4. Don't save (no profile to update)
-5. Return results
-```
-
----
-
-#### Test 4: `testGetAiSuggestions_ProfileDataNull_InitializesAndSaves` ✅
-
-**الوصف:**  
-عندما الملف الشخصي موجود لكن profileData = null
-
-**Flow:**
-```java
-if (profileData == null) {
-    profileData = OwnerProfileData.builder().build();
-    profile.setProfileData(profileData);
-}
-```
-
-**Before:**
-```json
-{
-  "personId": 1000123456,
-  "establishment": {...},
-  "profileData": null  ← Problem
-}
-```
-
-**After:**
-```json
-{
-  "personId": 1000123456,
-  "establishment": {...},
-  "profileData": {
-    "aiSuggestionsShown": true,
-    "aiSuggestionsFirstShownDate": "2025-10-28"
-  }
-}
-```
-
----
-
-#### Test 5: `testGetAiSuggestions_AIReturnsEmpty_StillSavesFlag` ✅
-
-**الوصف:**  
-AI يرجع قائمة فارغة - لازم نحفظ العلامة
-
-**Why Save Flag?**
-```
-✅ لمنع محاولات متكررة للحصول على اقتراحات غير موجودة
-✅ توفير تكلفة استدعاء AI
-✅ تحسين تجربة المستخدم (لا توقع خاطئ)
-```
-
-**Result:**
-```
-- Empty list returned
-- Profile saved with flag = true
-- Next request will skip AI
-```
-
----
-
-## 🔍 التفاصيل التقنية المتقدمة
-
-### 1. Mocking Strategy
-
-**Entity Mocking (EstablishmentViewEntity):**
-```java
-// Problem: VIEW entities are read-only (no setters)
-// Solution: Mock instead of create
-
-EstablishmentViewEntity establishment = 
-    mock(EstablishmentViewEntity.class);
-when(establishment.getRegistrationNo()).thenReturn(regNo);
-when(establishment.getId()).thenReturn(regNo);
-```
-
-**Why Mock VIEW entities?**
-- Database Views don't have setters
-- Q-classes generated without setters
-- Mock provides full control
-
----
-
-### 2. BilingualText Support
-
-**Test Data:**
-```java
-BilingualText reason = new BilingualText(
-    "سبب الاقتراح رقم 1",  // Arabic
-    "Suggestion reason #1" // English
-);
-```
-
-**Validation:**
-```java
-BilingualText reason = est.getSuggestionReason();
-assertNotNull(reason.getArabic());
-assertNotNull(reason.getEnglish());
-```
-
----
-
-### 3. Java 8 Compatibility
-
-**Problem:**
-```java
-// Java 9+
-Map<String, String> headers = Map.of(
-    "key1", "value1",
-    "key2", "value2"
-);
-```
-
-**Solution:**
-```java
-// Java 8
-Map<String, String> headers = new HashMap<>();
-headers.put("key1", "value1");
-headers.put("key2", "value2");
-```
-
----
-
-### 4. Mockito Configuration
-
-```java
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
-class MyTest {
-    @Mock
-    private Repository repository;
-    
-    @InjectMocks
-    private Service service;
-}
-```
-
-**Strictness.LENIENT:**
-- يسمح بـ unused stubs
-- مفيد للـ integration tests
-- يقلل false positives
-
----
-
-## 📈 Test Coverage Analysis
-
-### Coverage by Layer:
-
-```
-┌─────────────────────────────────────────────────────┐
-│ Layer                    │ Coverage │ Test Count   │
-├─────────────────────────────────────────────────────┤
-│ API Layer (B2BSuggestions│   N/A    │  Manual Only │
-│ Service Layer            │   100%   │      5       │
-│ Proxy Layer (OSB)        │   100%   │      9       │
-│ Integration Flow         │   100%   │      6       │
-│ Apigee Simulation        │   100%   │     13       │
-├─────────────────────────────────────────────────────┤
-│ TOTAL                    │   ~95%   │     33       │
-└─────────────────────────────────────────────────────┘
-```
-
-### Scenario Coverage:
-
-✅ **Happy Paths:** 8 tests  
-✅ **Error Handling:** 12 tests  
-✅ **Edge Cases:** 7 tests  
-✅ **Security/Policy:** 6 tests  
-
----
-
-## 🚀 Running the Tests
-
-### Run All Tests:
-```bash
-mvn test
-```
-
-### Run Specific Test Class:
-```bash
-mvn test -Dtest=B2BIntegrationFlowSimplifiedTest
-mvn test -Dtest=ApigeeFlowSimulationTest
-mvn test -Dtest=OsbAiProxyTest
-mvn test -Dtest=EstablishmentSuggestionsServiceTest
-```
-
-### Run Single Test Method:
-```bash
-mvn test -Dtest=B2BIntegrationFlowSimplifiedTest#testCompleteFlow_HappyPath_Success
-```
-
-### Generate Coverage Report:
-```bash
-mvn test jacoco:report
-```
-Report Location: `target/site/jacoco/index.html`
-
----
-
-## 📝 Test Data Reference
-
-### Constants Used:
-```java
-TEST_REG_NO         = 501234567L
-TEST_PERSON_ID      = 1000123456L
-API_KEY             = "LLrquEpkhNG2O3E19H36Rp0wNlY4rj8s"
-APIGEE_PROXY_URL    = "https://apigee-fea12.gosi.sa"
-OSB_AI_ENDPOINT     = "/osb/ai/v1/suggestions"
-TIMEOUT             = 10000 (10 seconds)
-PROXY2_TIMEOUT      = 30000 (30 seconds)
-```
-
-### Sample JWT Token:
-```
-eyJhbGciOiJSUzI1NiJ9.
-eyJzdWIiOiIxMDAwMTIzNDU2IiwicGVyc29uSWQiOjEwMDAxMjM0NTYsInNjb3BlIjoiYjJiLnN1Z2dlc3Rpb25zLnJlYWQifQ.
-signature
-```
-
----
-
-## ⚠️ Known Limitations & Future Enhancements
-
-### Current Limitations:
-
-1. **API Layer Tests:**
-   - لم يتم اختبارها آلياً (Manual testing only)
-   - تحتاج Spring Boot Test Context
-
-2. **Actual Apigee Integration:**
-   - محاكاة فقط (Simulation)
-   - ليس اختبار حقيقي لـ Apigee
-   - تحتاج بيئة Fea12
-
-3. **AI Service:**
-   - Endpoint URL غير محدد (TODO)
-   - API Key header name غير مؤكد (TODO)
-   - Response format مفترض
-
-4. **JWT Claim Name:**
-   - افتراض: "personId"
-   - يحتاج تأكيد من Security Team
-
-### Recommended Future Tests:
-
-```
-□ Spring Boot Integration Tests (with @SpringBootTest)
-□ Contract Tests with AI service (Pact/Spring Cloud Contract)
-□ Performance Tests (JMeter)
-□ Apigee E2E Tests (Postman/Newman on Fea12)
-□ Security Penetration Tests
-□ Load Testing (stress test rate limiting)
-```
-
----
-
-## 🎯 Test Quality Metrics
-
-### Code Quality:
-- ✅ All tests follow AAA pattern (Arrange-Act-Assert)
-- ✅ Descriptive test names (Given-When-Then style)
-- ✅ Comprehensive assertions
-- ✅ Proper mocking strategy
-- ✅ No test interdependencies
-
-### Documentation Quality:
-- ✅ Javadoc على كل test method
-- ✅ Comments شارحة للـ complex logic
-- ✅ Test data واضحة ومفهومة
-
-### Maintainability:
-- ✅ Helper methods لتقليل التكرار
-- ✅ Constants معرّفة بشكل واضح
-- ✅ Easy to add new tests
-
----
-
-## 📚 Dependencies Used
-
-```xml
-<!-- Testing -->
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter</artifactId>
-    <scope>test</scope>
-</dependency>
-
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-junit-jupiter</artifactId>
-    <scope>test</scope>
-</dependency>
-
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <scope>test</scope>
-</dependency>
-
-<!-- For JWT mocking -->
-<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-oauth2-jose</artifactId>
-    <scope>test</scope>
-</dependency>
-```
-
----
-
-## ✅ Conclusion
-
-### What We Achieved:
-
-✅ **33 tests** covering entire B2B AI Suggestions flow  
-✅ **100% success rate** - all tests passing  
-✅ **Complete integration testing** from UI to AI  
-✅ **Apigee policy simulation** (security, CORS, rate limiting)  
-✅ **Error handling** at all layers  
-✅ **Bilingual support** validated (Arabic/English)  
-✅ **Edge cases** covered comprehensively  
-
-### Next Steps:
-
-1. ⏭️ Deploy to Fea12 environment
-2. ⏭️ Get actual Apigee Proxy #2 configuration
-3. ⏭️ Confirm JWT claim name from Security Team
-4. ⏭️ Get AI service endpoint from AI Team
-5. ⏭️ Run E2E tests on Fea12
-
----
-
-**تم التوثيق بواسطة:** GitHub Copilot  
-**التاريخ:** 28 أكتوبر 2025  
-**الحالة:** ✅ جميع الاختبارات ناجحة  
-**النسخة:** 1.0
-
----
-
-## 📞 للأسئلة والاستفسارات
-
-إذا كان لديك أي أسئلة حول:
-- كيفية إضافة اختبارات جديدة
-- شرح اختبار معين
-- تعديل البيانات المستخدمة
-- إضافة سيناريوهات جديدة
-
-الرجاء الرجوع إلى:
-1. الكود المصدري للاختبارات
-2. هذا الملف التوثيقي
-3. فريق التطوير
-
----
-
-**الحمد لله، التغطية الشاملة مكتملة! 🎉**
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                    HTTP REQUEST                                 │
+│  GET /owner-sphere/b2b/501234567/suggestions                   │
+│  Headers:                                                       │
+│    - Authorization: Bearer <JWT_TOKEN>                         │
+│    - Accept: application/json                                  │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│              ⚙️ LAYER 1: API CONTROLLER                         │
+│                                                                 │
+│  📄 File: B2BSuggestionsApiImpl.java                           │
+│  📍 Location: osp-api/src/main/java/.../api/b2b/              │
+│                                                                 │
+│  ✅ What happens here:                                         │
+│    1️⃣ Log incoming request                                     │
+│    2️⃣ Extract regNo from path (501234567)                     │
+│    3️⃣ Get personId from JWT token (security context)          │
+│    4️⃣ Call service layer                                       │
+│    5️⃣ Handle null response defensively                         │
+│    6️⃣ Return ResponseEntity.ok(response)                       │
+│                                                                 │
+│  📝 Code:                                                       │
+│    SuggestionsResponse response =                              │
+│        suggestionsService.getAiSuggestions(regNo, personId);  │
+│    return ResponseEntity.ok(response);                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│         🧠 LAYER 2: BUSINESS LOGIC / SERVICE                    │
+│                                                                 │
+│  📄 File: EstablishmentSuggestionsService.java                 │
+│  📍 Location: ownersphere/src/main/java/.../service/          │
+│                                                                 │
+│  ✅ What happens here:                                         │
+│    1️⃣ Query database for OwnerSphereProfile                   │
+│       ↳ SELECT * FROM T_OWNERSPHEREPROFILE                    │
+│         WHERE ESTABLISHMENTID = regNo                          │
+│                                                                 │
+│    2️⃣ Check if profile exists                                  │
+│       ├─ ❌ NOT FOUND:                                         │
+│       │   ↳ Call AI directly (no tracking)                    │
+│       │   ↳ Return AI response                                │
+│       │                                                        │
+│       └─ ✅ FOUND:                                             │
+│           ↳ Read profileData JSON column                      │
+│           ↳ Check aiSuggestionsShown flag                     │
+│                                                                 │
+│    3️⃣ Check if already shown                                   │
+│       ├─ ✅ YES (aiSuggestionsShown = true):                  │
+│       │   ↳ Log "already shown"                               │
+│       │   ↳ Return empty list []                              │
+│       │   ↳ STOP (no AI call)                                 │
+│       │                                                        │
+│       └─ ❌ NO (aiSuggestionsShown = null/false):             │
+│           ↳ Call AI proxy                                     │
+│           ↳ Update flag: aiSuggestionsShown = true           │
+│           ↳ Save date: aiSuggestionsFirstShownDate = today   │
+│           ↳ Save to database                                  │
+│           ↳ Return AI response                                │
+│                                                                 │
+│  📝 Code Flow:                                                  │
+│    if (profileData.getAiSuggestionsShown() == true) {         │
+│        return emptyResponse();  // Cached behavior            │
+│    }                                                           │
+│    SuggestionsResponse ai = osbAiProxy.fetch(regNo);          │
+│    profileData.setAiSuggestionsShown(true);                   │
+│    repository.save(profile);                                   │
+│    return ai;                                                  │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│           🔌 LAYER 3: INTEGRATION / PROXY                       │
+│                                                                 │
+│  📄 File: OsbAiProxy.java                                      │
+│  📍 Location: ownersphere/src/main/java/.../proxy/service/    │
+│                                                                 │
+│  ✅ What happens here:                                         │
+│    1️⃣ Generate UUID for request tracking                       │
+│       ↳ requestId = UUID.randomUUID()                         │
+│       ↳ Example: "cad7f12a-4096-47a9-a8f8-631d98685032"       │
+│                                                                 │
+│    2️⃣ Prepare HTTP request                                     │
+│       ↳ URL: apigeeBaseUrl + "/v1/gosi-brain/service-..."    │
+│       ↳ Method: POST                                          │
+│       ↳ Headers:                                               │
+│         • Content-Type: application/json                      │
+│         • X-Request-Id: {uuid}                                │
+│       ↳ Body:                                                  │
+│         {                                                      │
+│           "registrationNumber": 501234567,                    │
+│           "requestId": "uuid-here"                            │
+│         }                                                      │
+│                                                                 │
+│    3️⃣ Call Apigee AI service                                   │
+│       ↳ restTemplate.exchange(url, POST, entity, ...)        │
+│                                                                 │
+│    4️⃣ Handle response/errors                                   │
+│       ├─ ✅ Success (200 OK):                                  │
+│       │   ↳ Deserialize JSON → SuggestionsResponse           │
+│       │   ↳ Log success + count                               │
+│       │   ↳ Return response                                   │
+│       │                                                        │
+│       ├─ ❌ Client Error (4xx):                                │
+│       │   ↳ throw OsbAiServiceException                       │
+│       │   ↳ includes requestId for tracking                   │
+│       │                                                        │
+│       ├─ ❌ Server Error (5xx):                                │
+│       │   ↳ throw OsbAiServiceException                       │
+│       │                                                        │
+│       ├─ ❌ Timeout/Network Error:                             │
+│       │   ↳ throw OsbAiServiceException                       │
+│       │                                                        │
+│       └─ ❌ Unexpected Error:                                  │
+│           ↳ throw OsbAiServiceException                       │
+│                                                                 │
+│  📝 Error Handling Code:                                        │
+│    try {                                                       │
+│        ResponseEntity<SuggestionsResponse> response =         │
+│            restTemplate.exchange(...);                         │
+│        return response.getBody();                              │
+│    } catch (HttpClientErrorException e) {                     │
+│        throw new OsbAiServiceException("Client error", e, id);│
+│    } catch (HttpServerErrorException e) {                     │
+│        throw new OsbAiServiceException("Server error", e, id);│
+│    } catch (ResourceAccessException e) {                      │
+│        throw new OsbAiServiceException("Timeout", e, id);     │
+│    } catch (Exception e) {                                    │
+│        throw new OsbAiServiceException("Unexpected", e, id);  │
+│    }                                                           │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│               🌐 EXTERNAL: APIGEE GATEWAY                       │
+│                                                                 │
+│  📍 Endpoint: POST /v1/gosi-brain/service-recommendation       │
+│  🔐 Security: API Key (handled by OSB layer)                   │
+│  📊 Policies:                                                   │
+│    ✅ API Key validation                                       │
+│    ✅ Rate limiting                                            │
+│    ✅ Request/Response transformation                          │
+│    ✅ Logging & monitoring                                     │
+│                                                                 │
+│  ⚙️ Processing:                                                 │
+│    1️⃣ Validate API key                                         │
+│    2️⃣ Transform request if needed                              │
+│    3️⃣ Route to AI service backend                              │
+│    4️⃣ Transform response                                       │
+│    5️⃣ Add tracking headers                                     │
+│    6️⃣ Return to caller                                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│              🤖 GOSI AI SERVICE (GOSI Brain)                    │
+│                                                                 │
+│  🧠 AI Model processes:                                         │
+│    • Registration number analysis                              │
+│    • Business relationship patterns                            │
+│    • Industry sector matching                                  │
+│    • Geographic proximity                                      │
+│    • Supply chain connections                                  │
+│                                                                 │
+│  📤 Returns:                                                     │
+│    {                                                            │
+│      "establishments": [                                        │
+│        {                                                        │
+│          "establishmentName": "شركة النور للتجارة",            │
+│          "registrationNumber": 501111111,                      │
+│          "establishmentLocation": "Riyadh",                    │
+│          "unn": 7000000001,                                    │
+│          "aiConfidenceScore": 0.95,                            │
+│          "matchReason": "Similar business activity"            │
+│        },                                                       │
+│        ...                                                      │
+│      ]                                                          │
+│    }                                                            │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                   ⬅️ RESPONSE FLOWS BACK                        │
+│                                                                 │
+│  AI Service → Apigee → OsbAiProxy → Service → Controller      │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│              💾 DATABASE UPDATE (if first time)                 │
+│                                                                 │
+│  UPDATE T_OWNERSPHEREPROFILE                                   │
+│  SET PROFILEDATA = '{                                           │
+│    "aiSuggestionsShown": true,                                 │
+│    "aiSuggestionsFirstShownDate": "2025-10-29",               │
+│    ...other fields                                             │
+│  }'                                                             │
+│  WHERE PROFILEID = ...                                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                  📡 HTTP RESPONSE TO FRONTEND                   │
+│                                                                 │
+│  Status: 200 OK                                                │
+│  Content-Type: application/json                                │
+│                                                                 │
+│  Body:                                                          │
+│  {                                                              │
+│    "establishments": [                                          │
+│      {                                                          │
+│        "establishmentName": "شركة النور للتجارة",              │
+│        "registrationNumber": 501111111,                        │
+│        "establishmentLocation": "Riyadh",                      │
+│        "unn": 7000000001                                       │
+│      },                                                         │
+│      {                                                          │
+│        "establishmentName": "مؤسسة الأمل",                      │
+│        "registrationNumber": 501222222,                        │
+│        "establishmentLocation": "Jeddah",                      │
+│        "unn": 7000000002                                       │
+│      }                                                          │
+│    ]                                                            │
+│  }                                                              │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                        FRONTEND DISPLAY                         │
+│  User sees list of suggested establishments                     │
+└─────────────────────────────────────────────────────────────────┘
