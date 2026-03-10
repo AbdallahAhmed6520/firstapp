@@ -1,751 +1,128 @@
-Restricted مقيد
-Dear @Vignesh G
 
-The MR is approved, kindly accepted  
-
-https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/21
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) 
-Sent: Thursday, March 5, 2026 1:53 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Platform Engineering Team,
-
-Could you please review the following MR to fix the below issue
-
-https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/21
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Thursday, March 5, 2026 1:29 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Dear @MOAYAD A. ALSURAYYI(مؤيد  عبدالله السريع),
-
-Script execution failed with below error.
-
-Migration V30.0.20260219.13__CREATE_T_PROFILESEARCHHISTORY.sql failed
----------------------------------------------------------------------
-SQL State  : 42000
-Error Code : 2264
-Message    : ORA-02264: name already used by an existing constraint
-Location   : ./DDL/V30.0.20260219.13__CREATE_T_PROFILESEARCHHISTORY.sql (/opt/ibm-ucd/agent/var/work/Owner_Sphere_DB_Scripts_Component/migration_scripts/./DDL/V30.0.20260219.13__CREATE_T_PROFILESEARCHHISTORY.sql)
-Line       : 1
-Statement  : CREATE TABLE OWS_ADMIN.T_PROFILESEARCHHISTORY (
-
-Regards,
-Vignesh G
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Thursday, March 5, 2026 1:11 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Thanks @Vignesh G,
-
-Please find updated list with build no, kindly start deployment
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#18	-	Owner-sphere	 
-Owner-sphere/api-proxy	#3	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 
-Owner-sphere/osb	#53	-	Owner-sphere	 Please proceed with the establishment-ownersphere-prj first as the build is ready for it
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
- 
-
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Thursday, March 5, 2026 1:07 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Merged.
-
-Regards,
-Vignesh G
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Thursday, March 5, 2026 1:05 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Vignesh G,
-
-MR is Approved, kindly accepted
-
- https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/20
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) 
-Sent: Thursday, March 5, 2026 12:39 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Platform Engineering Team,
-
-Kindly review the following MR link to fix the below issue
-
-https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/20
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Thursday, March 5, 2026 2:45 AM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Dear @MOAYAD A. ALSURAYYI(مؤيد  عبدالله السريع),
-
-Failed with same error.
-
-Migration V30.0.20260219.05__CREATE_T_SERVICEOFFERING.sql failed
-----------------------------------------------------------------
-SQL State  : 42000
-Error Code : 907
-Message    : ORA-00907: missing right parenthesis
-Location   : ./DDL/V30.0.20260219.05__CREATE_T_SERVICEOFFERING.sql (/opt/ibm-ucd/agent/var/work/Owner_Sphere_DB_Scripts_Component/migration_scripts/./DDL/V30.0.20260219.05__CREATE_T_SERVICEOFFERING.sql)
-Line       : 1
-Statement  : CREATE TABLE OWS_ADMIN.T_SERVICEOFFERING
-(
-
-Regards,
-Vignesh G
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Wednesday, March 4, 2026 11:05 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Thanks @Vignesh G,
-
-Please find updated component with build no, kindly start deployment
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#17	-	Owner-sphere	 
-Owner-sphere/api-proxy	#3	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 
-Owner-sphere/osb	#53	-	Owner-sphere	 Please proceed with the establishment-ownersphere-prj first as the build is ready for it
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
- 
-
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Wednesday, March 4, 2026 10:42 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Merged.
-
-Regards,
-Vignesh G
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Wednesday, March 4, 2026 9:30 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @DevOps,
-
-The MR is approved, kindly accepted
-
-https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/19
-
-Best regards,
-Moayad.
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) 
-Sent: Wednesday, March 4, 2026 5:20 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Platform Engineering Team,
-
-Please find MR link to fix the below issue, kindly approve it
-
-https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/19
-
-Best regards,
-Moayad.
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Wednesday, March 4, 2026 5:14 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Apologies, wrongly pasted. Please find the below error.
-
-SQL State  : 42000
-Error Code : 907
-Message    : ORA-00907: missing right parenthesis
-Location   : ./DDL/V30.0.20260219.05__CREATE_T_SERVICEOFFERING.sql (/opt/ibm-ucd/agent/var/work/Owner_Sphere_DB_Scripts_Component/migration_scripts/./DDL/V30.0.20260219.05__CREATE_T_SERVICEOFFERING.sql)
-Line       : 1
-Statement  : CREATE TABLE OWS_ADMIN.T_SERVICEOFFERING
-
-Regards,
-Vignesh G
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Wednesday, March 4, 2026 4:56 PM
-To: Vignesh G <VG1@gosi.gov.sa>; Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Vignesh G,
-
-The below error and script related to Triage_Management App not Owner sphere App, could you please check?
-
-Best regards,
-Moayad.
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Wednesday, March 4, 2026 4:39 PM
-To: Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Dear @MOAYAD A. ALSURAYYI(مؤيد  عبدالله السريع),
-
-Script deployments failed with below error.
-
-SQL State  : 72000
-Error Code : 1430
-Message    : ORA-01430: column being added already exists in table
-Location   : ./DDL/V31.0.20260304.02__ALTER_A_CASE.sql (/opt/ibm-ucd/agent/var/work/Triage_Management_DB_Scripts_Component/migration_scripts/./DDL/V31.0.20260304.02__ALTER_A_CASE.sql)
-Line       : 1
-Statement  : ALTER TABLE TRG_ADMIN.A_CASE
-    ADD CASETYPE VARCHAR2(255 BYTE)
-
-Regards,
-Vignesh G
-
-From: Muhammed A. Afaq(محمد آفاق) <mafaq@gosi.gov.sa> 
-Sent: Wednesday, March 4, 2026 2:24 PM
-To: Vignesh G <VG1@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @Vignesh G
-
-Updated for OWS_ADMIN and OWS_USR schemas in both enviornments.
-
-
-Thanks,
-
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Tuesday, March 3, 2026 7:05 PM
-To: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; DBGroup <DBGroup@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>; Niyaz Ahammed <NNIYAZ@gosi.gov.sa>; Dhanraj Kannan <DKANNAN@GOSI.GOV.SA>; Karthikeyan Palanisamy <KPALANISWAMY1@gosi.gov.sa>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Dear @DBGroup,
-
-Request your support to add the flyway password in both e2e and UAT environment for OwnerSphere domain.
-
-E2E:
-flyway.ows.schema.ddl.password - https://10.0.27.46:8443/#environmentTemplate/17405eef-0657-408a-9633-094df032a2a4/-1/configuration/properties
-flyway.ows.schema.dml.password - https://10.0.27.46:8443/#environmentTemplate/17405eef-0657-408a-9633-094df032a2a4/-1/configuration/properties
-
-UAT:
-flyway.ows.schema.ddl.password - https://10.0.27.46:8443/#environmentTemplate/1771ffde-6e65-5e9d-0e3c-a0c17e75cc66/-1/configuration/properties
-flyway.ows.schema.dml.password - https://10.0.27.46:8443/#environmentTemplate/1771ffde-6e65-5e9d-0e3c-a0c17e75cc66/-1/configuration/properties
-
-
-Regards,
-Vignesh G
-
-From: AbdelRahman Selim <ASELIM@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 4:42 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Franjo Joy <FJOY@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Dear DevOps,
-
-Reminder.
-
-Regards,
-________________________________________
-
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>
-Date: 3 March 2026 at 3:02:24 PM GMT+3
-To: Franjo Joy <FJOY@GOSI.GOV.SA>, Vignesh G <VG1@gosi.gov.sa>, AbdelRahman Selim <ASELIM@GOSI.GOV.SA>, BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>, Jijith Shaji <JSHAJI@gosi.gov.sa>, DevOps <devops@gosi.gov.sa>, Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>, Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>, Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>, FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>, KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
-
-Restricted مقيد
-Dear @DevOps,
-
-Please find the updated list with build no, kindly start deployment
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#16	-	Owner-sphere	 
-Owner-sphere/api-proxy	#3	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 
-Owner-sphere/osb	#53	-	Owner-sphere	 Please proceed with the establishment-ownersphere-prj first as the build is ready for it
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
- 
-
-
-Best regards,
-Moayad.
- 
-From: Franjo Joy <FJOY@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 3:00 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-MR Accepted.
- 
- 
-Regards,
-Franjo Joy
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 2:59 PM
-To: Franjo Joy <FJOY@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Dear @Vignesh G, @Franjo Joy,
-
-The MR is approved, kindly accepted
-
-Best regards
-Moayad.
- 
-From: Franjo Joy <FJOY@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 2:55 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Kindly get the changes approved from @Platform Engineering Team
- 
-Regards,
-Franjo Joy
- 
- 
- 
-Franjo Joy
-Franjo Joy	
-Developer_Ameen
-		
-Business Solutions General Department
-
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 1:35 PM
-To: Vignesh G <VG1@gosi.gov.sa>; AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Dear @Vignesh G,
-
-Please find the following MR link to fix the below issue, kindly accepted
-
-https://gitlab.gosi.ins/owner-sphere/apigee/api-proxies/-/merge_requests/4
-
-Best regards,
-Moayad. 
- 
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Tuesday, March 3, 2026 1:22 PM
-To: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-@MOAYAD A. ALSURAYYI(مؤيد  عبدالله السريع),
- 
-Please help to fix the below error.
- 
-proxy###+OWS_B2BEstablishmentAPIProxy
-Environment - 
-cat: OWS_B2BEstablishmentAPIProxy/apiproxy/env.properties: No such file or directory
-Traceback (most recent call last):
-  File "../../../utils/DeployProxy.py", line 151, in <module>
-    (Directory == None and ZipFile == None) or \
-NameError: name 'ZipFile' is not defined
-proxy###+OWS_GosiBrainAPIProxy
-Environment - 
-cat: OWS_GosiBrainAPIProxy/apiproxy/env.properties: No such file or directory
-Traceback (most recent call last):
-  File "../../../utils/DeployProxy.py", line 151, in <module>
-    (Directory == None and ZipFile == None) or \
-NameError: name 'ZipFile' is not defined
-proxy###+OWS_OpenSearchAPIProxy
-cat: OWS_OpenSearchAPIProxy/apiproxy/env.properties: No such file or directory
-Environment - 
-Traceback (most recent call last):
-  File "../../../utils/DeployProxy.py", line 151, in <module>
-    (Directory == None and ZipFile == None) or \
-NameError: name 'ZipFile' is not defined
-proxy###+OWS_OwnerAPIProxy
-cat: OWS_OwnerAPIProxy/apiproxy/env.properties: No such file or directory
-Environment - 
-Traceback (most recent call last):
-  File "../../../utils/DeployProxy.py", line 151, in <module>
-    (Directory == None and ZipFile == None) or \
-NameError: name 'ZipFile' is not defined
-proxy###+OWS_OwnerSphereAPIProxy
- 
- 
-Regards,
-Vignesh G
- 
-From: AbdelRahman Selim <ASELIM@GOSI.GOV.SA> 
-Sent: Tuesday, March 3, 2026 11:39 AM
-To: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Dear DevOps,
- 
-Appreciate it if we expedite the deployment in order to proceed the testing in E2E.
- 
-Regards.
-________________________________________
-
-From: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>
-Date: 3 March 2026 at 9:18:26 AM GMT+3
-To: Vignesh G <VG1@gosi.gov.sa>, MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>, Jijith Shaji <JSHAJI@gosi.gov.sa>, DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>, Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>, Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>, Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>, FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>, Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>, KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @DevOps,
- 
-New OSB #53 build shared in the table after your confirmation about the Jenkins build fix
- 
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#16	-	Owner-sphere	 
-Owner-sphere/api-proxy	#2	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 Already merged 
-Owner-sphere/osb	#53	-	Owner-sphere	 Please proceed with the establishment-ownersphere-prj first as the build is ready for it
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
- 
-Regards,
-Bhavyang
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Monday, March 2, 2026 2:40 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Noted. We will update you once the deployments are done.
- 
-Regards,
-Vignesh G
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 2:30 PM
-To: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Dear @DevOps, please start deployment to e2e env with below build no
-
-Best regards,
-Moayad.
- 
-From: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 2:29 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @DevOps,
- 
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#16	-	Owner-sphere	 
-Owner-sphere/api-proxy	#2	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 Already merged 
-Owner-sphere/osb	#52	-	Owner-sphere	 Please proceed with the establishment-ownersphere-prj first as the build is ready for it
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
- 
- 
-From: BHAVYANG SINGH 
-Sent: Monday, March 2, 2026 2:16 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @DevOps,
- 
-Please deploy the establishment-ownersphere-prj to e2e
- 
-http://jenkinsci.gosi.ins:8080/job/Owner-Sphere/job/owner-sphere%252Fosb%252Fowner-sphere-mb-app/job/main/52/
- 
-Build: 52
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 2:12 PM
-To: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Jijith Shaji <JSHAJI@gosi.gov.sa>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Dear @DevOps,
-
-Can you please start deployment of e2e for ready build that we have shared below.
-
-Best regards,
-Moayad.
- 
-From: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 1:09 PM
-To: Jijith Shaji <JSHAJI@gosi.gov.sa>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @Jijith Shaji,
-
-Please approve the MR
- 
-https://gitlab.gosi.ins/owner-sphere/osb/owner-sphere-mb-app/-/merge_requests/6
- 
-From: Jijith Shaji <JSHAJI@gosi.gov.sa> 
-Sent: Monday, March 2, 2026 12:22 PM
-To: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-+ mv '*_feature18_customizationfile.xml' /jenkins/slave04/workspace/ere_osb_owner-sphere-mb-app_main/artifacts/feature18/
-mv: cannot stat '*_feature18_customizationfile.xml': No such file or directory
- 
- 
-add all env customization files.
- 
-Regards,
-Jijith 
- 
-From: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 12:07 PM
-To: Jijith Shaji <JSHAJI@gosi.gov.sa>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @Jijith Shaji,
-
-The build is failing stating POM is not present.
-
-http://jenkinsci.gosi.ins:8080/job/Owner-Sphere/job/owner-sphere%252Fosb%252Fowner-sphere-mb-app/job/main/47/console
-
-However, the POM files are present both at project level as well as repo level.
-
- 
-
-Could you please check if anything else is missing considering it’s a new repo?
-
-Regards,
-Bhavyang
- 
-From: Jijith Shaji <JSHAJI@gosi.gov.sa> 
-Sent: Monday, March 2, 2026 10:42 AM
-To: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Its merged.
- 
-From: BHAVYANG SINGH <BSINGH@GOSI.GOV.SA> 
-Sent: Monday, March 2, 2026 10:37 AM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @DevOps,
- 
-Any update on the below MR request?
- 
-Regards,
-Bhavyang
- 
- 
- 
-BHAVYANG SINGH
-BHAVYANG SINGH	
-		
-
- 
-From: BHAVYANG SINGH 
-Sent: Sunday, March 1, 2026 6:52 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Hello @DevOps,
- 
-Please approve the MR
- 
-https://gitlab.gosi.ins/owner-sphere/osb/owner-sphere-mb-app/-/merge_requests/5
- 
-Regards,
-Bhavyang
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Sunday, March 1, 2026 3:51 PM
-To: Vignesh G <VG1@gosi.gov.sa>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Thanks @Vignesh G,
-
-Please find updated list with build no, kindly start deploy to e2 env
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	#24	-	Owner-sphere	
-Owner-sphere/database	#16	-	Owner-sphere	 
-Owner-sphere/api-proxy	#2	-	Owner-sphere	 
-Owner-sphere/api-product	#2	-	Owner-sphere	 
-owner-sphere-app-queue	#4	-	Owner-sphere	 Already merged 
-Owner-sphere/osb	-	-	Owner-sphere	 @BHAVYANG SINGH kindly confirm
-apigee-developer-apps	#2362	-	Shared	 
-foundation/apigee/pre-config	-	-	Shared	 Already deployed to e2e
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	 Already deployed to e2e
-foundation/apigee/foundation-api-proxies	-	-	Foundation	Already deployed to e2e
-establishment/database/establishment-management-db-scripts	-	-	Establishment	Already deployed to e2e
-/database/customer-information-management-db-scripts	-	-	Customer	Already deployed to e2e
-
-Best regards,
-Moayad
- 
-From: Vignesh G <VG1@gosi.gov.sa> 
-Sent: Sunday, March 1, 2026 3:43 PM
-To: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA>; DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Merged.
- 
-Regards,
-Vignesh G
- 
- 
- 
-Vignesh G
-Vignesh G	
-Business Analyst_Ameen
-		IT
-Business Solutions General Department
-
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) <MALSURAYYI@GOSI.GOV.SA> 
-Sent: Sunday, March 1, 2026 3:14 PM
-To: DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>; Abdelmoity Elsaeed <AELSAEED1@GOSI.GOV.SA>; FURKAN .. GURSOY(فرقان . . قرسوي) <FGURSOY@GOSI.GOV.SA>; Platform Engineering Team <PlatformEngineeringTeam@gosi.gov.sa>; KHALED H. ALFARAJ(خالد حمود الفرج) <KALFARAJ@GOSI.GOV.SA>
-Subject: RE: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-++ 
- 
- 
- 
-مؤيد بن عبدالله السريع
-MOAYAD ABDULLAH ALSURAYYI	مطوّر البرمجيات أول
-Senior Software Developer
-	0118087026	قسم التهيئة والتسجيل
-Onboarding & Registration
-
- 
-From: MOAYAD A. ALSURAYYI(مؤيد عبدالله السريع) 
-Sent: Sunday, March 1, 2026 3:11 PM
-To: DevOps <devops@gosi.gov.sa>
-Cc: AbdelRahman Selim <ASELIM@GOSI.GOV.SA>; Abduallah Ahmed (عبد الله أحمد) <aahmed1@gosi.gov.sa>; Mohamed M. Ahmed(محمد مجدي أحمد) <MMAHMED@gosi.gov.sa>; BHAVYANG SINGH <BSINGH@GOSI.GOV.SA>
-Subject: Ameen | Cycle-56 | Feature BCS-21625 EmployerPlatform:Owner Sphere MVP 1.0 Deployment
- 
-Restricted مقيد
-Dear @DevOps
-
-I hope this email find you well,
-
-Please find my following components for owner sphere product, can you please accept the MRs links, all necessary approval are there.
-Cycle-56
-Component name	Build No.	MR link	Domain	comment
-owner-sphere/java	-	https://gitlab.gosi.ins/owner-sphere/java/owner-sphere/-/merge_requests/109
-Owner-sphere	
-Owner-sphere/database	-	https://gitlab.gosi.ins/owner-sphere/database/owner-sphere-db-scripts/-/merge_requests/18
-Owner-sphere	 
-Owner-sphere/api-proxy	-	https://gitlab.gosi.ins/owner-sphere/apigee/api-proxies/-/merge_requests/3
-Owner-sphere	 
-Owner-sphere/api-product	-	https://gitlab.gosi.ins/owner-sphere/apigee/api-products/-/merge_requests/2
-Owner-sphere	 
-owner-sphere-app-queue	-	-	Owner-sphere	 Already merged 
-Owner-sphere/osb	-	-	Owner-sphere	 @BHAVYANG SINGH kindly confirm
-apigee-developer-apps	-	-	Shared	 Already merged
-foundation/apigee/pre-config	-	-	Shared	 Already merged
-common-lib	-	-	Foundation	 Not deployable component
-foundation/java/foundation-service	-		Foundation	Already merged 
-foundation/apigee/foundation-api-proxies	-	-	Foundation	 Already merged 
-establishment/database/establishment-management-db-scripts	-	-	Establishment	 Already merged 
-/database/customer-information-management-db-scripts	-	-	Customer	 Already merged 
-
-
-Best regards,
-Moayad.
- 
+Started by user Abduallah Ahmed (عبد الله أحمد)
+Querying the current revision of branch main...
+Current revision of branch main is 96ee3b8b0e642b40b91b65f2a7eed05f5d1b921a
+Obtained Jenkinsfile from 96ee3b8b0e642b40b91b65f2a7eed05f5d1b921a
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on slave02 in /jenkins/slave02/workspace/ase_owner-sphere-db-scripts_main
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential gitlab-ssh-key
+Fetching changes from the remote Git repository
+Cleaning workspace
+Fetching without tags
+ERROR: Error fetching remote repo 'origin'
+hudson.plugins.git.GitException: Failed to fetch from git@gitlab.gosi.ins:owner-sphere/database/owner-sphere-db-scripts.git
+	at PluginClassLoader for git//hudson.plugins.git.GitSCM.fetchFrom(GitSCM.java:998)
+	at PluginClassLoader for git//hudson.plugins.git.GitSCM.retrieveChanges(GitSCM.java:1239)
+	at PluginClassLoader for git//hudson.plugins.git.GitSCM._checkout(GitSCM.java:1310)
+	at PluginClassLoader for git//hudson.plugins.git.GitSCM.checkout(GitSCM.java:1277)
+	at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep.checkout(SCMStep.java:136)
+	at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:101)
+	at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:88)
+	at PluginClassLoader for workflow-step-api//org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution.lambda$start$0(SynchronousNonBlockingStepExecution.java:49)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: hudson.plugins.git.GitException: Command "git fetch --no-tags --force --progress -- git@gitlab.gosi.ins:owner-sphere/database/owner-sphere-db-scripts.git +refs/heads/main:refs/remotes/origin/main" returned status code 128:
+stdout: 
+stderr: Warning: Permanently added 'gitlab.gosi.ins' (ED25519) to the list of known hosts.
+Permission denied, please try again.
+Permission denied, please try again.
+git@gitlab.gosi.ins: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandIn(CliGitAPIImpl.java:2848)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandWithCredentials(CliGitAPIImpl.java:2189)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl$1.execute(CliGitAPIImpl.java:638)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler$GitCommandMasterToSlaveCallable.call(RemoteGitImpl.java:173)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler$GitCommandMasterToSlaveCallable.call(RemoteGitImpl.java:164)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:225)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:50)
+	at hudson.remoting.Request$2.run(Request.java:391)
+	at hudson.remoting.InterceptingExecutorService.lambda$wrap$0(InterceptingExecutorService.java:81)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+	Suppressed: hudson.remoting.Channel$CallSiteStackTrace: Remote call to slave02
+		at hudson.remoting.Channel.attachCallSiteStackTrace(Channel.java:1916)
+		at hudson.remoting.UserRequest$ExceptionResponse.retrieve(UserRequest.java:384)
+		at hudson.remoting.Channel.call(Channel.java:1108)
+		at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler.execute(RemoteGitImpl.java:155)
+		at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+		at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+		at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler.invoke(RemoteGitImpl.java:140)
+		at PluginClassLoader for git-client/jdk.proxy15/jdk.proxy15.$Proxy81.execute(Unknown Source)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM.fetchFrom(GitSCM.java:996)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM.retrieveChanges(GitSCM.java:1239)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM._checkout(GitSCM.java:1310)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM.checkout(GitSCM.java:1277)
+		at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep.checkout(SCMStep.java:136)
+		at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:101)
+		at PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:88)
+		at PluginClassLoader for workflow-step-api//org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution.lambda$start$0(SynchronousNonBlockingStepExecution.java:49)
+		at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+		at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+		at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+		at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+		at java.base/java.lang.Thread.run(Thread.java:1583)
+ERROR: Error fetching remote repo 'origin'
+ERROR: Maximum checkout retry attempts reached, aborting
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+Error when executing always post condition:
+Also:   org.jenkinsci.plugins.workflow.actions.ErrorAction$ErrorId: 611c156b-0eef-4cf0-9e19-6efb2dd1244b
+org.jenkinsci.plugins.workflow.steps.MissingContextVariableException: Required context class hudson.FilePath is missing
+Perhaps you forgot to surround the step with a step that provides this, such as: node
+	at PluginClassLoader for workflow-basic-steps//org.jenkinsci.plugins.workflow.steps.CoreStep$Execution.run(CoreStep.java:90)
+	at PluginClassLoader for workflow-basic-steps//org.jenkinsci.plugins.workflow.steps.CoreStep$Execution.run(CoreStep.java:71)
+	at PluginClassLoader for workflow-step-api//org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution.lambda$start$0(SynchronousNonBlockingStepExecution.java:49)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] End of Pipeline
+ERROR: Error fetching remote repo 'origin'
+[INFO]
+[INFO] -----------------------------------------------------
+[INFO] Global Post Script
+[INFO] -----------------------------------------------------
+Job Name-Owner-Sphere/owner-sphere%2Fdatabase%2Fowner-sphere-db-scripts/main
+Branch Name-main
+Build Result-FAILURE
+Owner-Sphere/owner-sphere%2Fdatabase%2Fowner-sphere-db-scripts Component
+owner-sphere/database/owner-sphere-db-scripts Component
+[INFO] -----------------------------------------------------
+[GitLab Pipeline Status] Notifying branch build status: FAILED Owner-Sphere/owner-sphere%2Fdatabase%2Fowner-sphere-db-scripts/main #22: There was a failure building this commit.
+ > git rev-parse --resolve-git-dir /jenkins/slave02/workspace/ase_owner-sphere-db-scripts_main/.git # timeout=10
+ > git config remote.origin.url git@gitlab.gosi.ins:owner-sphere/database/owner-sphere-db-scripts.git # timeout=10
+ > git rev-parse --verify HEAD # timeout=10
+No valid HEAD. Skipping the resetting
+ > git clean -fdx # timeout=10
+Fetching upstream changes from git@gitlab.gosi.ins:owner-sphere/database/owner-sphere-db-scripts.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.5'
+using GIT_SSH to set credentials GitLab
+ > git fetch --no-tags --force --progress -- git@gitlab.gosi.ins:owner-sphere/database/owner-sphere-db-scripts.git +refs/heads/main:refs/remotes/origin/main # timeout=10
+Notified JIRA that a build has completed (null).
+
+Finished: FAILURE
